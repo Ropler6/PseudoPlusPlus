@@ -53,7 +53,7 @@ def preprocess_larrow(line: str, pos: int):
         line = add_character_at(" ", line, pos)
         pos += 1
 
-    return line
+    return line, pos
 
 def preprocess_rarrow(line: str, pos: int):
     if line[pos + 1] != "=" and line[pos + 1] != " ":
@@ -63,53 +63,52 @@ def preprocess_rarrow(line: str, pos: int):
         line = add_character_at(" ", line, pos)
         pos += 1
 
-    return line
+    return line, pos
 
 def preprocess_minus(line: str, pos: int):
+    if line[pos + 1] != " ":
+        line = add_character_at(" ", line, pos + 1)
+
     if line[pos - 1] != "<" and line[pos - 1] != " ":
         line = add_character_at(" ", line, pos)
         pos += 1
 
-    if line[pos + 1] != " ":
-        line = add_character_at(" ", line, pos + 1)
-
-    return line
+    return line, pos
 
 # TODO: handle += -= /= etc
-def preprocessArithmeticOperator(line: str, pos: int):
-    if line[pos - 1] != " ":
-        line = add_character_at(" ", line, pos)
-        pos += 1
-    
+def preprocess_arithmetic_operator(line: str, pos: int):
     if line[pos + 1] != " ":
         line = add_character_at(" ", line, pos + 1)
 
-    return line
+    if line[pos - 1] != " ":
+        line = add_character_at(" ", line, pos)
+        pos += 1    
 
+    return line, pos
+
+
+with open("./test.cpp", "w") as g:
+    g.write("")
 
 with open("./main.pc") as f:
-    output = "#include <iostream>\nusing namespace std;\nint main()\n{\n"
-
     for line in f: # go line by line
-        processed_line = ""
-        for pos, char in enumerate(line): # processing the current line (adding spaces where needed)
-            match char:
+        i = 0
+        while i < len(line): # processing the current line (adding spaces where needed)
+                             # using a while-loop to properly have len(line) updated
+            match line[i]:
                 case "<":
-                    processed_line = preprocess_larrow(line, pos)
-                    break
+                    line, i = preprocess_larrow(line, i)
 
                 case "-":
-                    processed_line = preprocess_minus(line, pos)
-                    break
+                    line, i = preprocess_minus(line, i)
 
                 case ">":
-                    processed_line = preprocess_rarrow(line, pos)
-                    break
+                    line, i = preprocess_rarrow(line, i)
 
                 case "+" | "/" | "*" | "%" | "[" | "]" | "=" | "(" | ")":
-                    processed_line = preprocessArithmeticOperator(line, pos)
-                    break
+                    line, i = preprocess_arithmetic_operator(line, i)
+            i += 1
 
         with open("./test.cpp", "a") as g:
-            g.write(processed_line)
+            g.write(line)
 
