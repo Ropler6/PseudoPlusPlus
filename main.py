@@ -117,7 +117,7 @@ def preprocess_arithmetic_operator(line: str, pos: int):
 
 
 # Reset the rest file
-with open("./test.cpp", "w") as g:
+with open("./temp.txt", "w+") as g:
     g.write("")
 
 with open("./main.pc") as f:
@@ -140,6 +140,6 @@ with open("./main.pc") as f:
             i += 1
 
         # Write the processed line to the file
-        with open("./test.cpp", "a") as g:
+        with open("./temp.txt", "a") as g:
             g.write(line)
 
