@@ -171,6 +171,35 @@ def process_user_input(line: str):
     return result
 
 
+def process_while_structure(line: str):
+    """
+    Determines whether the "cat timp" is the start of a while-loop
+    or the end of a repeat-while loop and processes the code accordingly
+    """
+
+    tokens = line.split()
+    result = ""
+    if tokens[-1] == "executa": # while-loop
+        for token in tokens:
+            if keywords.get(token) is not None:
+                result += keywords[token]
+            else:
+                result += token
+
+        return result
+    else: # end of repeat-while loop
+        result = "} while("
+        tokens = tokens[2:] # remove "cat" & "timp"
+        for token in tokens:
+            if keywords.get(token) is not None:
+                result += keywords[token]
+            else:
+                result += token
+
+        result += ");"        
+        return result
+
+
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
@@ -194,11 +223,15 @@ def process_line(line: str):
         return process_user_input(segments[0])
     elif tokens[0] == "scrie":
         return process_user_output(segments[0])
-    elif tokens[0] in ["daca", "cat", ]:
+    elif tokens[0] == "daca":
         required_stops += 1
         requires_semicolon = False
+    elif tokens[0] == "cat":
+        required_stops += 1
+        return process_while_structure(segments[0])
     elif tokens[0] == "repeta":
         required_loop_enders += 1
+        requires_semicolon = False
     elif tokens[0] == "stop":
         required_stops -= 1
         requires_semicolon = False
@@ -243,7 +276,7 @@ with open("./main.pc") as f:
             g.write(line)
 
 with open("./test.cpp", "w") as g:
-    g.write("")
+    g.write("#include <iostream>\nusing namespace std;\nint main(){")
 
 # TODO: move this in the for-loop above
 with open("./temp.txt") as f:
@@ -251,3 +284,4 @@ with open("./temp.txt") as f:
         for line in f:
             processed_line = process_line(line)
             g.write(processed_line)
+        g.write("return 0;\n}\n")
