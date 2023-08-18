@@ -124,14 +124,28 @@ def preprocess_arithmetic_operator(line: str, pos: int):
 
     return line, pos
 
-
+# TODO: add error-handling
 def process_user_output(line: str):
-    pass
+    line = line[6:] # remove "scrie" from the line
+    tokens = line.split(",")
+    tokens[-1] = tokens[-1].strip("\n")
+    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
+
+    result = "cout<<"
+
+    for token in tokens: # adding reading syntax for each token
+        result += f"{token}<<"
+
+    result = result[:-2] # removing extra "<<" from the end
+    result += ";\n" # finishing the line
+
+    return result
 
 # TODO: add error-handling
 def process_user_input(line: str):
     line = line[8:] # remove "citeste" from the line
     tokens = line.split(",")
+    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
     # the last token and the data type
     temp = tokens[-1].strip().split(" ") # [variable, '(', type, ')']
@@ -179,8 +193,7 @@ def process_line(line: str):
     if tokens[0] == "citeste":
         return process_user_input(segments[0])
     elif tokens[0] == "scrie":
-        # return process_user_output(segments[0])
-        pass
+        return process_user_output(segments[0])
     elif tokens[0] in ["daca", "cat", ]:
         required_stops += 1
         requires_semicolon = False
