@@ -32,6 +32,13 @@ keywords = {
     "si": "&&",
     "sau": "||",
 
+    # data type
+    "natural": "float",
+    "real": "float",
+    "intreg": "float",
+    "sir": "string",
+    "caracter": "char",
+
     # other
     "(": "(",
     ")": ")",
@@ -118,12 +125,37 @@ def preprocess_arithmetic_operator(line: str, pos: int):
     return line, pos
 
 
-def process_user_input(line: str):
-    pass
-
-
 def process_user_output(line: str):
     pass
+
+# TODO: add error-handling
+def process_user_input(line: str):
+    line = line[8:] # remove "citeste" from the line
+    tokens = line.split(",")
+
+    # the last token and the data type
+    temp = tokens[-1].strip().split(" ") # [variable, '(', type, ')']
+    tokens[-1] = temp[0] # the last token
+    data_type = temp[2] # the data type
+
+    result = ""
+    result += keywords[data_type] + " " # the data type of the variables
+
+    for token in tokens: #declaring the variables and saving them for later usage
+        result += f"{token},"
+        identifiers.append(Identifier(token, data_type))
+
+    result = result[:-1] + ";\n" # finishing the line
+    result += "cin>>"
+
+    for token in tokens: # adding reading syntax for each token
+        result += f"{token}>>"
+
+    result = result[:-2] # removing extra ">>" from the end
+    result += ";\n" # finishing the line
+
+    return result
+
 
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
@@ -145,8 +177,7 @@ def process_line(line: str):
         return ""
 
     if tokens[0] == "citeste":
-        # return process_user_input(segments[0])
-        pass
+        return process_user_input(segments[0])
     elif tokens[0] == "scrie":
         # return process_user_output(segments[0])
         pass
