@@ -58,6 +58,23 @@ def add_character_at(character: str, string: str, position: int) -> str:
     return string[:position] + character + string[position:]
 
 
+def type_of(value: str):
+    """
+    Determines the type of `value` and returns it as a string
+    """
+
+
+    try:
+        value = int(value)
+        return "intreg"
+    except ValueError:
+        try:
+            value = float(value)
+            return "real"
+        except ValueError:
+            return "sir" if len(value) > 1 else "caracter"
+
+
 def preprocess_larrow(line: str, pos: int):
     """
     Adds spaces around '<' (if required)
@@ -219,6 +236,32 @@ def process_repeat_until(line: str):
     return result
 
 
+def process_for_loop(line: str):
+    line = line.strip()
+
+    # TODO: check if "executa" exists
+    line = line[7:-8] # remove "pentru" & "executa"
+    result = "for ("
+    tokens = line.split(",")
+
+    iterator_segment = tokens[0].split() # the declaration of the iterator variable (ex: "i <- 1")
+    iterator = Identifier(iterator_segment[0], type_of(iterator_segment[2]))
+
+    if iterator.name not in [x.name for x in identifiers]:
+        result += f"{keywords[iterator.type]} {iterator.name} = {iterator_segment[2]}; "
+    else:
+        result += f"{iterator.name} = {iterator_segment[2]}; "
+
+    increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
+
+    # TODO: wrap this in a try-except block + check if both the iterator and increment are characters
+    if float(increment) > 0:
+        result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {tokens[2]})" + "{"
+    else:
+        result += f"{iterator.name} >= {tokens[1]}; {iterator.name} += {tokens[2]})" + "{"
+
+    return result
+
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
@@ -265,6 +308,10 @@ def process_line(line: str):
     elif tokens[0] == "pana":
         required_loop_enders -= 1
         return process_repeat_until(segments[0])
+    
+    elif tokens[0] == "pentru":
+        required_stops += 1
+        return process_for_loop(segments[0])
     
     elif tokens[0] == "altfel":
         if "daca" in tokens:
