@@ -23,7 +23,7 @@ keywords = {
     # conditional
     "daca": "if (",
     "atunci": "){",
-    "altfel": "else{",
+    "altfel": "}else ",
 
     # operator
     "[": "(int)(",
@@ -33,9 +33,9 @@ keywords = {
     "sau": "||",
 
     # data type
-    "natural": "float",
+    "natural": "unsigned int",
     "real": "float",
-    "intreg": "float",
+    "intreg": "int",
     "sir": "string",
     "caracter": "char",
 
@@ -126,6 +126,7 @@ def preprocess_arithmetic_operator(line: str, pos: int):
 
 # TODO: add error-handling
 def process_user_output(line: str):
+    line = line.strip()
     line = line[6:] # remove "scrie" from the line
     tokens = line.split(",")
     tokens[-1] = tokens[-1].strip("\n")
@@ -143,6 +144,7 @@ def process_user_output(line: str):
 
 # TODO: add error-handling
 def process_user_input(line: str):
+    line = line.strip()
     line = line[8:] # remove "citeste" from the line
     tokens = line.split(",")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
@@ -177,6 +179,7 @@ def process_while_structure(line: str):
     or the end of a repeat-while loop and processes the code accordingly
     """
 
+    line = line.strip()
     tokens = line.split()
     result = ""
     if tokens[-1] == "executa": # while-loop
@@ -201,6 +204,7 @@ def process_while_structure(line: str):
 
 
 def process_repeat_until(line: str):
+    line = line.strip()
     result = "} while (!(" # negate the condition(s)
     line = line[10:] # remove "pana cand "
     tokens = line.split()
@@ -218,6 +222,7 @@ def process_repeat_until(line: str):
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
+    line = line.strip()
     segments = line.split(";")
     if len(segments) > 1: #if there are more instructions, process them separately
         result = ""
@@ -229,7 +234,7 @@ def process_line(line: str):
     tokens = segments[0].strip("\n").split()
     result = ""
     global required_stops, required_loop_enders
-    requires_semicolon = True
+    required_end = ";"
 
     if len(tokens) == 0:
         return ""
@@ -243,7 +248,7 @@ def process_line(line: str):
     
     elif tokens[0] == "daca":
         required_stops += 1
-        requires_semicolon = False
+        required_end = ""
 
     elif tokens[0] == "cat":
         required_stops += 1
@@ -251,15 +256,21 @@ def process_line(line: str):
     
     elif tokens[0] == "repeta":
         required_loop_enders += 1
-        requires_semicolon = False
+        required_end = ""
 
     elif tokens[0] == "stop":
         required_stops -= 1
-        requires_semicolon = False
+        required_end = ""
 
     elif tokens[0] == "pana":
         required_loop_enders -= 1
         return process_repeat_until(segments[0])
+    
+    elif tokens[0] == "altfel":
+        if "daca" in tokens:
+            required_end = ""
+        else:
+            required_end = "{"
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
@@ -267,8 +278,7 @@ def process_line(line: str):
         else:
             result += token
 
-    if requires_semicolon:
-        result += ";"
+    result += required_end
 
     return result + "\n"
 
