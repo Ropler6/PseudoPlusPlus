@@ -274,9 +274,9 @@ def process_line(line: str):
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
-            result += keywords[token]
+            result += keywords[token] + " "
         else:
-            result += token
+            result += token + " "
 
     result += required_end
 
