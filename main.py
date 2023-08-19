@@ -200,6 +200,21 @@ def process_while_structure(line: str):
         return result
 
 
+def process_repeat_until(line: str):
+    result = "} while (!(" # negate the condition(s)
+    line = line[10:] # remove "pana cand "
+    tokens = line.split()
+
+    for token in tokens:
+        if keywords.get(token) is not None:
+            result += keywords[token]
+        else:
+            result += token
+
+    result += "));\n"
+    return result
+
+
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
@@ -218,23 +233,33 @@ def process_line(line: str):
 
     if len(tokens) == 0:
         return ""
+    
 
     if tokens[0] == "citeste":
         return process_user_input(segments[0])
+    
     elif tokens[0] == "scrie":
         return process_user_output(segments[0])
+    
     elif tokens[0] == "daca":
         required_stops += 1
         requires_semicolon = False
+
     elif tokens[0] == "cat":
         required_stops += 1
         return process_while_structure(segments[0])
+    
     elif tokens[0] == "repeta":
         required_loop_enders += 1
         requires_semicolon = False
+
     elif tokens[0] == "stop":
         required_stops -= 1
         requires_semicolon = False
+
+    elif tokens[0] == "pana":
+        required_loop_enders -= 1
+        return process_repeat_until(segments[0])
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
