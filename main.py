@@ -280,6 +280,26 @@ def process_for_loop(line: str):
 
     return result
 
+
+#TODO: support for strings
+def process_assignment(line: str):
+    line = line.strip()
+    result = ""
+    tokens = line.split()
+
+    if tokens[1] not in [x.name for x in identifiers]: # variable declaration
+        result += "float "
+        identifiers.append(Identifier(tokens[1], "real"))
+
+    for token in tokens: #TODO: error-handling
+        if keywords.get(token) is not None:
+            result += keywords[token] + " "
+        else:
+            result += token + " "
+
+    return result + ";"
+
+
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
@@ -336,6 +356,10 @@ def process_line(line: str):
             required_end = ""
         else:
             required_end = "{"
+
+    elif len(tokens) > 0:
+        if tokens[1] == "<-":
+            return process_assignment(segments[0])
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
