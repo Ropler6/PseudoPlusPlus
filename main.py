@@ -63,6 +63,7 @@ def type_of(value: str):
     Determines the type of `value` and returns it as a string
     """
 
+    value = value.replace(" ", "")
 
     try:
         value = int(value)
