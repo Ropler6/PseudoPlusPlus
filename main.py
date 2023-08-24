@@ -193,22 +193,32 @@ def process_user_input(line: str):
 def process_while_structure(line: str):
     """
     Determines whether the "cat timp" is the start of a while-loop
-    or the end of a repeat-while loop and processes the code accordingly
+    or the end of a repeat-while loop and processes the code accordingly.
+    It splits the line into multiple lines after "executa" and processes them
+    separately.
     """
 
     line = line.strip()
-    tokens = line.split()
     result = ""
-    if tokens[-1] == "executa": # while-loop
+    exe_index = line.find("executa")
+    if exe_index != -1: # while-loop
+        while_loop, _, other = line.partition("executa")
+        tokens = while_loop.split()
         for token in tokens:
             if keywords.get(token) is not None:
                 result += keywords[token]
             else:
                 result += token
+        result += keywords["executa"]
 
-        return result
+        processed_subline = ""
+        if len(other):
+            processed_subline = process_line(other)
+
+        return result + processed_subline
     else: # end of repeat-while loop
         result = "} while("
+        tokens = line.split()
         tokens = tokens[2:] # remove "cat" & "timp"
         for token in tokens:
             if keywords.get(token) is not None:
