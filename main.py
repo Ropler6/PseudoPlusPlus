@@ -125,6 +125,7 @@ def preprocess_minus(line: str, pos: int):
 
 
 # TODO: handle += -= /= etc
+# TODO: split ()[] from +*/%=
 def preprocess_arithmetic_operator(line: str, pos: int):
     """
     Adds spaces around arithmetic operators: +/*%[]=()
@@ -132,12 +133,18 @@ def preprocess_arithmetic_operator(line: str, pos: int):
     """
 
 
-    if line[pos + 1] != " ":
-        line = add_character_at(" ", line, pos + 1)
+    try:
+        if line[pos + 1] != " ":
+            line = add_character_at(" ", line, pos + 1)
+    except IndexError:
+        pass
 
-    if line[pos - 1] != " ":
-        line = add_character_at(" ", line, pos)
-        pos += 1    
+    try:
+        if line[pos - 1] != " ":
+            line = add_character_at(" ", line, pos)
+            pos += 1
+    except IndexError:
+        pass
 
     return line, pos
 
@@ -346,6 +353,21 @@ with open("./temp.txt", "w+") as g:
 # Add spaces to the file and put the results in a temp file
 with open("./main.pc") as f:
     for line in f: # go line by line
+
+        line = line.strip()
+        pos = 0 # the position which it's currently at
+        tokens = line.split()
+        for token in tokens: # adding ";" after/before each relevant keyword
+            pos += len(token) + 1 # the +1 is to compensate for the space (separator)
+            if token in ("altfel", "atunci", "executa"):
+                line = add_character_at(";", line, pos - 1)
+                pos += 1
+            elif token == "stop":
+                line = add_character_at(";", line, pos - len("stop") - 1)
+                pos += 1
+
+        line += "\n" # adding it back (removed above)
+
         i = 0
         while i < len(line): # processing the current line
                              # using a while-loop to properly have len(line) updated
