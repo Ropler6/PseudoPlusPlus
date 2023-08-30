@@ -23,7 +23,7 @@ keywords = {
     # conditional
     "daca": "if (",
     "atunci": "){",
-    "altfel": "}else ",
+    "altfel": "}else{ ",
 
     # operator
     "[": "(int)(",
@@ -49,6 +49,13 @@ keywords = {
 
 class UnknownTokenError(Exception):
     """Raise when the processer encounters an unknown token"""
+
+class UnexpectedKeywordError(Exception):
+    """Raise when a keyword is used improperly"""
+
+
+class MissingKeywordError(Exception):
+    """Raise when a keyword is missing in a structure"""
 
 
 identifiers: list[Identifier] = []
@@ -304,6 +311,25 @@ def process_assignment(line: str):
     return result + ";"
 
 
+def process_if_statement(line: str):
+    line = line.strip()
+    result = ""
+    tokens = line.split()
+    if tokens[-1] not in ("atunci", "atunci;"):
+        raise MissingKeywordError("atunci")
+    
+    result = keywords[tokens[0]] # "daca"
+    tokens = tokens[1:-1] # removed "daca" & "atunci;"
+
+    for token in tokens:
+        if keywords.get(token) is not None and token not in ("="):
+            raise UnexpectedKeywordError(token)
+        else:
+            result += token + " "
+
+    return result + keywords["atunci"]
+
+
 required_stops = 0 # the amount of stops required to close all loops/if statements
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
@@ -323,10 +349,6 @@ def process_line(line: str):
     global required_stops, required_loop_enders
     required_end = ";"
 
-    if len(tokens) == 0:
-        return ""
-    
-
     if tokens[0] == "citeste":
         return process_user_input(segments[0])
     
@@ -335,7 +357,7 @@ def process_line(line: str):
     
     elif tokens[0] == "daca":
         required_stops += 1
-        required_end = ""
+        return process_if_statement(segments[0])
 
     elif tokens[0] == "cat":
         required_stops += 1
@@ -343,11 +365,11 @@ def process_line(line: str):
     
     elif tokens[0] == "repeta":
         required_loop_enders += 1
-        required_end = ""
+        return keywords["repeta"]
 
     elif tokens[0] == "stop":
         required_stops -= 1
-        required_end = ""
+        return keywords["stop"]
 
     elif tokens[0] == "pana":
         required_loop_enders -= 1
@@ -358,10 +380,7 @@ def process_line(line: str):
         return process_for_loop(segments[0])
     
     elif tokens[0] == "altfel":
-        if "daca" in tokens:
-            required_end = ""
-        else:
-            required_end = "{"
+        return keywords["altfel"]
 
     elif len(tokens) > 1:
         if tokens[1] == "<-":
@@ -372,7 +391,7 @@ def process_line(line: str):
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
-            result += keywords[token] + " "
+            raise UnexpectedKeywordError(token)
         else:
             result += token + " "
 
@@ -393,10 +412,10 @@ with open("./main.pc") as f:
         tokens = line.split()
         for token in tokens: # adding ";" after/before each relevant keyword
             pos += len(token) + 1 # the +1 is to compensate for the space (separator)
-            if token in ("altfel", "atunci", "executa"):
+            if token in ("altfel", "atunci", "executa", "repeta"): # add ';' after the keywords
                 line = add_character_at(";", line, pos - 1)
                 pos += 1
-            elif token in ("stop", "citeste", "scrie"):
+            elif token in ("stop", "citeste", "scrie"): # add ';' before the keywords
                 line = add_character_at(";", line, pos - len(token) - 1)
                 pos += 1
 
