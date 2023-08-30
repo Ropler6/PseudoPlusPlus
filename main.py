@@ -304,6 +304,8 @@ required_stops = 0 # the amount of stops required to close all loops/if statemen
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
     line = line.strip()
+    if len(line) == 0: return ""
+
     segments = line.split(";")
     if len(segments) > 1: #if there are more instructions, process them separately
         result = ""
@@ -387,8 +389,8 @@ with open("./main.pc") as f:
             if token in ("altfel", "atunci", "executa"):
                 line = add_character_at(";", line, pos - 1)
                 pos += 1
-            elif token == "stop":
-                line = add_character_at(";", line, pos - len("stop") - 1)
+            elif token in ("stop", "citeste", "scrie"):
+                line = add_character_at(";", line, pos - len(token) - 1)
                 pos += 1
 
         line += "\n" # adding it back (removed above)
