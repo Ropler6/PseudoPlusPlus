@@ -47,6 +47,10 @@ keywords = {
     "stop": "}",
 }
 
+class UnknownTokenError(Exception):
+    """Raise when the processer encounters an unknown token"""
+
+
 identifiers: list[Identifier] = []
 
 def add_character_at(character: str, string: str, position: int) -> str:
@@ -362,6 +366,9 @@ def process_line(line: str):
     elif len(tokens) > 1:
         if tokens[1] == "<-":
             return process_assignment(segments[0])
+        
+    else:
+        raise UnknownTokenError(f"Simbol necunoscut: {segments[0]}")
 
     for token in tokens: #TODO: error-handling
         if keywords.get(token) is not None:
