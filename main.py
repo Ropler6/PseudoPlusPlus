@@ -359,7 +359,7 @@ def process_line(line: str):
         else:
             required_end = "{"
 
-    elif len(tokens) > 0:
+    elif len(tokens) > 1:
         if tokens[1] == "<-":
             return process_assignment(segments[0])
 
