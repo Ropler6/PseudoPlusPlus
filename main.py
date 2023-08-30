@@ -47,6 +47,11 @@ keywords = {
     "stop": "}",
 }
 
+operators = ("[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=")
+structure_keywords = ("cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
+                      "citeste", "scrie", "pentru", "iesi", "stop")
+data_types = ("natural", "intreg", "real", "sir", "caracter")
+
 class UnknownTokenError(Exception):
     """Raise when the processer encounters an unknown token"""
 
@@ -298,13 +303,27 @@ def process_assignment(line: str):
     result = ""
     tokens = line.split()
 
-    if tokens[1] not in [x.name for x in identifiers]: # variable declaration
+    if tokens[0] not in [x.name for x in identifiers]: # variable declaration
         result += "float "
-        identifiers.append(Identifier(tokens[1], "real"))
+        identifiers.append(Identifier(tokens[0], "real"))
 
-    for token in tokens: #TODO: error-handling
-        if keywords.get(token) is not None:
-            result += keywords[token] + " "
+    result += tokens[0] + "="
+    tokens = tokens[2:]
+
+    for token in tokens:
+        # reserved word (keyword/data type)
+        if token in structure_keywords or token in data_types:
+            raise UnexpectedKeywordError(token)
+        
+        # operator (as-is or C++ equivalent)
+        elif token in operators:
+            result += f"{keywords[token] if keywords.get(token) is not None else token} "
+        
+        # not an identifier/number literal
+        elif token not in [x.name for x in identifiers] and type_of(token) not in ("real", "intreg"):
+            raise UnknownTokenError(token)
+        
+        # identifier
         else:
             result += token + " "
 
