@@ -4,7 +4,7 @@ class Identifier:
         self.type = type
 
 
-keywords = {
+KEYWORDS = {
     # I/O
     "citeste": "cin>>",
     "<-": "=",
@@ -47,10 +47,10 @@ keywords = {
     "stop": "}",
 }
 
-operators = ("[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=")
-structure_keywords = ("cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
+OPERATORS = ("[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=")
+STRUCTURE_KEYWORDS = ("cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
                       "citeste", "scrie", "pentru", "iesi", "stop")
-data_types = ("natural", "intreg", "real", "sir", "caracter")
+DATA_TYPES = ("natural", "intreg", "real", "sir", "caracter")
 
 class UnknownTokenError(Exception):
     """Raise when the processer encounters an unknown token"""
@@ -196,7 +196,7 @@ def process_user_input(line: str):
     data_type = temp[2] # the data type
 
     result = ""
-    result += keywords[data_type] + " " # the data type of the variables
+    result += KEYWORDS[data_type] + " " # the data type of the variables
 
     for token in tokens: #declaring the variables and saving them for later usage
         result += f"{token},"
@@ -229,11 +229,11 @@ def process_while_structure(line: str):
         while_loop, _, other = line.partition("executa")
         tokens = while_loop.split()
         for token in tokens:
-            if keywords.get(token) is not None:
-                result += keywords[token]
+            if KEYWORDS.get(token) is not None:
+                result += KEYWORDS[token]
             else:
                 result += token
-        result += keywords["executa"]
+        result += KEYWORDS["executa"]
 
         processed_subline = ""
         if len(other):
@@ -245,8 +245,8 @@ def process_while_structure(line: str):
         tokens = line.split()
         tokens = tokens[2:] # remove "cat" & "timp"
         for token in tokens:
-            if keywords.get(token) is not None:
-                result += keywords[token]
+            if KEYWORDS.get(token) is not None:
+                result += KEYWORDS[token]
             else:
                 result += token
 
@@ -261,8 +261,8 @@ def process_repeat_until(line: str):
     tokens = line.split()
 
     for token in tokens:
-        if keywords.get(token) is not None:
-            result += keywords[token]
+        if KEYWORDS.get(token) is not None:
+            result += KEYWORDS[token]
         else:
             result += token
 
@@ -282,7 +282,7 @@ def process_for_loop(line: str):
     iterator = Identifier(iterator_segment[0], type_of(iterator_segment[2]))
 
     if iterator.name not in [x.name for x in identifiers]:
-        result += f"{keywords[iterator.type]} {iterator.name} = {iterator_segment[2]}; "
+        result += f"{KEYWORDS[iterator.type]} {iterator.name} = {iterator_segment[2]}; "
     else:
         result += f"{iterator.name} = {iterator_segment[2]}; "
 
@@ -312,12 +312,12 @@ def process_assignment(line: str):
 
     for token in tokens:
         # reserved word (keyword/data type)
-        if token in structure_keywords or token in data_types:
+        if token in STRUCTURE_KEYWORDS or token in DATA_TYPES:
             raise UnexpectedKeywordError(token)
         
         # operator (as-is or C++ equivalent)
-        elif token in operators:
-            result += f"{keywords[token] if keywords.get(token) is not None else token} "
+        elif token in OPERATORS:
+            result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token} "
         
         # not an identifier/number literal
         elif token not in [x.name for x in identifiers] and type_of(token) not in ("real", "intreg"):
@@ -337,16 +337,16 @@ def process_if_statement(line: str):
     if tokens[-1] not in ("atunci", "atunci;"):
         raise MissingKeywordError("atunci")
     
-    result = keywords[tokens[0]] # "daca"
+    result = KEYWORDS[tokens[0]] # "daca"
     tokens = tokens[1:-1] # removed "daca" & "atunci;"
 
     for token in tokens:
-        if keywords.get(token) is not None and token not in ("="):
+        if KEYWORDS.get(token) is not None and token not in ("="):
             raise UnexpectedKeywordError(token)
         else:
             result += token + " "
 
-    return result + keywords["atunci"]
+    return result + KEYWORDS["atunci"]
 
 
 required_stops = 0 # the amount of stops required to close all loops/if statements
@@ -384,11 +384,11 @@ def process_line(line: str):
     
     elif tokens[0] == "repeta":
         required_loop_enders += 1
-        return keywords["repeta"]
+        return KEYWORDS["repeta"]
 
     elif tokens[0] == "stop":
         required_stops -= 1
-        return keywords["stop"]
+        return KEYWORDS["stop"]
 
     elif tokens[0] == "pana":
         required_loop_enders -= 1
@@ -399,7 +399,7 @@ def process_line(line: str):
         return process_for_loop(segments[0])
     
     elif tokens[0] == "altfel":
-        return keywords["altfel"]
+        return KEYWORDS["altfel"]
 
     elif len(tokens) > 1:
         if tokens[1] == "<-":
@@ -409,7 +409,7 @@ def process_line(line: str):
         raise UnknownTokenError(f"Simbol necunoscut: {segments[0]}")
 
     for token in tokens: #TODO: error-handling
-        if keywords.get(token) is not None:
+        if KEYWORDS.get(token) is not None:
             raise UnexpectedKeywordError(token)
         else:
             result += token + " "
