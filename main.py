@@ -47,10 +47,11 @@ KEYWORDS = {
     "stop": "}",
 }
 
-OPERATORS = ("[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=")
-STRUCTURE_KEYWORDS = ("cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
-                      "citeste", "scrie", "pentru", "iesi", "stop")
-DATA_TYPES = ("natural", "intreg", "real", "sir", "caracter")
+OPERATORS = {"[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<="}
+STRUCTURE_KEYWORDS = {"cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
+                      "citeste", "scrie", "pentru", "iesi", "stop"}
+DATA_TYPES = {"natural", "intreg", "real", "sir", "caracter"}
+RESERVED_KEYWORDS = set.union(STRUCTURE_KEYWORDS, DATA_TYPES)
 
 class UnknownTokenError(Exception):
     """Raise when the processer encounters an unknown token"""
@@ -61,6 +62,9 @@ class UnexpectedKeywordError(Exception):
 
 class MissingKeywordError(Exception):
     """Raise when a keyword is missing in a structure"""
+
+class UnexpectedOperatorError(Exception):
+    """Raise when an operator is used in a wrong context"""
 
 
 identifiers: list[Identifier] = []
@@ -90,6 +94,45 @@ def type_of(value: str):
             return "real"
         except ValueError:
             return "sir" if len(value) > 1 else "caracter"
+
+
+def check_for_errors(tokens: list[str], result: str, *, operators_allowed: bool = False, reserved_allowed: bool = False,
+                      identifiers_allowed: bool = False, literals_allowed: bool = False) -> str:
+    """Checks `tokens` for illegal tokens (specified in the params) and throws errors accordingly
+    
+    Returns the processed tokens added to `result`"""
+
+    for token in tokens:
+        if not reserved_allowed:
+            if token in RESERVED_KEYWORDS:
+                raise UnexpectedKeywordError(token)
+        else:
+            result += KEYWORDS[token] + " "
+            continue
+
+        if not operators_allowed:
+            if token in OPERATORS:
+                raise UnexpectedOperatorError(token)
+        else:
+            if token in OPERATORS:
+                result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token} "
+                continue
+            
+        if not literals_allowed:
+            if type_of(token) not in ("real", "intreg"):
+                raise UnknownTokenError(token)
+        else:
+            result += token + " "
+            continue
+        
+        if not identifiers_allowed:
+            if token not in [x.name for x in identifiers]:
+                raise UnknownTokenError(token)
+        else:
+            result += token + " "
+            continue
+
+    return result
 
 
 def preprocess_larrow(line: str, pos: int):
@@ -228,11 +271,13 @@ def process_while_structure(line: str):
     if exe_index != -1: # while-loop
         while_loop, _, other = line.partition("executa")
         tokens = while_loop.split()
-        for token in tokens:
-            if KEYWORDS.get(token) is not None:
-                result += KEYWORDS[token]
-            else:
-                result += token
+        result += "while ("
+        tokens = tokens[2:] # remove "cat" & "timp"
+        
+        result = check_for_errors(tokens, result, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
+        
         result += KEYWORDS["executa"]
 
         processed_subline = ""
@@ -244,11 +289,10 @@ def process_while_structure(line: str):
         result = "} while("
         tokens = line.split()
         tokens = tokens[2:] # remove "cat" & "timp"
-        for token in tokens:
-            if KEYWORDS.get(token) is not None:
-                result += KEYWORDS[token]
-            else:
-                result += token
+        
+        result = check_for_errors(tokens, result, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
         result += ");"        
         return result
@@ -260,11 +304,9 @@ def process_repeat_until(line: str):
     line = line[10:] # remove "pana cand "
     tokens = line.split()
 
-    for token in tokens:
-        if KEYWORDS.get(token) is not None:
-            result += KEYWORDS[token]
-        else:
-            result += token
+    result = check_for_errors(tokens, result, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
     result += "));\n"
     return result
@@ -310,22 +352,9 @@ def process_assignment(line: str):
     result += tokens[0] + "="
     tokens = tokens[2:]
 
-    for token in tokens:
-        # reserved word (keyword/data type)
-        if token in STRUCTURE_KEYWORDS or token in DATA_TYPES:
-            raise UnexpectedKeywordError(token)
-        
-        # operator (as-is or C++ equivalent)
-        elif token in OPERATORS:
-            result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token} "
-        
-        # not an identifier/number literal
-        elif token not in [x.name for x in identifiers] and type_of(token) not in ("real", "intreg"):
-            raise UnknownTokenError(token)
-        
-        # identifier
-        else:
-            result += token + " "
+    result = check_for_errors(tokens, result, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
     return result + ";"
 
@@ -340,11 +369,9 @@ def process_if_statement(line: str):
     result = KEYWORDS[tokens[0]] # "daca"
     tokens = tokens[1:-1] # removed "daca" & "atunci;"
 
-    for token in tokens:
-        if KEYWORDS.get(token) is not None and token not in ("="):
-            raise UnexpectedKeywordError(token)
-        else:
-            result += token + " "
+    result = check_for_errors(tokens, result, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
     return result + KEYWORDS["atunci"]
 
