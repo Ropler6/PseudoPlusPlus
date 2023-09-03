@@ -67,6 +67,10 @@ class UnexpectedOperatorError(Exception):
     """Raise when an operator is used in a wrong context"""
 
 
+class MissingIdentifierError(Exception):
+    """Raise when an identifier is expected but is missing in code"""
+
+
 identifiers: list[Identifier] = []
 
 def add_character_at(character: str, string: str, position: int) -> str:
@@ -226,7 +230,7 @@ def process_user_output(line: str):
 
     return result
 
-# TODO: add error-handling
+
 def process_user_input(line: str):
     line = line.strip()
     line = line[8:] # remove "citeste" from the line
@@ -242,10 +246,24 @@ def process_user_input(line: str):
     tokens = line.split(",")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
+    if len(tokens) == 0: # if there are no variables being read
+        raise MissingIdentifierError
+
     result = ""
     result += KEYWORDS[data_type] + " " # the data type of the variables
 
     for token in tokens: #declaring the variables and saving them for later usage
+        
+        # check for literals/operators/reserved keywords
+        if type_of(token) in ("intreg", "real"):
+            raise UnknownTokenError(token)
+        
+        if token in OPERATORS:
+            raise UnexpectedOperatorError(token)
+        
+        if token in RESERVED_KEYWORDS:
+            raise UnexpectedKeywordError(token)
+
         result += f"{token},"
         identifiers.append(Identifier(token, data_type))
 
