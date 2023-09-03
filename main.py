@@ -90,6 +90,10 @@ def type_of(value: str):
     Determines the type of `value` and returns it as a string
     """
 
+    for x in identifiers:
+        if x.name == value:
+            return x.type
+
     value = value.replace(" ", "")
 
     try:
@@ -368,12 +372,18 @@ def process_for_loop(line: str):
 
     if type_of(identifier) in ("intreg", "real"):
         raise UnknownTokenError(identifier) 
-    
-    if init_value in set.union(RESERVED_KEYWORDS, OPERATORS):
+
+    if init_value in RESERVED_KEYWORDS:
         raise UnexpectedKeywordError(init_value)
     
-    if bound in set.union(RESERVED_KEYWORDS, OPERATORS):
+    if init_value in OPERATORS:
+        raise UnexpectedOperatorError(init_value)
+    
+    if bound in RESERVED_KEYWORDS:
         raise UnexpectedKeywordError(bound)
+    
+    if bound in OPERATORS:
+        raise UnexpectedOperatorError(bound)
 
     iterator = Identifier(identifier, type_of(init_value))
 
