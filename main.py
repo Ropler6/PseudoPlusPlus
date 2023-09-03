@@ -520,11 +520,11 @@ def process_line(line: str):
 
     return result + "\n"
 
-# Reset the rest file
-with open("./temp.txt", "w+") as g:
-    g.write("")
+# the output file
+g = open("./test.cpp", "w+")
+g.write("#include <iostream>\nusing namespace std;\nint main(){")
 
-# Add spaces to the file and put the results in a temp file
+# processing the code and outputting it
 with open("./main.pc") as f:
     for line in f: # go line by line
 
@@ -558,22 +558,16 @@ with open("./main.pc") as f:
                 case "+" | "/" | "*" | "%" | "[" | "]" | "=" | "(" | ")":
                     line, i = preprocess_arithmetic_operator(line, i)
             i += 1
+        
+        processed_line = process_line(line)
 
         # Write the processed line to the file
-        with open("./temp.txt", "a") as g:
-            g.write(line)
+        g.write(processed_line)
 
-with open("./test.cpp", "w") as g:
-    g.write("#include <iostream>\nusing namespace std;\nint main(){")
-
-# TODO: move this in the for-loop above
-with open("./temp.txt") as f:
-    with open("./test.cpp", "a") as g:
-        for line in f:
-            processed_line = process_line(line)
-            g.write(processed_line)
-        g.write("return 0;\n}\n")
-        if abs(required_loop_enders - loop_enders) > 0:
-            raise StopsError(f"{required_loop_enders} terminatoare de structura necesare - {loop_enders} prezente")
-        elif abs(required_stops - stops) > 0:
-            raise StopsError(f"{required_stops} stopuri necesare - {stops} prezente")
+    g.write("return 0;\n}\n")
+    if abs(required_loop_enders - loop_enders) > 0:
+        raise StopsError(f"{required_loop_enders} terminatoare de structura necesare - {loop_enders} prezente")
+    elif abs(required_stops - stops) > 0:
+        raise StopsError(f"{required_stops} stopuri necesare - {stops} prezente")
+    
+    g.close()
