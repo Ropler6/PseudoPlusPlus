@@ -230,13 +230,17 @@ def process_user_output(line: str):
 def process_user_input(line: str):
     line = line.strip()
     line = line[8:] # remove "citeste" from the line
+    line, _, data_type = line.partition("(")
+
+    if len(data_type) == 0: # if the type (or paranthesis) is missing
+        raise MissingKeywordError("Missing '(' or \"citeste\"")
+    
+    if data_type[-1] != ")":
+        raise MissingKeywordError("Missing ')'")
+
+    data_type = data_type[:-1].strip() # remove the ")"
     tokens = line.split(",")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
-
-    # the last token and the data type
-    temp = tokens[-1].strip().split(" ") # [variable, '(', type, ')']
-    tokens[-1] = temp[0] # the last token
-    data_type = temp[2] # the data type
 
     result = ""
     result += KEYWORDS[data_type] + " " # the data type of the variables
@@ -311,7 +315,7 @@ def process_repeat_until(line: str):
     result += "));\n"
     return result
 
-
+# TODO: add error-handling
 def process_for_loop(line: str):
     line = line.strip()
 
