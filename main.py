@@ -217,13 +217,19 @@ def process_user_output(line: str):
     line = line.strip()
     line = line[6:] # remove "scrie" from the line
     tokens = line.split(",")
+
+    if len(tokens) == 0:
+        raise MissingIdentifierError
+
     tokens[-1] = tokens[-1].strip("\n")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
     result = "cout<<"
 
-    for token in tokens: # adding reading syntax for each token
-        result += f"{token}<<"
+    result = check_for_errors(tokens, result, "<<",
+                              operators_allowed=True,
+                              identifiers_allowed=True,
+                              literals_allowed=True)
 
     result = result[:-2] # removing extra "<<" from the end
     result += ";\n" # finishing the line
