@@ -100,7 +100,7 @@ def type_of(value: str):
             return "sir" if len(value) > 1 else "caracter"
 
 
-def check_for_errors(tokens: list[str], result: str, *, operators_allowed: bool = False, reserved_allowed: bool = False,
+def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
                       identifiers_allowed: bool = False, literals_allowed: bool = False) -> str:
     """Checks `tokens` for illegal tokens (specified in the params) and throws errors accordingly
     
@@ -111,7 +111,7 @@ def check_for_errors(tokens: list[str], result: str, *, operators_allowed: bool 
             if token in RESERVED_KEYWORDS:
                 raise UnexpectedKeywordError(token)
         else:
-            result += KEYWORDS[token] + " "
+            result += KEYWORDS[token] + sep
             continue
 
         if not operators_allowed:
@@ -119,21 +119,21 @@ def check_for_errors(tokens: list[str], result: str, *, operators_allowed: bool 
                 raise UnexpectedOperatorError(token)
         else:
             if token in OPERATORS:
-                result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token} "
+                result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
                 continue
             
         if not literals_allowed:
             if type_of(token) not in ("real", "intreg"):
                 raise UnknownTokenError(token)
         else:
-            result += token + " "
+            result += token + sep
             continue
         
         if not identifiers_allowed:
             if token not in [x.name for x in identifiers]:
                 raise UnknownTokenError(token)
         else:
-            result += token + " "
+            result += token + sep
             continue
 
     return result
