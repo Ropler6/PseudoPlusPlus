@@ -233,7 +233,7 @@ def process_user_input(line: str):
     line, _, data_type = line.partition("(")
 
     if len(data_type) == 0: # if the type (or paranthesis) is missing
-        raise MissingKeywordError("Missing '(' or \"citeste\"")
+        raise MissingKeywordError("Missing '(' or the data type")
     
     if data_type[-1] != ")":
         raise MissingKeywordError("Missing ')'")
