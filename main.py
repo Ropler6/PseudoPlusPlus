@@ -71,9 +71,14 @@ class MissingIdentifierError(Exception):
 class MissingLiteralError(Exception):
     """Raise when a literal is expected but is missing in code""" 
 
+class StopsError(Exception):
+    """Raise when there are not enough/too many structure terminators"""
 
 identifiers: list[Identifier] = []
-
+required_stops = 0 # the amount of stops required to close all loops/if statements
+required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
+stops = 0 # the amount of stops present in code
+loop_enders = 0 # the amount of amount of loop closers present in code
 
 #? HELPER FUNCTIONS
 def add_character_at(character: str, string: str, position: int) -> str:
@@ -302,10 +307,13 @@ def process_while_structure(line: str):
     separately.
     """
 
+    global loop_enders, required_stops
+
     line = line.strip()
     result = ""
     exe_index = line.find("executa")
     if exe_index != -1: # while-loop
+        required_stops += 1
         while_loop, _, other = line.partition("executa")
         tokens = while_loop.split()
         result += "while ("
@@ -323,6 +331,7 @@ def process_while_structure(line: str):
 
         return result + processed_subline
     else: # end of repeat-while loop
+        loop_enders += 1
         result = "} while("
         tokens = line.split()
         tokens = tokens[2:] # remove "cat" & "timp"
@@ -445,8 +454,6 @@ def process_if_statement(line: str):
     return result + KEYWORDS["atunci"]
 
 
-required_stops = 0 # the amount of stops required to close all loops/if statements
-required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 def process_line(line: str):
     line = line.strip()
     if len(line) == 0: return ""
@@ -461,7 +468,7 @@ def process_line(line: str):
 
     tokens = segments[0].strip("\n").split()
     result = ""
-    global required_stops, required_loop_enders
+    global required_stops, required_loop_enders, loop_enders, stops
     required_end = ";"
 
     if tokens[0] == "citeste":
@@ -475,7 +482,6 @@ def process_line(line: str):
         return process_if_statement(segments[0])
 
     elif tokens[0] == "cat":
-        required_stops += 1
         return process_while_structure(segments[0])
     
     elif tokens[0] == "repeta":
@@ -483,11 +489,11 @@ def process_line(line: str):
         return KEYWORDS["repeta"]
 
     elif tokens[0] == "stop":
-        required_stops -= 1
+        stops += 1
         return KEYWORDS["stop"]
 
     elif tokens[0] == "pana":
-        required_loop_enders -= 1
+        loop_enders += 1
         return process_repeat_until(segments[0])
     
     elif tokens[0] == "pentru":
@@ -567,3 +573,7 @@ with open("./temp.txt") as f:
             processed_line = process_line(line)
             g.write(processed_line)
         g.write("return 0;\n}\n")
+        if abs(required_loop_enders - loop_enders) > 0:
+            raise StopsError(f"{required_loop_enders} terminatoare de structura necesare - {loop_enders} prezente")
+        elif abs(required_stops - stops) > 0:
+            raise StopsError(f"{required_stops} stopuri necesare - {stops} prezente")
