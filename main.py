@@ -59,20 +59,23 @@ class UnknownTokenError(Exception):
 class UnexpectedKeywordError(Exception):
     """Raise when a keyword is used improperly"""
 
-
 class MissingKeywordError(Exception):
     """Raise when a keyword is missing in a structure"""
 
 class UnexpectedOperatorError(Exception):
     """Raise when an operator is used in a wrong context"""
 
-
 class MissingIdentifierError(Exception):
     """Raise when an identifier is expected but is missing in code"""
+
+class MissingLiteralError(Exception):
+    """Raise when a literal is expected but is missing in code""" 
 
 
 identifiers: list[Identifier] = []
 
+
+#? HELPER FUNCTIONS
 def add_character_at(character: str, string: str, position: int) -> str:
     """
     Adds the given `character` at the given `position` and returns the new string
@@ -139,6 +142,7 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
     return result
 
 
+#? PREPROCESSING FUNCTIONS
 def preprocess_larrow(line: str, pos: int):
     """
     Adds spaces around '<' (if required)
@@ -212,7 +216,8 @@ def preprocess_arithmetic_operator(line: str, pos: int):
 
     return line, pos
 
-# TODO: add error-handling
+
+#? PROCESSING FUNCTIONS
 def process_user_output(line: str):
     line = line.strip()
     line = line[6:] # remove "scrie" from the line
@@ -339,30 +344,56 @@ def process_repeat_until(line: str):
     result += "));\n"
     return result
 
-# TODO: add error-handling
+
 def process_for_loop(line: str):
     line = line.strip()
 
-    # TODO: check if "executa" exists
+    if line[-7:] not in ("executa", "executa;"):
+        raise MissingKeywordError("executa")
+
     line = line[7:-8] # remove "pentru" & "executa"
     result = "for ("
     tokens = line.split(",")
 
-    iterator_segment = tokens[0].split() # the declaration of the iterator variable (ex: "i <- 1")
-    iterator = Identifier(iterator_segment[0], type_of(iterator_segment[2]))
+    identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
+    identifier = identifier.strip()
+    init_value = init_value.strip()
+    bound = tokens[1].strip() # the value at which the for-loop ends
+
+    if len(op) == 0:
+        raise MissingKeywordError("<-")
+    
+    if len(init_value) == 0:
+        raise MissingLiteralError
+
+    if type_of(identifier) in ("intreg", "real"):
+        raise UnknownTokenError(identifier) 
+    
+    if init_value in set.union(RESERVED_KEYWORDS, OPERATORS):
+        raise UnexpectedKeywordError(init_value)
+    
+    if bound in set.union(RESERVED_KEYWORDS, OPERATORS):
+        raise UnexpectedKeywordError(bound)
+
+    iterator = Identifier(identifier, type_of(init_value))
 
     if iterator.name not in [x.name for x in identifiers]:
-        result += f"{KEYWORDS[iterator.type]} {iterator.name} = {iterator_segment[2]}; "
+        result += f"{KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
     else:
-        result += f"{iterator.name} = {iterator_segment[2]}; "
+        result += f"{iterator.name} = {init_value}; "
 
     increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 
-    # TODO: wrap this in a try-except block + check if both the iterator and increment are characters
-    if float(increment) > 0:
-        result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {tokens[2]})" + "{"
-    else:
-        result += f"{iterator.name} >= {tokens[1]}; {iterator.name} += {tokens[2]})" + "{"
+    # if the increment is a number, set the sign (">=" or "<=") accordingly
+    if type_of(increment) in ("real", "intreg"):
+        if float(increment) > 0:
+            result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {increment})" + "{"
+        else:
+            result += f"{iterator.name} >= {tokens[1]}; {iterator.name} += {increment})" + "{"
+    elif type_of(increment) == "caracter":
+        result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {increment})" + "{"
+    else: # if the increment is a string
+        raise UnknownTokenError(increment)
 
     return result
 
