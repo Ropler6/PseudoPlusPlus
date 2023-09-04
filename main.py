@@ -403,14 +403,25 @@ def process_for_loop(line: str):
 
     increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 
-    # if the increment is a number, set the sign (">=" or "<=") accordingly
+    
+    # if the increment is an identifier, put the processed sign ("<=" or ">=")
+    # depending on whether or not it has a '-' preceding it
+    if increment in [x.name for x in identifiers] or increment[1:] in [x.name for x in identifiers]:
+        if increment[0] == "-":
+            result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
+        else:
+            result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
+
+        return result
+
+    # if the increment is a number literal, set the sign (">=" or "<=") accordingly
     if type_of(increment) in ("real", "intreg"):
         if float(increment) > 0:
-            result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {increment})" + "{"
+            result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
         else:
-            result += f"{iterator.name} >= {tokens[1]}; {iterator.name} += {increment})" + "{"
+            result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
     elif type_of(increment) == "caracter":
-        result += f"{iterator.name} <= {tokens[1]}; {iterator.name} += {increment})" + "{"
+        result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
     else: # if the increment is a string
         raise UnknownTokenError(increment)
 
