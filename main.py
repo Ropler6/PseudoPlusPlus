@@ -29,6 +29,7 @@ KEYWORDS = {
     "[": "(int)(",
     "]": ")",
     "=": "==",
+    "!=": "!=",
     "si": "&&",
     "sau": "||",
 
@@ -197,6 +198,24 @@ def preprocess_minus(line: str, pos: int):
     if line[pos - 1] != "<" and line[pos - 1] != " ":
         line = add_character_at(" ", line, pos)
         pos += 1
+
+    return line, pos
+
+def preprocess_equals(line: str, pos: int):
+    """
+    Adds spaces around the '=' (if required)
+    Returns the modified line and the new position of the character
+    """
+
+    if line[pos - 1] != "!":
+        line = add_character_at(" ", line, pos)
+        pos += 1
+
+    try:
+        if line[pos + 1] != " ":
+            line = add_character_at(" ", line, pos + 1)
+    except IndexError:
+        pass
 
     return line, pos
 
@@ -566,7 +585,10 @@ with open("./main.pc") as f:
                 case ">":
                     line, i = preprocess_rarrow(line, i)
 
-                case "+" | "/" | "*" | "%" | "[" | "]" | "=" | "(" | ")":
+                case "=":
+                    line, i = preprocess_equals(line, i)
+
+                case "+" | "/" | "*" | "%" | "[" | "]" | "(" | ")":
                     line, i = preprocess_arithmetic_operator(line, i)
             i += 1
         
