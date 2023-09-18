@@ -80,6 +80,7 @@ required_stops = 0 # the amount of stops required to close all loops/if statemen
 required_loop_enders = 0 # the amount of "cat timp" required to close all repeta-loops
 stops = 0 # the amount of stops present in code
 loop_enders = 0 # the amount of amount of loop closers present in code
+current_line = 0 # the line which the program is currently processing
 
 #? HELPER FUNCTIONS
 def add_character_at(character: str, string: str, position: int) -> str:
@@ -113,7 +114,7 @@ def type_of(value: str):
             value = float(value)
             return "real"
         except ValueError:
-            raise MissingIdentifierError
+            raise MissingIdentifierError(f"Line {current_line}")
 
 
 def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
@@ -125,14 +126,14 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
     for token in tokens:
         if not reserved_allowed:
             if token in RESERVED_KEYWORDS:
-                raise UnexpectedKeywordError(token)
+                raise UnexpectedKeywordError(f"{token} on line {current_line}")
         else:
             result += KEYWORDS[token] + sep
             continue
 
         if not operators_allowed:
             if token in OPERATORS:
-                raise UnexpectedOperatorError(token)
+                raise UnexpectedOperatorError(f"{token} on line {current_line}")
         else:
             if token in OPERATORS:
                 result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
@@ -140,14 +141,14 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
             
         if not literals_allowed:
             if type_of(token) not in ("real", "intreg"):
-                raise UnknownTokenError(token)
+                raise UnknownTokenError(f"{token} on line {current_line}")
         else:
             result += token + sep
             continue
         
         if not identifiers_allowed:
             if not is_identifier(token):
-                raise UnknownTokenError(token)
+                raise UnknownTokenError(f"{token} on line {current_line}")
         else:
             result += token + sep
             continue
@@ -168,7 +169,7 @@ def get_identifier_type(name: str):
         if x.name == name:
             return x.type
 
-    raise MissingIdentifierError
+    raise MissingIdentifierError(f"Line {current_line}")
 
 
 #? PREPROCESSING FUNCTIONS
@@ -271,7 +272,7 @@ def process_user_output(line: str):
     tokens = line.split(",")
 
     if len(tokens) == 0:
-        raise MissingIdentifierError
+        raise MissingIdentifierError(f"Line {current_line}")
 
     tokens[-1] = tokens[-1].strip("\n")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
@@ -295,17 +296,17 @@ def process_user_input(line: str):
     line, _, data_type = line.partition("(")
 
     if len(data_type) == 0: # if the type (or paranthesis) is missing
-        raise MissingKeywordError("Missing '(' or the data type")
+        raise MissingKeywordError(f"Missing '(' or the data type on line {current_line}")
     
     if data_type[-1] != ")":
-        raise MissingKeywordError("Missing ')'")
+        raise MissingKeywordError(f"Missing ')' on line {current_line}")
 
     data_type = data_type[:-1].strip() # remove the ")"
     tokens = line.split(",")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
     if len(tokens) == 0: # if there are no variables being read
-        raise MissingIdentifierError
+        raise MissingIdentifierError(f"Line {current_line}")
 
     result = ""
     result += KEYWORDS[data_type] + " " # the data type of the variables
@@ -314,13 +315,13 @@ def process_user_input(line: str):
         
         # check for literals/operators/reserved keywords
         if type_of(token) in ("intreg", "real"):
-            raise UnknownTokenError(token)
+            raise UnknownTokenError(f"{token} on line {current_line}")
         
         if token in OPERATORS:
-            raise UnexpectedOperatorError(token)
+            raise UnexpectedOperatorError(f"{token} on line {current_line}")
         
         if token in RESERVED_KEYWORDS:
-            raise UnexpectedKeywordError(token)
+            raise UnexpectedKeywordError(f"{token} on line {current_line}")
 
         result += f"{token},"
         identifiers.append(Identifier(token, data_type))
@@ -400,7 +401,7 @@ def process_for_loop(line: str):
     line = line.strip()
 
     if line[-7:] not in ("executa", "executa;"):
-        raise MissingKeywordError("executa")
+        raise MissingKeywordError(f"\"executa\" on line {current_line}")
 
     line = line[7:-8] # remove "pentru" & "executa"
     result = "for ("
@@ -412,25 +413,25 @@ def process_for_loop(line: str):
     bound = tokens[1].strip() # the value at which the for-loop ends
 
     if len(op) == 0:
-        raise MissingKeywordError("<-")
+        raise MissingKeywordErrorf(f"\"<-\" on line {current_line}")
     
     if len(init_value) == 0:
-        raise MissingLiteralError
+        raise MissingLiteralError(f"Line {current_line}")
 
     if type_of(identifier) in ("intreg", "real"):
-        raise UnknownTokenError(identifier) 
+        raise UnknownTokenError(f"{identifier} on line {current_line}") 
 
     if init_value in RESERVED_KEYWORDS:
-        raise UnexpectedKeywordError(init_value)
+        raise UnexpectedKeywordError(f"{init_value} on line {current_line}")
     
     if init_value in OPERATORS:
-        raise UnexpectedOperatorError(init_value)
+        raise UnexpectedOperatorError(f"{init_value} on line {current_line}")
     
     if bound in RESERVED_KEYWORDS:
-        raise UnexpectedKeywordError(bound)
+        raise UnexpectedKeywordError(f"{bound} on line {current_line}")
     
     if bound in OPERATORS:
-        raise UnexpectedOperatorError(bound)
+        raise UnexpectedOperatorError(f"{bound} on line {current_line}")
 
     iterator = Identifier(identifier, type_of(init_value))
 
@@ -461,7 +462,7 @@ def process_for_loop(line: str):
     elif type_of(increment) == "caracter":
         result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
     else: # if the increment is a string
-        raise UnknownTokenError(increment)
+        raise UnknownTokenError(f"{increment} on line {current_line}")
 
     return result
 
@@ -491,7 +492,7 @@ def process_if_statement(line: str):
     result = ""
     tokens = line.split()
     if tokens[-1] not in ("atunci", "atunci;"):
-        raise MissingKeywordError("atunci")
+        raise MissingKeywordError(f"\"atunci\" on line {current_line}")
     
     result = KEYWORDS[tokens[0]] # "daca"
     tokens = tokens[1:-1] # removed "daca" & "atunci;"
@@ -557,11 +558,11 @@ def process_line(line: str):
             return process_assignment(segments[0])
         
     else:
-        raise UnknownTokenError(f"Simbol necunoscut: {segments[0]}")
+        raise UnknownTokenError(f"{segments[0]} on line {current_line}")
 
     for token in tokens: #TODO: error-handling
         if KEYWORDS.get(token) is not None:
-            raise UnexpectedKeywordError(token)
+            raise UnexpectedKeywordError(f"{token} on line {current_line}")
         else:
             result += token + " "
 
@@ -611,6 +612,7 @@ with open("./main.pc") as f:
                     line, i = preprocess_arithmetic_operator(line, i)
             i += 1
         
+        current_line += 1
         processed_line = process_line(line)
 
         # Write the processed line to the file
@@ -618,8 +620,8 @@ with open("./main.pc") as f:
 
     g.write("return 0;\n}\n")
     if abs(required_loop_enders - loop_enders) > 0:
-        raise StopsError(f"{required_loop_enders} terminatoare de structura necesare - {loop_enders} prezente")
+        raise StopsError(f"{required_loop_enders} necessary structure terminators - {loop_enders} present")
     elif abs(required_stops - stops) > 0:
-        raise StopsError(f"{required_stops} stopuri necesare - {stops} prezente")
+        raise StopsError(f"{required_stops} necessary stops - {stops} present")
     
     g.close()
