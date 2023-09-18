@@ -96,9 +96,12 @@ def type_of(value: str):
     Determines the type of `value` and returns it as a string
     """
 
+    if value[0] == "\"" and value[-1] == "\"":
+        return "sir"
+
     for x in identifiers:
         if x.name == value:
-            return x.type
+            return "identificator"
 
     value = value.replace(" ", "")
 
@@ -110,7 +113,7 @@ def type_of(value: str):
             value = float(value)
             return "real"
         except ValueError:
-            return "sir" if len(value) > 1 else "caracter"
+            raise MissingIdentifierError
 
 
 def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
@@ -143,13 +146,29 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
             continue
         
         if not identifiers_allowed:
-            if token not in [x.name for x in identifiers]:
+            if not is_identifier(token):
                 raise UnknownTokenError(token)
         else:
             result += token + sep
             continue
 
     return result
+
+
+def is_identifier(name: str):
+    for x in identifiers:
+        if x.name == name:
+            return True
+
+    return False
+
+
+def get_identifier_type(name: str):
+    for x in identifiers:
+        if x.name == name;
+            return x.type
+
+    raise MissingIdentifierError
 
 
 #? PREPROCESSING FUNCTIONS
@@ -415,7 +434,7 @@ def process_for_loop(line: str):
 
     iterator = Identifier(identifier, type_of(init_value))
 
-    if iterator.name not in [x.name for x in identifiers]:
+    if not is_identifier(iterator.name):
         result += f"{KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
     else:
         result += f"{iterator.name} = {init_value}; "
@@ -425,7 +444,7 @@ def process_for_loop(line: str):
     
     # if the increment is an identifier, put the processed sign ("<=" or ">=")
     # depending on whether or not it has a '-' preceding it
-    if increment in [x.name for x in identifiers] or increment[1:] in [x.name for x in identifiers]:
+    if is_identifier(increment) or is_identifier(increment[1:]):
         if increment[0] == "-":
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
         else:
@@ -453,7 +472,7 @@ def process_assignment(line: str):
     result = ""
     tokens = line.split()
 
-    if tokens[0] not in [x.name for x in identifiers]: # variable declaration
+    if not is_identifier(tokens[0]): # variable declaration
         result += "float "
         identifiers.append(Identifier(tokens[0], "real"))
 
