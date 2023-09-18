@@ -165,7 +165,7 @@ def is_identifier(name: str):
 
 def get_identifier_type(name: str):
     for x in identifiers:
-        if x.name == name;
+        if x.name == name:
             return x.type
 
     raise MissingIdentifierError
