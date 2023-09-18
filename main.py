@@ -48,7 +48,7 @@ KEYWORDS = {
     "stop": "}",
 }
 
-OPERATORS = {"[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<="}
+OPERATORS = {"[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=", "!="}
 STRUCTURE_KEYWORDS = {"cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
                       "citeste", "scrie", "pentru", "iesi", "stop"}
 DATA_TYPES = {"natural", "intreg", "real", "sir", "caracter"}
@@ -114,7 +114,7 @@ def type_of(value: str):
             value = float(value)
             return "real"
         except ValueError:
-            raise MissingIdentifierError(f"Line {current_line}")
+            raise UnknownTokenError(f"Line {current_line}")
 
 
 def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
@@ -143,13 +143,17 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
             if type_of(token) not in ("real", "intreg"):
                 raise UnknownTokenError(f"{token} on line {current_line}")
         else:
-            result += token + sep
-            continue
+            if type_of(token) != "identificator":
+                result += token + sep
+                continue
         
         if not identifiers_allowed:
-            if not is_identifier(token):
+            if is_identifier(token):
                 raise UnknownTokenError(f"{token} on line {current_line}")
         else:
+            if not is_identifier(token):
+                raise UnknownTokenError(f"{token} on line {current_line}")
+            
             result += token + sep
             continue
 
@@ -313,6 +317,9 @@ def process_user_input(line: str):
 
     for token in tokens: #declaring the variables and saving them for later usage
         
+        result += f"{token},"
+        identifiers.append(Identifier(token, data_type))
+
         # check for literals/operators/reserved keywords
         if type_of(token) in ("intreg", "real"):
             raise UnknownTokenError(f"{token} on line {current_line}")
@@ -322,9 +329,6 @@ def process_user_input(line: str):
         
         if token in RESERVED_KEYWORDS:
             raise UnexpectedKeywordError(f"{token} on line {current_line}")
-
-        result += f"{token},"
-        identifiers.append(Identifier(token, data_type))
 
     result = result[:-1] + ";\n" # finishing the line
     result += "cin>>"
