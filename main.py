@@ -427,7 +427,7 @@ def process_for_loop(line: str):
     bound = tokens[1].strip() # the value at which the for-loop ends
     
     if len(op) == 0:
-        raise MissingKeywordErrorf(f"\"<-\" on line {current_line}")
+        raise MissingKeywordError(f"\"<-\" on line {current_line}")
     
     if len(init_value) == 0:
         raise MissingLiteralError(f"Line {current_line}")
