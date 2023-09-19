@@ -115,7 +115,7 @@ def type_of(value: str):
             value = float(value)
             return "real"
         except ValueError:
-            raise UnknownTokenError(f"{value} on line {current_line}")
+            return "necunoscut"
 
 
 def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
@@ -139,7 +139,7 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
             if token in OPERATORS:
                 result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
                 continue
-            
+        
         if not literals_allowed:
             if type_of(token) not in ("real", "intreg"):
                 raise UnknownTokenError(f"{token} on line {current_line}")
@@ -225,6 +225,7 @@ def preprocess_minus(line: str, pos: int):
         pos += 1
 
     return line, pos
+
 
 def preprocess_equals(line: str, pos: int):
     """
@@ -424,7 +425,7 @@ def process_for_loop(line: str):
     identifier = identifier.strip()
     init_value = init_value.strip()
     bound = tokens[1].strip() # the value at which the for-loop ends
-
+    
     if len(op) == 0:
         raise MissingKeywordErrorf(f"\"<-\" on line {current_line}")
     
@@ -446,7 +447,10 @@ def process_for_loop(line: str):
     if bound in OPERATORS:
         raise UnexpectedOperatorError(f"{bound} on line {current_line}")
 
-    iterator = Identifier(identifier, type_of(init_value))
+    if type_of(init_value) == "identificator":
+        iterator = Identifier(identifier, get_identifier_type(init_value))
+    else:
+        iterator = Identifier(identifier, type_of(init_value))
 
     if not is_identifier(iterator.name):
         result += f"{KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
