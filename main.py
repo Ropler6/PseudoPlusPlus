@@ -32,6 +32,7 @@ KEYWORDS = {
     "!=": "!=",
     "si": "&&",
     "sau": "||",
+    "!": "!",
 
     # data type
     "natural": "unsigned int",
@@ -48,7 +49,7 @@ KEYWORDS = {
     "stop": "}",
 }
 
-OPERATORS = {"[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=", "!="}
+OPERATORS = {"[", "]", "(", ")", "+", "-", "/", "*", "%", "si", "sau", "=", "<-", ">", "<", ">=", "<=", "!=", "!"}
 STRUCTURE_KEYWORDS = {"cat", "timp", "executa", "repeta", "pana", "cand", "daca", "atunci", "altfel",
                       "citeste", "scrie", "pentru", "iesi", "stop"}
 DATA_TYPES = {"natural", "intreg", "real", "sir", "caracter"}
@@ -360,6 +361,10 @@ def process_while_structure(line: str):
         while_loop, _, other = line.partition("executa")
         tokens = while_loop.split()
         result += "while ("
+        
+        if tokens[0] != "cat" or tokens[1] != "timp":
+            raise MissingKeywordError(f"Line {current_line}")
+            
         tokens = tokens[2:] # remove "cat" & "timp"
         
         result = check_for_errors(tokens, result, operators_allowed=True,
@@ -377,6 +382,10 @@ def process_while_structure(line: str):
         loop_enders += 1
         result = "} while("
         tokens = line.split()
+        
+        if tokens[0] != "cat" or tokens[1] != "timp":
+            raise MissingKeywordError(f"Line {current_line}")
+        
         tokens = tokens[2:] # remove "cat" & "timp"
         
         result = check_for_errors(tokens, result, operators_allowed=True,
