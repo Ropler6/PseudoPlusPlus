@@ -114,7 +114,7 @@ def type_of(value: str):
             value = float(value)
             return "real"
         except ValueError:
-            raise UnknownTokenError(f"Line {current_line}")
+            raise UnknownTokenError(f"{value} on line {current_line}")
 
 
 def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
