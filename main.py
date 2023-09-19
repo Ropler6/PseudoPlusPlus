@@ -431,6 +431,9 @@ def process_for_loop(line: str):
     
     if len(init_value) == 0:
         raise MissingLiteralError(f"Line {current_line}")
+        
+    if len(identifier) == 0:
+        raise MissingIdentifierError(f"Line {current_line}")
 
     if type_of(identifier) in ("intreg", "real"):
         raise UnknownTokenError(f"{identifier} on line {current_line}") 
