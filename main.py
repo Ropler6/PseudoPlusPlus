@@ -33,6 +33,8 @@ KEYWORDS = {
     "si": "&&",
     "sau": "||",
     "!": "!",
+    ">=": ">=",
+    "<=":"<='",
 
     # data type
     "natural": "unsigned int",
@@ -183,7 +185,7 @@ def preprocess_larrow(line: str, pos: int):
     Adds spaces around '<' (if required)
     Returns the modified line and the new position of the character 
     """
-    if line[pos + 1] != "-" and line[pos + 1] != " ":
+    if line[pos + 1] not in ("-", " ", "="):
         line = add_character_at(" ", line, pos + 1)
 
     if line[pos - 1] != " ":
@@ -200,7 +202,7 @@ def preprocess_rarrow(line: str, pos: int):
     """
 
 
-    if line[pos + 1] != "=" and line[pos + 1] != " ":
+    if line[pos + 1] not in ("=", " '"):
         line = add_character_at(" ", line, pos + 1)
 
     if line[pos - 1] != " ":
@@ -233,7 +235,7 @@ def preprocess_equals(line: str, pos: int):
     Returns the modified line and the new position of the character
     """
 
-    if line[pos - 1] != "!":
+    if line[pos - 1] not in ("!", "<", ">"):
         line = add_character_at(" ", line, pos)
         pos += 1
 
