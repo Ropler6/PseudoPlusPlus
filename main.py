@@ -32,9 +32,6 @@ KEYWORDS = {
     "!=": "!=",
     "si": "&&",
     "sau": "||",
-    "!": "!",
-    ">=": ">=",
-    "<=":"<='",
 
     # data type
     "natural": "unsigned int",
@@ -428,6 +425,9 @@ def process_for_loop(line: str):
     init_value = init_value.strip()
     bound = tokens[1].strip() # the value at which the for-loop ends
     
+    if len(tokens) > 3:
+        raise UnknownTokenError(f"{tokens[3:]} on line {current_line}")
+    
     if len(op) == 0:
         raise MissingKeywordError(f"\"<-\" on line {current_line}")
     
@@ -458,7 +458,10 @@ def process_for_loop(line: str):
         iterator = Identifier(identifier, type_of(init_value))
 
     if not is_identifier(iterator.name):
-        result += f"{KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
+        if iterator.type != "necunoscut":
+            result += f"{KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
+        else:
+            raise UnknownTokenError(f"{iterator.name} on line {current_line}")
     else:
         result += f"{iterator.name} = {init_value}; "
 
