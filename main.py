@@ -160,6 +160,11 @@ def check_for_errors(tokens: list[str], result: str, sep: str = " ", *, operator
     return result
 
 
+def check_for_operators(line: str, pos: int, omit: set[str] = set()):
+    if line[pos]  in OPERATORS - omit:
+        raise UnexpectedOperatorError(f"{line[pos]} on line {current_line}")
+
+
 def is_identifier(name: str):
     for x in identifiers:
         if x.name == name:
@@ -182,6 +187,10 @@ def preprocess_larrow(line: str, pos: int):
     Adds spaces around '<' (if required)
     Returns the modified line and the new position of the character 
     """
+    
+    check_for_operators(line, pos + 1, {"-", "="})
+    check_for_operators(line, pos - 1)
+    
     if line[pos + 1] not in ("-", " ", "="):
         line = add_character_at(" ", line, pos + 1)
 
@@ -198,6 +207,8 @@ def preprocess_rarrow(line: str, pos: int):
     Returns the modified line and the new position of the character 
     """
 
+    check_for_operators(line, pos + 1, {"="})
+    check_for_operators(line, pos - 1)
 
     if line[pos + 1] not in ("=", " '"):
         line = add_character_at(" ", line, pos + 1)
@@ -216,6 +227,9 @@ def preprocess_minus(line: str, pos: int):
     """
 
 
+    check_for_operators(line, pos + 1)
+    check_for_operators(line, pos - 1, {"<"})
+
     if line[pos + 1] != " ":
         line = add_character_at(" ", line, pos + 1)
 
@@ -231,6 +245,10 @@ def preprocess_equals(line: str, pos: int):
     Adds spaces around the '=' (if required)
     Returns the modified line and the new position of the character
     """
+
+
+    check_for_operators(line, pos + 1)
+    check_for_operators(line, pos - 1, {"!", "<", ">"})
 
     if line[pos - 1] not in ("!", "<", ">"):
         line = add_character_at(" ", line, pos)
@@ -253,6 +271,9 @@ def preprocess_arithmetic_operator(line: str, pos: int):
     Returns the modified line and the new position of the character 
     """
 
+
+    check_for_operators(line, pos + 1)
+    check_for_operators(line, pos - 1)
 
     try:
         if line[pos + 1] != " ":
