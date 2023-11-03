@@ -94,6 +94,9 @@ def process_while_structure(line: str, counter: Counter):
             raise helpers.MissingKeywordError(f"Line {counter.current_line}")
             
         tokens = tokens[2:] # remove "cat" & "timp"
+
+        if len(tokens) == 0:
+            raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
         
         result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
@@ -127,8 +130,12 @@ def process_while_structure(line: str, counter: Counter):
 def process_repeat_until(line: str, counter: Counter):
     line = line.strip()
     result = "} while (!(" # negate the condition(s)
-    line = line[10:] # remove "pana cand "
     tokens = line.split()
+
+    if tokens[0] != "pana" or tokens[1] != "cand":
+        raise helpers.MissingKeywordError(f"Line {counter.current_line}")
+
+    tokens = tokens[2:] # remove ["pana", "cand"]
 
     result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
@@ -249,6 +256,9 @@ def process_if_statement(line: str, counter: Counter):
     
     result = helpers.KEYWORDS[tokens[0]] # "daca"
     tokens = tokens[1:-1] # removed "daca" & "atunci;"
+
+    if len(tokens) == 0:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
 
     result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
