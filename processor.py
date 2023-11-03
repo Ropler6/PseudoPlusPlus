@@ -52,7 +52,7 @@ def process_user_input(line: str, counter: Counter):
         counter.identifiers.append(helpers.Identifier(token, data_type))
 
         # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
-        if helpers.type_of(token) in ("intreg", "real"):
+        if helpers.type_of(token, counter) in ("intreg", "real"):
             raise helpers.UnknownTokenError(f"{token} on line {counter.current_line}")
         
         if token in helpers.OPERATORS:
@@ -165,7 +165,7 @@ def process_for_loop(line: str, counter: Counter):
     if len(identifier) == 0:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
 
-    if helpers.type_of(identifier) in ("intreg", "real"):
+    if helpers.type_of(identifier, counter) in ("intreg", "real"):
         raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line}") 
 
     if init_value in helpers.RESERVED_KEYWORDS:
@@ -180,12 +180,12 @@ def process_for_loop(line: str, counter: Counter):
     if bound in helpers.OPERATORS:
         raise helpers.UnexpectedOperatorError(f"{bound} on line {counter.current_line}")
 
-    if helpers.type_of(init_value) == "identificator":
-        iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value))
+    if helpers.type_of(init_value, counter) == "identificator":
+        iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value, counter))
     else:
-        iterator = helpers.Identifier(identifier, helpers.type_of(init_value))
+        iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
 
-    if not helpers.is_identifier(iterator.name):
+    if not helpers.is_identifier(iterator.name, counter):
         if iterator.type != "necunoscut":
             result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
         else:
@@ -198,7 +198,7 @@ def process_for_loop(line: str, counter: Counter):
     
     # if the increment is an identifier, put the processed sign ("<=" or ">=")
     # depending on whether or not it has a '-' preceding it
-    if helpers.is_identifier(increment) or helpers.is_identifier(increment[1:]):
+    if helpers.is_identifier(increment, counter) or helpers.is_identifier(increment[1:], counter):
         if increment[0] == "-":
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
         else:
@@ -207,12 +207,12 @@ def process_for_loop(line: str, counter: Counter):
         return result
 
     # if the increment is a number literal, set the sign (">=" or "<=") accordingly
-    if helpers.type_of(increment) in ("real", "intreg"):
+    if helpers.type_of(increment, counter) in ("real", "intreg"):
         if float(increment) > 0:
             result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
         else:
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
-    elif helpers.type_of(increment) == "caracter":
+    elif helpers.type_of(increment, counter) == "caracter":
         result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
     else: # if the increment is a string
         raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line}")
@@ -226,7 +226,7 @@ def process_assignment(line: str, counter: Counter):
     result = ""
     tokens = line.split()
 
-    if not helpers.is_identifier(tokens[0]): # variable declaration
+    if not helpers.is_identifier(tokens[0], counter): # variable declaration
         result += "float "
         counter.identifiers.append(helpers.Identifier(tokens[0], "real"))
 
@@ -265,7 +265,7 @@ def process_line(line: str, counter: Counter):
     if len(segments) > 1: #if there are more instructions, process them separately
         result = ""
         for segment in segments:
-            result += process_line(segment)
+            result += process_line(segment, counter)
 
         return result
 
