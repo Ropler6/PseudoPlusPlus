@@ -108,6 +108,12 @@ def type_of(value: str, counter: Counter):
         if x.name == value:
             return "identificator"
 
+    if value in OPERATORS:
+        return "operator"
+    
+    if value in RESERVED_KEYWORDS:
+        return "keyword"
+
     value = value.replace(" ", "")
 
     try:
@@ -128,6 +134,9 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
     Returns the processed tokens added to `result`"""
 
     for token in tokens:
+        if type_of(token, counter) == "necunoscut":
+            raise UnknownTokenError(f"{token} on line {counter.current_line}")
+
         if not reserved_allowed:
             if token in RESERVED_KEYWORDS:
                 raise UnexpectedKeywordError(f"{token} on line {counter.current_line}")
