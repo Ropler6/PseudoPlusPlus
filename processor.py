@@ -155,6 +155,9 @@ def process_for_loop(line: str, counter: Counter):
     result = "for ("
     tokens = line.split(",")
 
+    if len(tokens) <= 2:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+
     identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
     identifier = identifier.strip()
     init_value = init_value.strip()
