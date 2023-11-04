@@ -302,6 +302,10 @@ def process_line(line: str, counter: Counter):
     elif tokens[0] == "repeta":
         counter.required_loop_enders += 1
         return helpers.KEYWORDS["repeta"]
+    
+    elif tokens[0] == "executa":
+        counter.required_loop_enders += 1
+        return helpers.KEYWORDS["repeta"] # KEYWORDS["executa"] is used for "cat timp"
 
     elif tokens[0] == "stop":
         counter.stops += 1
