@@ -25,28 +25,33 @@ with open("./main.pc") as f:
         line += "\n" # adding it back (removed above)
 
         i = 0
-        while i < len(line): # processing the current line
-                             # using a while-loop to properly have len(line) updated
-            match line[i]:
-                case "<":
-                    line, i = preprocessor.preprocess_larrow(line, i, counter)
+        try:
+            while i < len(line): # processing the current line
+                                # using a while-loop to properly have len(line) updated
+                match line[i]:
+                    case "<":
+                        line, i = preprocessor.preprocess_larrow(line, i, counter)
 
-                case "-":
-                    line, i = preprocessor.preprocess_minus(line, i, counter)
+                    case "-":
+                        line, i = preprocessor.preprocess_minus(line, i, counter)
 
-                case ">":
-                    line, i = preprocessor.preprocess_rarrow(line, i, counter)
+                    case ">":
+                        line, i = preprocessor.preprocess_rarrow(line, i, counter)
 
-                case "=":
-                    line, i = preprocessor.preprocess_equals(line, i, counter)
+                    case "=":
+                        line, i = preprocessor.preprocess_equals(line, i, counter)
 
-                case "/":
-                    line, i = preprocessor.preprocess_division(line, i, counter)
+                    case "/":
+                        line, i = preprocessor.preprocess_division(line, i, counter)
 
-                case "+" | "*" | "%" | "[" | "]" | "(" | ")":
-                    line, i = preprocessor.preprocess_arithmetic_operator(line, i, counter)
-            i += 1
-        
+                    case "+" | "*" | "%" | "[" | "]" | "(" | ")":
+                        line, i = preprocessor.preprocess_arithmetic_operator(line, i, counter)
+                i += 1
+        except Exception as e:
+            print(f"{type(e).__name__}: {e}")
+            force_exit = True
+            break
+
         counter.current_line += 1
         try: # try to process the current line
             processed_line = processor.process_line(line, counter)
