@@ -1,6 +1,8 @@
 import preprocessor, processor, helpers
 
 counter = helpers.Counter()
+force_exit = False
+
 g = open("./test.cpp", "w+")
 g.write("#include <iostream>\nusing namespace std;\nint main(){")
 
@@ -46,15 +48,27 @@ with open("./main.pc") as f:
             i += 1
         
         counter.current_line += 1
-        processed_line = processor.process_line(line, counter)
+        try: # try to process the current line
+            processed_line = processor.process_line(line, counter)
+        except Exception as e: # if an exception is raised, display it and terminate the program
+            print(f"{type(e).__name__}: {e}")
+            force_exit = True
+            break
 
         # Write the processed line to the file
         g.write(processed_line)
 
     g.write("return 0;\n}\n")
     if abs(counter.required_loop_enders - counter.loop_enders) > 0:
-        raise helpers.StopsError(f"{counter.required_loop_enders} necessary structure terminators - {counter.loop_enders} present")
+        print(f"StopsError: {counter.required_loop_enders} necessary structure terminators - {counter.loop_enders} present")
+        force_exit = True
     elif abs(counter.required_stops - counter.stops) > 0:
-        raise helpers.StopsError(f"{counter.required_stops} necessary stops - {counter.stops} present")
+        print(f"StopsError: {counter.required_stops} necessary stops - {counter.stops} present")
+        force_exit = True
     
     g.close()
+
+if force_exit: # if an exception has previously been raised
+    g.close()
+    with open("./test.cpp", "w+") as g:
+        g.write("")

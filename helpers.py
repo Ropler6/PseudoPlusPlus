@@ -83,9 +83,6 @@ class MissingIdentifierError(Exception):
 class MissingLiteralError(Exception):
     """Raise when a literal is expected but is missing in code""" 
 
-class StopsError(Exception):
-    """Raise when there are not enough/too many structure terminators"""
-
 
 def add_character_at(character: str, string: str, position: int) -> str:
     """
