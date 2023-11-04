@@ -43,6 +43,9 @@ def process_user_input(line: str, counter: Counter):
     if len(tokens) == 0: # if there are no variables being read
         raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
 
+    if data_type not in helpers.DATA_TYPES:
+        raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line}")
+
     result = ""
     result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
 
