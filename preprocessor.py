@@ -82,11 +82,27 @@ def preprocess_equals(line: str, pos: int, counter: Counter):
     return line, pos
 
 
+def preprocess_division(line: str, pos: int, counter: Counter):
+    """
+    Adds "1.0" before the `/` operator to allow for true division
+    when the code is transpiled to C++
+    """
+
+
+    helpers.check_for_operators(line, pos + 1 , counter)
+    helpers.check_for_operators(line, pos - 1 , counter)
+
+    line = helpers.add_character_at("* 1.0 ", line, pos)
+    pos += 6
+
+    return line, pos
+
+
 # TODO: handle += -= /= etc
 # TODO: split ()[] from +*/%=
 def preprocess_arithmetic_operator(line: str, pos: int, counter: Counter):
     """
-    Adds spaces around arithmetic operators: +/*%[]=()
+    Adds spaces around arithmetic operators: +*%[]=()
     Returns the modified line and the new position of the character 
     """
 

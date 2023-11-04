@@ -38,7 +38,10 @@ with open("./main.pc") as f:
                 case "=":
                     line, i = preprocessor.preprocess_equals(line, i, counter)
 
-                case "+" | "/" | "*" | "%" | "[" | "]" | "(" | ")":
+                case "/":
+                    line, i = preprocessor.preprocess_division(line, i, counter)
+
+                case "+" | "*" | "%" | "[" | "]" | "(" | ")":
                     line, i = preprocessor.preprocess_arithmetic_operator(line, i, counter)
             i += 1
         
