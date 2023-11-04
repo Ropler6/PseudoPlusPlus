@@ -101,6 +101,9 @@ def type_of(value: str, counter: Counter):
     Determines the type of `value` and returns it as a string
     """
 
+    if len(value) == 0:
+        return "necunoscut"
+
     if value[0] == "\"" and value[-1] == "\"":
         return "sir"
 
