@@ -1,5 +1,8 @@
 import preprocessor, processor, helpers
 from io import TextIOWrapper
+from pathlib import Path
+
+EXIT_MESSAGE = "Press Enter to close this window..."
 
 def force_exit(g: TextIOWrapper, output_file: str):
     """
@@ -11,7 +14,7 @@ def force_exit(g: TextIOWrapper, output_file: str):
     with open(output_file, "w+") as f:
         f.write("")
 
-    input("Press Enter to close this window...")
+    input(EXIT_MESSAGE)
 
 def main():
     input_file = input("Input file: ")
@@ -21,8 +24,11 @@ def main():
     if len(output_file) == 0:
         output_file = "./main.cpp"
 
-    g = open(output_file, "w+")
-    g.write("#include <iostream>\nusing namespace std;\nint main(){")
+    raw_file = Path(input_file)
+    if not raw_file.is_file(): # checking if the input file exists
+        print(f"File '{input_file}' does not exist!")
+        print(EXIT_MESSAGE)
+        return
 
     counter = helpers.Counter()
     # processing the code and outputting it
@@ -94,7 +100,7 @@ def main():
         
         g.close()
 
-    input("Press Enter to close this window...")
+    input(EXIT_MESSAGE)
 
 
 if __name__ == "__main__":
