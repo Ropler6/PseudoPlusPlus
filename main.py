@@ -30,6 +30,9 @@ def main():
         print(EXIT_MESSAGE)
         return
 
+    g = open(output_file, "w+")
+    g.write("#include <iostream>\nusing namespace std;\nint main(){")
+
     counter = helpers.Counter()
     # processing the code and outputting it
     with open(input_file, "r") as f:
