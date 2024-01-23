@@ -124,4 +124,3 @@ def preprocess_arithmetic_operator(line: str, pos: int, counter: Counter):
         pass
 
     return line, pos
-

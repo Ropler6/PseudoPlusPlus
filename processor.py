@@ -2,6 +2,12 @@ import helpers
 from helpers import Counter
 
 def process_user_output(line: str, counter: Counter):
+    """
+    Processes lines with the format `scrie <variables | literals>` and retruns the
+    C++ equivalent
+    """
+    
+
     line = line.strip()
     line = line[6:] # remove "scrie" from the line
     tokens = line.split(",")
@@ -26,6 +32,12 @@ def process_user_output(line: str, counter: Counter):
 
 
 def process_user_input(line: str, counter: Counter):
+    """
+    Processes lines with the format `citeste <variables> (<data type>)` and
+    returns the C++ equivalent
+    """
+    
+
     line = line.strip()
     line = line[8:] # remove "citeste" from the line
     line, _, data_type = line.partition("(")
@@ -82,7 +94,10 @@ def process_while_structure(line: str, counter: Counter):
     or the end of a repeat-while loop and processes the code accordingly.
     It splits the line into multiple lines after "executa" and processes them
     separately.
+
+    The format processed is either `cat timp <conditions> executa` or `cat timp <conditions>` 
     """
+
 
     line = line.strip()
     result = ""
@@ -131,6 +146,11 @@ def process_while_structure(line: str, counter: Counter):
 
 
 def process_repeat_until(line: str, counter: Counter):
+    """
+    Processes lines with the format `repeta <condition>` and returns the C++ equivalent
+    """
+
+
     line = line.strip()
     result = "} while (!(" # negate the condition(s)
     tokens = line.split()
@@ -149,6 +169,13 @@ def process_repeat_until(line: str, counter: Counter):
 
 
 def process_for_loop(line: str, counter: Counter):
+    """
+    Processes lines with the format 
+    `pentru <variable> <- <variable | literal>, <variable | literal>, <variable | literal>`
+    and returns the C++ equivalent
+    """
+    
+
     line = line.strip()
 
     if line[-7:] not in ("executa", "executa;"):
@@ -235,6 +262,12 @@ def process_for_loop(line: str, counter: Counter):
 
 #TODO: support for strings
 def process_assignment(line: str, counter: Counter):
+    """
+    Processes lines with the format `<variable> <- <variable | operation>`, adds them to the
+    identifiers array if required and returns the C++ equivalent
+    """
+
+
     line = line.strip()
     result = ""
     tokens = line.split()
@@ -254,6 +287,12 @@ def process_assignment(line: str, counter: Counter):
 
 
 def process_if_statement(line: str, counter: Counter):
+    """
+    Processes lines with the format `daca <conditions> atunci` and returns the
+    C++ equivalent
+    """
+
+
     line = line.strip()
     result = ""
     tokens = line.split()
@@ -274,6 +313,12 @@ def process_if_statement(line: str, counter: Counter):
 
 
 def process_line(line: str, counter: Counter):
+    """
+    Returns the lines processed by substituting keywords with their C++
+    equivalents or by processing them in other functions
+    """
+
+
     line = line.strip()
     if len(line) == 0: return ""
 
