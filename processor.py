@@ -3,7 +3,7 @@ from helpers import Counter
 
 def process_user_output(line: str, counter: Counter):
     """
-    Processes lines with the format `scrie <variables | literals>` and retruns the
+    Processes lines with the format `scrie <variables | literals>` and returns the
     C++ equivalent
     """
     
