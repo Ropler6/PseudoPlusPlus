@@ -98,8 +98,6 @@ def preprocess_division(line: str, pos: int, counter: Counter):
     return line, pos
 
 
-# TODO: handle += -= /= etc
-# TODO: split ()[] from +*/%=
 def preprocess_arithmetic_operator(line: str, pos: int, counter: Counter):
     """
     Adds spaces around arithmetic operators: +*%[]=()

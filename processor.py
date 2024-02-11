@@ -260,7 +260,6 @@ def process_for_loop(line: str, counter: Counter):
     return result
 
 
-#TODO: support for strings
 def process_assignment(line: str, counter: Counter):
     """
     Processes lines with the format `<variable> <- <variable | operation>`, adds them to the
@@ -377,7 +376,7 @@ def process_line(line: str, counter: Counter):
     else:
         raise helpers.UnknownTokenError(f"{segments[0]} on line {counter.current_line}")
 
-    for token in tokens: #TODO: error-handling
+    for token in tokens:
         if helpers.KEYWORDS.get(token) is not None:
             raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line}")
         else:
