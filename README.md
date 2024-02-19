@@ -569,49 +569,62 @@ def process_assignment(line: str, counter: Counter):
   
   ```python
   def check_for_errors(tokens: list[str], result: str, counter: Counter,
-             sep: str = " ", *, operators_allowed: bool = False,
-             reserved_allowed: bool = False, identifiers_allowed: bool = False,
-             literals_allowed: bool = False) -> str:
+                      sep: str = " ", *, operators_allowed: bool = False,
+                      reserved_allowed: bool = False, identifiers_allowed: bool = False,
+                      literals_allowed: bool = False) -> str:
     """Checks `tokens` for illegal tokens (specified in the params) and throws errors accordingly
     
     Returns the processed tokens added to `result`"""
 
+    parentheses = 0 # ()
+    brackets = 0 # []
+
     for token in tokens:
-      if type_of(token, counter) == "necunoscut":
-        raise UnknownTokenError(f"{token} on line {counter.current_line}")
+        if type_of(token, counter) == "necunoscut":
+            raise UnknownTokenError(f"{token} on line {counter.current_line}")
 
-      if not reserved_allowed:
-        if token in RESERVED_KEYWORDS:
-          raise UnexpectedKeywordError(f"{token} on line {counter.current_line}")
-      else:
-        result += KEYWORDS[token] + sep
-        continue
+        if not reserved_allowed:
+            if token in RESERVED_KEYWORDS:
+                raise UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+        else:
+            result += KEYWORDS[token] + sep
+            continue
 
-      if not operators_allowed:
-        if token in OPERATORS:
-          raise UnexpectedOperatorError(f"{token} on line {counter.current_line}")
-      else:
-        if token in OPERATORS:
-          result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
-          continue
-      
-      if not literals_allowed:
-        if type_of(token, counter) not in ("real", "intreg"):
-          raise UnknownTokenError(f"{token} on line {counter.current_line}")
-      else:
-        if type_of(token, counter) != "identificator":
-          result += token + sep
-          continue
-      
-      if not identifiers_allowed:
-        if is_identifier(token, counter):
-          raise UnknownTokenError(f"{token} on line {counter.current_line}")
-      else:
-        if not is_identifier(token, counter):
-          raise UnknownTokenError(f"{token} on line {counter.current_line}")
+        if not operators_allowed:
+            if token in OPERATORS:
+                raise UnexpectedOperatorError(f"{token} on line {counter.current_line}")
+        else:
+            if token in OPERATORS:
+                if token in ("(", ")"):
+                    parentheses += 1
+                if token in ("[", "]"):
+                    brackets += 1
+                result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
+                continue
         
-        result += token + sep
-        continue
+        if not literals_allowed:
+            if type_of(token, counter) not in ("real", "intreg"):
+                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+        else:
+            if type_of(token, counter) != "identificator":
+                result += token + sep
+                continue
+        
+        if not identifiers_allowed:
+            if is_identifier(token, counter):
+                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+        else:
+            if not is_identifier(token, counter):
+                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+            
+            result += token + sep
+            continue
+
+    if brackets % 2 != 0:
+        raise MissingParenthesisError(f"on line {counter.current_line}")
+
+    if parentheses % 2 != 0:
+        raise MissingParenthesisError(f"on line {counter.current_line}")
 
     return result
   ```
@@ -646,7 +659,7 @@ def process_assignment(line: str, counter: Counter):
   return False
   ```
 
-* Erorile utilizate in program sunt `UnknownTokenError`, `UnexpectedKeywordError`, `MissingKeywordError`, `UnexpectedOperatorError`, `MissingLiteralError` si `MissingIdentifierError`, reprezentand in ordine: prezenta unui simbol necunoscut, folosirea ilegala a unui cuvant cheie, lipsa unui cuvant cheie, folosirea ilegala a unui operator, lipsa unei valori de tip literal sau lipsa unui identificator.
+* Erorile utilizate in program sunt `UnknownTokenError`, `UnexpectedKeywordError`, `MissingKeywordError`, `UnexpectedOperatorError`, `MissingLiteralError` si `MissingIdentifierError`, `MissingParenthesisError`, reprezentand, in ordine: prezenta unui simbol necunoscut, folosirea ilegala a unui cuvant cheie, lipsa unui cuvant cheie, folosirea ilegala a unui operator, lipsa unei valori de tip literal, lipsa unui identificator si lipsa unei paranteze (rotunde sau patrate).
 * Sunt definiti si operatorii si cuvintele cheie din sintaxa Pseudo++.
 
 ```python
