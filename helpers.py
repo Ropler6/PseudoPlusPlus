@@ -81,7 +81,10 @@ class MissingIdentifierError(Exception):
     """Raise when an identifier is expected but is missing in code"""
 
 class MissingLiteralError(Exception):
-    """Raise when a literal is expected but is missing in code""" 
+    """Raise when a literal is expected but is missing in code"""
+
+class MissingParenthesisError(Exception):
+    """Raise when a parenthesis or a bracket is missing"""
 
 
 def add_character_at(character: str, string: str, position: int) -> str:
@@ -133,6 +136,9 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
     
     Returns the processed tokens added to `result`"""
 
+    parentheses = 0 # ()
+    brackets = 0 # []
+
     for token in tokens:
         if type_of(token, counter) == "necunoscut":
             raise UnknownTokenError(f"{token} on line {counter.current_line}")
@@ -149,6 +155,10 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
                 raise UnexpectedOperatorError(f"{token} on line {counter.current_line}")
         else:
             if token in OPERATORS:
+                if token in ("(", ")"):
+                    parentheses += 1
+                if token in ("[", "]"):
+                    brackets += 1
                 result += f"{KEYWORDS[token] if KEYWORDS.get(token) is not None else token}" + sep
                 continue
         
@@ -169,6 +179,12 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
             
             result += token + sep
             continue
+
+    if brackets % 2 != 0:
+        raise MissingParenthesisError(f"on line {counter.current_line}")
+
+    if parentheses % 2 != 0:
+        raise MissingParenthesisError(f"on line {counter.current_line}")
 
     return result
 

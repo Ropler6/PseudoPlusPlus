@@ -646,7 +646,7 @@ def process_assignment(line: str, counter: Counter):
   return False
   ```
 
-* Erorile utilizate in program sunt `UnknownTokenError`, `UnexpectedKeywordError`, `MissingKeywordError`, `UnexpectedOperatorError`, `MissingLiteralError` si `MissingIdentifierError`, reprezentand in ordine: prezenta unui simbol necunoscut, folosirea ilegala a unui cuvant cheie, lipsa unui cuvant cheie, folosirea ilegala a unui operator, lipsa unei valori de tip literal sau lipsa unui identificator.
+* Erorile utilizate in program sunt `UnknownTokenError`, `UnexpectedKeywordError`, `MissingKeywordError`, `UnexpectedOperatorError`, `MissingLiteralError` si `MissingIdentifierError`, `MissingParenthesisError`, reprezentand, in ordine: prezenta unui simbol necunoscut, folosirea ilegala a unui cuvant cheie, lipsa unui cuvant cheie, folosirea ilegala a unui operator, lipsa unei valori de tip literal, lipsa unui identificator si lipsa unei paranteze (rotunde sau patrate).
 * Sunt definiti si operatorii si cuvintele cheie din sintaxa Pseudo++.
 
 ```python
