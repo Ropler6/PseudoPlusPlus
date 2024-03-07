@@ -34,7 +34,7 @@ KEYWORDS = {
     # conditional
     "daca": "if (",
     "atunci": "){",
-    "altfel": "}else{ ",
+    "altfel": "}else{",
 
     # operator
     "[": "(int)(",
