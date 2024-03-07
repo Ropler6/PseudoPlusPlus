@@ -282,7 +282,7 @@ def process_assignment(line: str, counter: Counter):
                                               identifiers_allowed=True,
                                               literals_allowed=True)
 
-    return result + ";"
+    return result[:-1] + ";"
 
 
 def process_if_statement(line: str, counter: Counter):
