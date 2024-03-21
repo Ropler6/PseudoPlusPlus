@@ -1,10 +1,11 @@
+---
+geometry: margin=3cm
+---
 # Documentatia programului "Pseudo++"
 
-<center style="margin-top: 100px">
-<img alt="Logo" src="./Logo.png">
-</center>
-
-<div style="page-break-after: always;"></div>
+\begin{center}
+\includegraphics[]{./Logo.png}
+\end{center}
 
 ## Informatii generale
 
@@ -112,18 +113,35 @@ counter.current_line += 1
 ## Etapa de procesare
 
 * Programul reia codul linie cu linie, cu schimbarile ulterioare adaugate de preprocesor, si il transforma in cod valid C++.
-* Acesta efectueaza diferite operatii pe cuvintele cheie si pe instructiunile logice prezente.
+* Acesta efectueaza diferite operatii pe cuvintele cheie si pe instructiunile logice prezente, cum ar fi transformarea lor in echivalentul din C++, impartirea lor pentru o procesare mai eficienta, negarea lor (in structura repetitiva cu test final de tipul `repeta <instructiuni> pana cand <conditie>`) si altele.
 * Pe parcursul programului sunt folositi termenii "simbol", "necunoscut", "ilegal" si "identificator".
-  * Un "simbol" este un sir de caractere (de obicei un cuvant, o variabila, un numar, un caracter, etc) care este procesat de program.
+  * Un "simbol" este un sir de caractere (de obicei un cuvant, o variabila, un numar, un caracter, etc) care este procesat de program. Acesta poate fi interpretat ca un cuvant cheie, ca o variabila, ca un operator sau ca o valoare de tip literal.
   * Un simbol "necunoscut" este o secventa care nu ar trebui sa apara intr-un anumit loc sau ceva ce programul nu recunoaste, cum ar fi cuvinte cheie scrise gresit (spre exemplu: `atnuci` sau `exeuta`) sau secvente ce nu au sens (spre exemplu: `YW1vZ3Vz`).
   * Un simbol "ilegal" reprezinta o secventa ce nu ar trebui sa apara intr-un anumit loc in cod, neavand sens sau avand un alt scop, cum ar fi folosirea unui cuvant cheie ca pe o variabila (`cat <- 1`).
-  * Un identificator reprezinta o variabila cu un nume unic ce stocheaza o valoare de un anumit tip de date.
+  * Un identificator reprezinta o variabila cu un nume unic ce stocheaza o valoare de un anumit tip de date, de obicei un numar.
+```mermaid
+graph LR
+    pre["Preprocesor"]
+    pro["Procesor"]
+    simbol["Simbol"]
+    necunoscut["Necunoscut"]
+    ilegal["Ilegal"]
+    identif["Identificator"]
+    cpp["Cod C++"]
+    eroare["Eroare"]
+    cc["Cuvinte cheie"]
+
+    pre --> pro
+    pro --> simbol
+    simbol --> cc & identif --> cpp
+    simbol --> necunoscut & ilegal --> eroare
+```
 
 ### Generalitati
 
 * Toate functiile verifica respectarea sintaxei si semnaleaza erori la gasirea unor probleme. Acestea sunt: lipsa de paraneze, folosirea unui tip de date invalid, lipsa declararii variabilelor, prezenta ilegala sau lipsa operatorilor, a variabilelor sau a literalelor, prezenta unor cuvinte/simboluri necunoscute programului, etc.
 * Nu sunt verificate erorile algebrice sau de logica matematica, obiectivul transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++ din punct de vedere al structurilor logice si al instructiunilor.
-* In programul principal este apelata functia `process_line` care apeleaza la randul ei celelalte functii pentru a procesa diferitele tipuri de structuri si intoarce linia procesata.
+* In programul principal este apelata functia `process_line` care apeleaza la randul ei celelalte functii pentru a procesa diferitele tipuri de structuri si intoarce linia procesata. Odata terminata procesarea (fara erori), linia procesata va fi scrisa in fisierul de tip C++.
 
 ```python
 try: # try to process the current line
@@ -143,7 +161,7 @@ g.write(processed_line)
 
 * Sintaxa: `citeste <variable> (<tip de date>)`
 * Functia `process_user_input` proceseaza linii care efectueaza operatii de citire a datelor de intrare de un anumit tip de date.
-* Se sterge cuvantul "citeste" din linia curenta si se verifica existenta tipului de date si al parantezelor. Se verifica existenta simbolurilor, apoi sunt cautate simboluri ilegale/"neasteptate", cum ar fi literale, cuvinte cheie, operatori.
+* Se sterge cuvantul "citeste" din linia curenta si se verifica existenta tipului de date si al parantezelor. Se verifica existenta simbolurilor, apoi sunt cautate simboluri ilegale, cum ar fi cele de tip literal, cuvinte cheie, operatori.
 
 ```python
 def process_user_input(line: str, counter: Counter):
@@ -439,7 +457,7 @@ def process_for_loop(line: str, counter: Counter):
     iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
 ```
 
-* Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare.
+* Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare. Altfel, va fi creata linia corespunzatoare in C++ cu urmatoarea sintaxa: `<tip de date> <nume variabila> = <valoare initiala>`. Vor fi sterse, de asemenea, spatiile in plus care au fost adaugate de catre preprocesor sau de catre utilizator.
 
 ```python
   if not helpers.is_identifier(iterator.name, counter):
@@ -453,7 +471,7 @@ def process_for_loop(line: str, counter: Counter):
   increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 ```
 
-* Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa.
+* Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa cu sintaxa. Sirul generat are formatul `<variabila> <operatie aritmetica de comparatie> <variabila | valoare de tip literal>; <variabila> += <increment>{`
 
 ```python
   # if the increment is an identifier, put the processed sign ("<=" or ">=")
@@ -514,6 +532,24 @@ def process_assignment(line: str, counter: Counter):
 ## Erori si sintaxa
 
 * In fisierul `helpers.py` se afla majoritatea functiilor si enumeratiilor folosite pentru verificarea sintaxei, cat si definitiile erorilor folosite in cod. Sunt definiti operatorii, cuvintele cheie si tipurile de date.
+
+```mermaid
+graph TD
+    help["helpers.py"]
+    erori["Erori"]
+    enum["Enumeratii"]
+    func["Functii"]
+    clase["Clase"]
+    pro["procesor.py"]
+    pre["preprocesor.py"]
+    main["main.py"]
+    
+    help --> erori & enum & func & clase
+    clase --> pre & pro
+    erori --> pre & pro
+    func --> main & pre & pro
+    enum --> pro
+```
 
 * Sunt definite functiile adjuvante pentru verificare, cum ar fi pentru:
   * tipul unei variabile, in functie de apartenenta sa la cuvinte cheie sau daca este o valoare de tip literal. Se verifica, in mod succesiv, lungimea simbolului, caracterul incipient si final, prezenta sa in lista de identificatori sau in enumeratii predefinite. In final, se verifica daca este un numar.
@@ -704,6 +740,22 @@ g.close()
 ## Structura programului
 
 * Programul este impartit in 3 fisiere: `main.py`, `processor.py`, `preprocessor.py` si `helpers.py` pentru structurarea mai eficienta si logica a codului.
+
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant ps as Pseudo++
+    participant main as main.py
+    participant pre as preprocessor.py
+    participant pro as processor.py
+    
+    ps->>main: Fisierul este introdus
+    main->>pre: Sunt adaugate caractere unde este necesar
+    pre->>pro: Simbolurile si operatiile sunt transformate <br> in echivalentul lor in C++
+    pro->>main: Se scrie codul C++ in fisier
+```
+
 * Acestea comunica transmit informatii de stare intre ele prin intermediul parametrului de tip `Counter`, clasa acestuia fiind definita in `helpers.py`. Parametrul contine starea curenta programului: numarul de terminatoare de structuri (conditionale sau repetitive) necesare si prezente, linia curenta si lista cu identificatorii definiti in program.
 
 ```python
