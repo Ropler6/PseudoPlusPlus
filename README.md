@@ -1,11 +1,8 @@
 ---
 geometry: margin=3cm
+documentclass: extarticle
+fontsize: 12pt
 ---
-# Documentatia programului "Pseudo++"
-
-\begin{center}
-\includegraphics[]{./Logo.png}
-\end{center}
 
 ## Informatii generale
 
@@ -28,6 +25,8 @@ geometry: margin=3cm
 * De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportandu-l ca fiind principalul lor sistem de control al versiunilor incepand din 2022. Exista multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
 * Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
 
+\pagebreak
+
 ## Inceputul programului
 
 * Utilizatorului i se dechide o fereastra de tip terminal in care programul va cere ca data de intrare fisierul ce trebuie transformat in C++ (cu extensia .pc), (optional) numele fisierului de iesire si calea (PATH) catre acesta. Acestea vor fi stocate in variabilele `input_file`, respectiv `output_file`.
@@ -49,6 +48,8 @@ def main():
     print(EXIT_MESSAGE)
     return
 ```
+
+\pagebreak
 
 ## Etapa de preprocesare
 
@@ -110,6 +111,8 @@ except Exception as e:
 counter.current_line += 1
 ```
 
+\pagebreak
+
 ## Etapa de procesare
 
 * Programul reia codul linie cu linie, cu schimbarile ulterioare adaugate de preprocesor, si il transforma in cod valid C++.
@@ -119,6 +122,8 @@ counter.current_line += 1
   * Un simbol "necunoscut" este o secventa care nu ar trebui sa apara intr-un anumit loc sau ceva ce programul nu recunoaste, cum ar fi cuvinte cheie scrise gresit (spre exemplu: `atnuci` sau `exeuta`) sau secvente ce nu au sens (spre exemplu: `YW1vZ3Vz`).
   * Un simbol "ilegal" reprezinta o secventa ce nu ar trebui sa apara intr-un anumit loc in cod, neavand sens sau avand un alt scop, cum ar fi folosirea unui cuvant cheie ca pe o variabila (`cat <- 1`).
   * Un identificator reprezinta o variabila cu un nume unic ce stocheaza o valoare de un anumit tip de date, de obicei un numar.
+
+
 ```mermaid
 graph LR
     pre["Preprocesor"]
@@ -529,9 +534,12 @@ def process_assignment(line: str, counter: Counter):
   return result + ";"
 ```
 
+\pagebreak
+
 ## Erori si sintaxa
 
 * In fisierul `helpers.py` se afla majoritatea functiilor si enumeratiilor folosite pentru verificarea sintaxei, cat si definitiile erorilor folosite in cod. Sunt definiti operatorii, cuvintele cheie si tipurile de date.
+
 
 ```mermaid
 graph TD
@@ -715,6 +723,8 @@ class Identifier:
     self.type = type
 ```
 
+\pagebreak
+
 ## Inainte de rezultatul final
 
 * Se verifica daca sunt prezente in program destule cuvinte cheie de inchidere a structurilor repetitive sau a structurilor logice (`stop`, respectiv `pana cand`/`cat timp`).
@@ -736,6 +746,8 @@ g.close()
 ## Rezultatul final
 
 * Programul va scrie in fisierul ales la inceput (sau in fisierul "main.cpp" in directorul curent in caz contrar) rezultatul compilarii din Pseudo++ in C++.
+
+\pagebreak
 
 ## Structura programului
 
@@ -776,3 +788,20 @@ class Counter:
 * `processor.py`: Contine toate functiile de procesare a linilor, inclusiv verificarea majoritatii sintaxei si tinerea evidentei variabilelor (numite in cod "identificatori")
 
 * `helpers.py`: Contine definitia multor clase si functii adjuvante folosite in celelalte fisiere, cum ar fi toate clasele de erori, `Counter`, `Identifier` si lista de cuvinte cheie
+
+# Exemplu de executie
+
+* Executia programului si introducerea datelor de intrare
+\begin{figure}
+\includegraphics[width=10cm]{./images/execution.png}
+\end{figure}
+
+* Fisierul de intrare (creat de utilizator) in Pseudo++
+\begin{figure}
+\includegraphics[width=5cm]{./images/input-file.png}
+\end{figure}
+
+* Fisierul de iesire (creat de program) in C++
+\begin{figure}
+\includegraphics[width=5cm]{./images/output-file.png}
+\end{figure}

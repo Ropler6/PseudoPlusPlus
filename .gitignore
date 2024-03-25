@@ -5,3 +5,4 @@ __pycache__
 *.pc
 *.txt
 *.pdf
+/pandoc
