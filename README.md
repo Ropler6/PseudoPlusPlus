@@ -5,10 +5,16 @@ fontsize: 12pt
 ---
 
 ## Informatii generale
+* Un traducător sursă-sursă, compilator sursă-sursă, transcompilator \
+sau transpilator este un tip de traducător care ia ca intrare codul sursă al unui \
+program scris într-un limbaj de programare și produce un cod sursă echivalent în același limbaj de programare sau într-un limbaj de programare diferit. Un traducător sursă-sursă convertește între limbaje de programare care operează aproximativ la același nivel de abstractizare, în timp ce un compilator tradițional traduce dintr-un limbaj de programare de nivel superior într-un limbaj de \
+programare de nivel inferior. De exemplu, un traducător sursă-sursă poate \
+efectua traducerea unui program din Python în JavaScript, în timp ce un \
+compilator tradițional traduce dintr-un limbaj precum C în asamblare sau Java în bytecode.
 
-* Un traducător sursă-sursă, compilator sursă-sursă, transcompilator sau transpilator este un tip de traducător care ia ca intrare codul sursă al unui program scris într-un limbaj de programare și produce un cod sursă echivalent în același limbaj de programare sau într-un limbaj de programare diferit. Un traducător sursă-sursă convertește între limbaje de programare care operează aproximativ la același nivel de abstractizare, în timp ce un compilator tradițional traduce dintr-un limbaj de programare de nivel superior într-un limbaj de programare de nivel inferior. De exemplu, un traducător sursă-sursă poate efectua traducerea unui program din Python în JavaScript, în timp ce un compilator tradițional traduce dintr-un limbaj precum C în asamblare sau Java în bytecode.
-
-* Pseudocodul reprezinta o descriere a pasilor unui algoritm folosind mai multe conventii ale limbajelor de programare (cum ar fi operatorul de atribuire, operatorul conditional, structura repetitiva, etc) folosind notatii informale si, de obicei, usor de inteles pentru actiuni si conditii. Chiar daca pseudocodul are caracteristici comune cu alte limbaje de programare, folosirea lui este intentionata pentru a fi citit de oameni, nu pentru a fi executat de calculatoare. Pseudocodul omite de obicie detalii care sunt esentiale pentru implementarea codului de catre un calculator. Programul este augumentat cu detalii de limbaj natural sau cu notatie matematica compacta. Pseudocodul este deseori folosit, deoarece este mai usor de inteles decat un limbaj de programare conventional, cat si pentru independenta sa fata de mediul delucru si de principiile cheie ale unui algoritm.
+* Pseudocodul reprezinta o descriere a pasilor unui algoritm folosind mai multe \
+conventii ale limbajelor de programare (cum ar fi operatorul de atribuire, \
+operatorul conditional, structura repetitiva, etc) folosind notatii informale si, de obicei, usor de inteles pentru actiuni si conditii. Chiar daca pseudocodul are caracteristici comune cu alte limbaje de programare, folosirea lui este intentionata pentru a fi citit de oameni, nu pentru a fi executat de calculatoare. Pseudocodul omite de obicie detalii care sunt esentiale pentru implementarea codului de catre un calculator. Programul este augumentat cu detalii de limbaj natural sau cu notatie matematica compacta. Pseudocodul este deseori folosit, deoarece este mai usor de inteles decat un limbaj de programare conventional, cat si pentru independenta sa fata de mediul delucru si de principiile cheie ale unui algoritm.
 
 * Programul Pseudo++ este un compilator de la o sursa la alta. Acesta transforma pseudocod scris cu o sintaxa similara cu cea de Bacalaureat in cod C++ ce poate fi compilat si executat.
 
@@ -20,14 +26,16 @@ fontsize: 12pt
 
 * Python este un limbaj de programare de nivel inalt, de uz general. Filosofia sa de design pune accentul pe lizibilitateacodului prin utilizarea unei indentari semnificative. Acesta a fost creat de catre neerlandezul Guido van Rossum in 1991. Acesta este un limbaj scris dinamic cu un colector de gunoi. Suporta mai multe paradigme de programare, inclusiv programare structurata (in special procedurala), orientata pe obiecte si functionala. Este adesea descris ca un limbaj cu "baterii incluse" datoruta bubkuitecuu sake standard cuprinzatoare.
 * Python se claseaza in mod constant ca fiind unul dintre cele mai populare limbaje de programare si a castigat o utilizare pe scara larga in comnitatea de invatare automata (machine learning).
-* Tot codul a fost scris si testat in Visual Studio Code. Acesta este un editor de cod sursadezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidentierea sintaxei, completareinteligenta a codului, refactorizarae codului si Git incorporat. Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele si pot instala extensii care adauga functionalitati.
+* Tot codul a fost scris si testat in Visual Studio Code. Acesta este un editor de cod sursa dezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidentierea sintaxei, completare inteligenta a codului, refactorizarae codului si Git incorporat. \
+Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele si pot instala extensii care adauga functionalitati.
 * Git este un sistem distribuit de control al versiunilor care urmareste modificarile i orice set de fisiere de calculator, utiliza de obicei pentru coordonarea muncii intre programatorii care dezvolta in colbatorare codul sursa in timpul dezvoltarii de software. Printreobiectivele sale se numara viteza, integritatea datelor si suportul pentru fluxuri de lucru distribuite, neliniare (mii de ramuri paralele care ruleaza pe diferite calculatoare). Git a fost scris initial de Linus Torvalds in 2005 pentru dezvoltarea nucleului Linux, alti dezvoltatori de nucleu contribuind la dezvoltarea sa initiala. Din 2005, Junio Hamano a fost mentorul principal. LA fel ca in cazul majoritatii celorlalte sisteme distribuite de control a versiunilor client-server, fiecare director git de pe fiecare calculator este un depozit cu drepturi depline, cu istoric complet si abilitati complete de urmarire a versiunilor, independent de accesul la retea sau de un server central. Git este un software gratuit si cu sursa deschisa, partajat sub licenta GPL-2.0-only.
 * De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportandu-l ca fiind principalul lor sistem de control al versiunilor incepand din 2022. Exista multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
-* Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
+* Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze \
+codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
 
 \pagebreak
 
-## Inceputul programului
+## Prezentarea codului sursa
 
 * Utilizatorului i se dechide o fereastra de tip terminal in care programul va cere ca data de intrare fisierul ce trebuie transformat in C++ (cu extensia .pc), (optional) numele fisierului de iesire si calea (PATH) catre acesta. Acestea vor fi stocate in variabilele `input_file`, respectiv `output_file`.
 * Fisierul de iesire (cu numele prestabilit "main.cpp") va fi pus in directorul curent daca nu este aleasa o cale.
@@ -115,7 +123,8 @@ counter.current_line += 1
 
 ## Etapa de procesare
 
-* Programul reia codul linie cu linie, cu schimbarile ulterioare adaugate de preprocesor, si il transforma in cod valid C++.
+* Programul reia codul linie cu linie, cu schimbarile ulterioare adaugate \
+de preprocesor, si il transforma in cod valid C++.
 * Acesta efectueaza diferite operatii pe cuvintele cheie si pe instructiunile logice prezente, cum ar fi transformarea lor in echivalentul din C++, impartirea lor pentru o procesare mai eficienta, negarea lor (in structura repetitiva cu test final de tipul `repeta <instructiuni> pana cand <conditie>`) si altele.
 * Pe parcursul programului sunt folositi termenii "simbol", "necunoscut", "ilegal" si "identificator".
   * Un "simbol" este un sir de caractere (de obicei un cuvant, o variabila, un numar, un caracter, etc) care este procesat de program. Acesta poate fi interpretat ca un cuvant cheie, ca o variabila, ca un operator sau ca o valoare de tip literal.
@@ -145,7 +154,8 @@ graph LR
 ### Generalitati
 
 * Toate functiile verifica respectarea sintaxei si semnaleaza erori la gasirea unor probleme. Acestea sunt: lipsa de paraneze, folosirea unui tip de date invalid, lipsa declararii variabilelor, prezenta ilegala sau lipsa operatorilor, a variabilelor sau a literalelor, prezenta unor cuvinte/simboluri necunoscute programului, etc.
-* Nu sunt verificate erorile algebrice sau de logica matematica, obiectivul transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++ din punct de vedere al structurilor logice si al instructiunilor.
+* Nu sunt verificate erorile algebrice sau de logica matematica, obiectivul \
+transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++ din punct de vedere al structurilor logice si al instructiunilor.
 * In programul principal este apelata functia `process_line` care apeleaza la randul ei celelalte functii pentru a procesa diferitele tipuri de structuri si intoarce linia procesata. Odata terminata procesarea (fara erori), linia procesata va fi scrisa in fisierul de tip C++.
 
 ```python
@@ -215,7 +225,8 @@ def process_user_input(line: str, counter: Counter):
       raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line}")
 ```
 
-* Se formateaza rezultatul in sintaxa de C++, adaugandu-se fiecare simbol in rezultatul final.
+* Se formateaza rezultatul in sintaxa de C++, adaugandu-se fiecare simbol in \
+rezultatul final.
 
 ```python
   result = result[:-1] + ";\n" # finishing the line
@@ -270,7 +281,8 @@ def process_user_output(line: str, counter: Counter):
 #### Logica
 
 * Sintaxa: `daca <conditii> atunci <instructiuni> stop`
-* Functia `process_if_statement` proceseaza linii care efectueaza operatii conditionale logice.
+* Functia `process_if_statement` proceseaza linii care efectueaza operatii \
+conditionale logice.
 * Se verifica existenta cuvantului cheie `atunci` si existenta simbolurilor prin numarare secventelor separate prin virgula. Sunt cautate cuvinte cheie si simboluri necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`. La final se concateneaza echivalentul din C++ al cuvantului cheie `atunci` gasit in enumeratia `KEYWORDS`.
 
 ```python
@@ -303,7 +315,8 @@ def process_if_statement(line: str, counter: Counter):
 #### Structura repetitiva cu test initial
 
 * Sintaxa: `cat timp <conditii> executa <instructiuni> stop`
-* Functia `process_while_structure` proceseaza atat structurile de forma `cat timp <conditii> executa <instructiuni> stop`, cat si partea finala a structurile de tipul `repeta <instructiuni> cat timp <conditie>`. Aceasta determina tipul structurii repetitive dupa prezenta cuvantului cheie `executa` si proceseaza diferit linia.
+* Functia `process_while_structure` proceseaza atat structurile de forma `cat timp <conditii> executa <instructiuni> stop`, cat si partea finala a \
+structurilor de tipul `repeta <instructiuni> cat timp <conditie>`. Aceasta determina tipul structurii repetitive dupa prezenta cuvantului cheie `executa` si proceseaza diferit linia.
 * In cazul in care este o structura `cat timp`, va fi incrementat numarul de terminatoare de structuri necesare. Se va verifica prezenta cuvintelor cheie si se va semnala o eroare in lipsa unuia dintre ele. Sunt cautate cuvinte cheie si simboluri necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`. In cazul in care exista o sublinie dupa cuvantul cheie `executa`, aceasta va fi procesata separata printr-un alt apel al functiei `process_line` si va fi concatenata rezultatului procesarii secventei initiale.
 
 ```python
@@ -392,7 +405,8 @@ def process_while_structure(line: str, counter: Counter):
 #### Structura repetitiva cu numar cunoscut de operatii
 
 * Sintaxa: `pentru <variabila> <- <valoare | variabila>, <valoare | variabila>, <valoare | variabila>`
-* Functia `process_for_loop` proceseaza structurile repetitive cu numar cunoscut de operatii, verificand daca iteratorul exista deja in vectorul cu variabile. Acesta proceseaza diferit iteratorul, limita si incrementul in functie de folosirea variabilelor sau a valorilor literale.
+* Functia `process_for_loop` proceseaza structurile repetitive cu numar cunoscut de operatii, verificand daca iteratorul exista deja in vectorul cu variabile. Acesta proceseaza diferit iteratorul, limita si incrementul in functie de folosirea \
+variabilelor sau a valorilor literale.
 * Se verifica prezenta cuvantului cheie `executa` si se semnaleaza o eroare in cazul lipsei acestuia. Se verifica numarul de simboluri si se extrag iteratorul, limita si incrementul.
 
 ```python
@@ -506,7 +520,9 @@ def process_for_loop(line: str, counter: Counter):
 #### Atribuirea valorilor variabilelor
 
 * Sintaxa: `<variabila> <- <valoare> | <operatii>`
-* Functia `process_assignment` verifica daca variabila este declarata prima oara si o adauga intr-un vector ce tine evidenta tuturor variabilelor. In caz contar va verifica doar erorile de sintaxa. Sunt cautate cuvinte cheie si simboluri necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`.
+* Functia `process_assignment` verifica daca variabila este declarata prima oara si o adauga intr-un vector ce tine evidenta tuturor variabilelor. In caz contrar va \
+verifica doar erorile de sintaxa. Sunt cautate cuvinte cheie si simboluri \
+necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`.
 
 ```python
 def process_assignment(line: str, counter: Counter):
@@ -560,7 +576,8 @@ graph TD
 ```
 
 * Sunt definite functiile adjuvante pentru verificare, cum ar fi pentru:
-  * tipul unei variabile, in functie de apartenenta sa la cuvinte cheie sau daca este o valoare de tip literal. Se verifica, in mod succesiv, lungimea simbolului, caracterul incipient si final, prezenta sa in lista de identificatori sau in enumeratii predefinite. In final, se verifica daca este un numar.
+  * tipul unei variabile, in functie de apartenenta sa la cuvinte cheie sau daca este o valoare de tip literal. Se verifica, in mod succesiv, lungimea \
+simbolului, caracterul incipient si final, prezenta sa in lista de identificatori sau in enumeratii predefinite. In final, se verifica daca este un numar.
   
   ```python
   def type_of(value: str, counter: Counter):
@@ -673,7 +690,8 @@ graph TD
     return result
   ```
   
-  * cautarea operatorilor, cautand un anumit caracter (cu posibile exceptii specificate in parametrul optional `omit`) in setul de operatori
+  * cautarea operatorilor, cautand un anumit caracter (cu posibile exceptii \
+  specificate in parametrul optional `omit`) in setul de operatori
   
   ```python
   def check_for_operators(line: str, pos: int, counter: Counter, omit: set[str] = set()):
@@ -745,7 +763,8 @@ g.close()
 
 ## Rezultatul final
 
-* Programul va scrie in fisierul ales la inceput (sau in fisierul "main.cpp" in directorul curent in caz contrar) rezultatul compilarii din Pseudo++ in C++.
+* Programul va scrie in fisierul ales la inceput (sau in fisierul "main.cpp" in \
+directorul curent in caz contrar) rezultatul compilarii din Pseudo++ in C++.
 
 \pagebreak
 
