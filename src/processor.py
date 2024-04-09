@@ -235,7 +235,7 @@ def process_for_loop(line: str, counter: Counter):
 
     increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 
-    
+    counter.identifiers.append(iterator)
     # if the increment is an identifier, put the processed sign ("<=" or ">=")
     # depending on whether or not it has a '-' preceding it
     if helpers.is_identifier(increment, counter) or helpers.is_identifier(increment[1:], counter):
@@ -243,7 +243,7 @@ def process_for_loop(line: str, counter: Counter):
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
         else:
             result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
-
+       
         return result
 
     # if the increment is a number literal, set the sign (">=" or "<=") accordingly
