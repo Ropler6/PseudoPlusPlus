@@ -205,20 +205,18 @@ def process_for_loop(line: str, counter: Counter):
     if len(identifier) == 0:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
 
+    helpers.check_for_errors(init_value.split(), "", counter,
+                     operators_allowed=True,
+                     identifiers_allowed=True,
+                     literals_allowed=True)
+     
+    helpers.check_for_errors(bound.split(), "", counter,
+                     operators_allowed=True,
+                     identifiers_allowed=True,
+                     literals_allowed=True)
+
     if helpers.type_of(identifier, counter) in ("intreg", "real"):
         raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line}") 
-
-    if init_value in helpers.RESERVED_KEYWORDS:
-        raise helpers.UnexpectedKeywordError(f"{init_value} on line {counter.current_line}")
-    
-    if init_value in helpers.OPERATORS:
-        raise helpers.UnexpectedOperatorError(f"{init_value} on line {counter.current_line}")
-    
-    if bound in helpers.RESERVED_KEYWORDS:
-        raise helpers.UnexpectedKeywordError(f"{bound} on line {counter.current_line}")
-    
-    if bound in helpers.OPERATORS:
-        raise helpers.UnexpectedOperatorError(f"{bound} on line {counter.current_line}")
 
     if helpers.type_of(init_value, counter) == "identificator":
         iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value, counter))
