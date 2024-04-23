@@ -155,7 +155,7 @@ graph LR
 
 * Toate functiile verifica respectarea sintaxei si semnaleaza erori la gasirea unor probleme. Acestea sunt: lipsa de paraneze, folosirea unui tip de date invalid, lipsa declararii variabilelor, prezenta ilegala sau lipsa operatorilor, a variabilelor sau a literalelor, prezenta unor cuvinte/simboluri necunoscute programului, etc.
 * Nu sunt verificate erorile algebrice sau de logica matematica, obiectivul \
-transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++ din punct de vedere al structurilor logice si al instructiunilor.
+transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++ din punct de vedere al structurilor logice si al instructiunilor. De asemenea, nu sunt in general permise operatiile algebrice in antetul structurilor repetitive sau logice.
 * In programul principal este apelata functia `process_line` care apeleaza la randul ei celelalte functii pentru a procesa diferitele tipuri de structuri si intoarce linia procesata. Odata terminata procesarea (fara erori), linia procesata va fi scrisa in fisierul de tip C++.
 
 ```python
