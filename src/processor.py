@@ -13,7 +13,7 @@ def process_user_output(line: str, counter: Counter):
     tokens = line.split(",")
 
     if len(tokens) == 0:
-        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1101)")
 
     tokens[-1] = tokens[-1].strip("\n")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
@@ -43,20 +43,20 @@ def process_user_input(line: str, counter: Counter):
     line, _, data_type = line.partition("(")
 
     if len(data_type) == 0: # if the type (or paranthesis) is missing
-        raise helpers.MissingKeywordError(f"Missing '(' or the data type on line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"Missing '(' or the data type on line {counter.current_line} (1201)")
     
     if data_type[-1] != ")":
-        raise helpers.MissingKeywordError(f"Missing ')' on line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"Missing ')' on line {counter.current_line} (1202)")
 
     data_type = data_type[:-1].strip() # remove the ")"
     tokens = line.split(",")
     tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
     if len(tokens) == 0: # if there are no variables being read
-        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1203)")
 
     if data_type not in helpers.DATA_TYPES:
-        raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line}")
+        raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line} (1204)")
 
     result = ""
     result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
@@ -68,13 +68,13 @@ def process_user_input(line: str, counter: Counter):
 
         # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
         if helpers.type_of(token, counter) in ("intreg", "real"):
-            raise helpers.UnknownTokenError(f"{token} on line {counter.current_line}")
+            raise helpers.UnknownTokenError(f"{token} on line {counter.current_line} (1205)")
         
         if token in helpers.OPERATORS:
-            raise helpers.UnexpectedOperatorError(f"{token} on line {counter.current_line}")
+            raise helpers.UnexpectedOperatorError(f"{token} on line {counter.current_line} (1206)")
         
         if token in helpers.RESERVED_KEYWORDS:
-            raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+            raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line} (1207)")
 
     result = result[:-1] + ";\n" # finishing the line
     result += "cin>>"
@@ -109,12 +109,12 @@ def process_while_structure(line: str, counter: Counter):
         result += "while ("
         
         if tokens[0] != "cat" or tokens[1] != "timp":
-            raise helpers.MissingKeywordError(f"Line {counter.current_line}")
+            raise helpers.MissingKeywordError(f"Line {counter.current_line} (1301)")
             
         tokens = tokens[2:] # remove "cat" & "timp"
 
         if len(tokens) == 0:
-            raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+            raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1302)")
         
         result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
@@ -133,7 +133,7 @@ def process_while_structure(line: str, counter: Counter):
         tokens = line.split()
         
         if tokens[0] != "cat" or tokens[1] != "timp":
-            raise helpers.MissingKeywordError(f"Line {counter.current_line}")
+            raise helpers.MissingKeywordError(f"Line {counter.current_line} (1303)")
         
         tokens = tokens[2:] # remove "cat" & "timp"
         
@@ -156,7 +156,7 @@ def process_repeat_until(line: str, counter: Counter):
     tokens = line.split()
 
     if tokens[0] != "pana" or tokens[1] != "cand":
-        raise helpers.MissingKeywordError(f"Line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"Line {counter.current_line} (1401)")
 
     tokens = tokens[2:] # remove ["pana", "cand"]
 
@@ -179,14 +179,14 @@ def process_for_loop(line: str, counter: Counter):
     line = line.strip()
 
     if line[-7:] not in ("executa", "executa;"):
-        raise helpers.MissingKeywordError(f"\"executa\" on line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"\"executa\" on line {counter.current_line} (1501)")
 
     line = line[7:-8] # remove "pentru" & "executa"
     result = "for ("
     tokens = line.split(",")
 
     if len(tokens) <= 2:
-        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1502)")
 
     identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
     identifier = identifier.strip()
@@ -194,16 +194,16 @@ def process_for_loop(line: str, counter: Counter):
     bound = tokens[1].strip() # the value at which the for-loop ends
     
     if len(tokens) > 3:
-        raise helpers.UnknownTokenError(f"{tokens[3:]} on line {counter.current_line}")
+        raise helpers.UnknownTokenError(f"{tokens[3:]} on line {counter.current_line} (1503)")
     
     if len(op) == 0:
-        raise helpers.MissingKeywordError(f"\"<-\" on line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"\"<-\" on line {counter.current_line} (1504)")
     
     if len(init_value) == 0:
-        raise helpers.MissingLiteralError(f"Line {counter.current_line}")
+        raise helpers.MissingLiteralError(f"Line {counter.current_line} (1505)")
         
     if len(identifier) == 0:
-        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1506)")
 
     helpers.check_for_errors(init_value.split(), "", counter,
                      operators_allowed=True,
@@ -216,7 +216,7 @@ def process_for_loop(line: str, counter: Counter):
                      literals_allowed=True)
 
     if helpers.type_of(identifier, counter) in ("intreg", "real"):
-        raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line}") 
+        raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line} (1507)") 
 
     if helpers.type_of(init_value, counter) == "identificator":
         iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value, counter))
@@ -227,7 +227,7 @@ def process_for_loop(line: str, counter: Counter):
         if iterator.type != "necunoscut":
             result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
         else:
-            raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line}")
+            raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line} (1508)")
     else:
         result += f"{iterator.name} = {init_value}; "
 
@@ -253,7 +253,7 @@ def process_for_loop(line: str, counter: Counter):
     elif helpers.type_of(increment, counter) == "caracter":
         result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
     else: # if the increment is a string
-        raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line}")
+        raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line} (1509)")
 
     return result
 
@@ -294,13 +294,13 @@ def process_if_statement(line: str, counter: Counter):
     result = ""
     tokens = line.split()
     if tokens[-1] not in ("atunci", "atunci;"):
-        raise helpers.MissingKeywordError(f"\"atunci\" on line {counter.current_line}")
+        raise helpers.MissingKeywordError(f"\"atunci\" on line {counter.current_line} (1601)")
     
     result = helpers.KEYWORDS[tokens[0]] # "daca"
     tokens = tokens[1:-1] # removed "daca" & "atunci;"
 
     if len(tokens) == 0:
-        raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1602)")
 
     result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
@@ -372,11 +372,11 @@ def process_line(line: str, counter: Counter):
             return process_assignment(segments[0], counter)
         
     else:
-        raise helpers.UnknownTokenError(f"{segments[0]} on line {counter.current_line}")
+        raise helpers.UnknownTokenError(f"{segments[0]} on line {counter.current_line} (1701)")
 
     for token in tokens:
         if helpers.KEYWORDS.get(token) is not None:
-            raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+            raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line} (1702)")
         else:
             result += token + " "
 

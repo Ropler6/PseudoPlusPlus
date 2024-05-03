@@ -141,18 +141,18 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
 
     for token in tokens:
         if type_of(token, counter) == "necunoscut":
-            raise UnknownTokenError(f"{token} on line {counter.current_line}")
+            raise UnknownTokenError(f"{token} on line {counter.current_line} (2101)")
 
         if not reserved_allowed:
             if token in RESERVED_KEYWORDS:
-                raise UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+                raise UnexpectedKeywordError(f"{token} on line {counter.current_line} (2102)")
         else:
             result += KEYWORDS[token] + sep
             continue
 
         if not operators_allowed:
             if token in OPERATORS:
-                raise UnexpectedOperatorError(f"{token} on line {counter.current_line}")
+                raise UnexpectedOperatorError(f"{token} on line {counter.current_line} (2103)")
         else:
             if token in OPERATORS:
                 if token in ("(", ")"):
@@ -164,7 +164,7 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
         
         if not literals_allowed:
             if type_of(token, counter) not in ("real", "intreg"):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2104)")
         else:
             if type_of(token, counter) != "identificator":
                 result += token + sep
@@ -172,26 +172,26 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
         
         if not identifiers_allowed:
             if is_identifier(token, counter):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2105)")
         else:
             if not is_identifier(token, counter):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2106)")
             
             result += token + sep
             continue
 
     if brackets % 2 != 0:
-        raise MissingParenthesisError(f"on line {counter.current_line}")
+        raise MissingParenthesisError(f"on line {counter.current_line} (2107)")
 
     if parentheses % 2 != 0:
-        raise MissingParenthesisError(f"on line {counter.current_line}")
+        raise MissingParenthesisError(f"on line {counter.current_line} (2108)")
 
     return result
 
 
 def check_for_operators(line: str, pos: int, counter: Counter, omit: set[str] = set()):
     if line[pos] in OPERATORS - omit:
-        raise UnexpectedOperatorError(f"{line[pos]} on line {counter.current_line}")
+        raise UnexpectedOperatorError(f"{line[pos]} on line {counter.current_line} (2201)")
 
 
 def is_identifier(name: str, counter: Counter):
@@ -207,4 +207,4 @@ def get_identifier_type(name: str, counter: Counter):
         if x.name == name:
             return x.type
 
-    raise MissingIdentifierError(f"Line {counter.current_line}")
+    raise MissingIdentifierError(f"Line {counter.current_line} (2301)")
