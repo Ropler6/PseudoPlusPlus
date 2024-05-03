@@ -7,7 +7,9 @@ def preprocess_larrow(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character 
     """
     
-    
+
+    if helpers.in_string_literal(line, pos): return line, pos
+
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1, counter, {"-", "="})
     if pos > 0:
@@ -31,6 +33,8 @@ def preprocess_rarrow(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character 
     """
 
+
+    if helpers.in_string_literal(line, pos): return line, pos
 
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1, counter, {"="})
@@ -56,6 +60,8 @@ def preprocess_minus(line: str, pos: int, counter: Counter):
     """
 
 
+    if helpers.in_string_literal(line, pos): return line, pos
+
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1, counter)
     if pos > 0:
@@ -79,6 +85,8 @@ def preprocess_equals(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character
     """
 
+
+    if helpers.in_string_literal(line, pos): return line, pos
 
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1, counter)
@@ -104,6 +112,8 @@ def preprocess_division(line: str, pos: int, counter: Counter):
     """
 
 
+    if helpers.in_string_literal(line, pos): return line, pos
+
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1 , counter)
     if pos > 0:
@@ -121,6 +131,8 @@ def preprocess_arithmetic_operator(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character 
     """
 
+
+    if helpers.in_string_literal(line, pos): return line, pos
 
     if pos < len(line) - 1:
         helpers.check_for_operators(line, pos + 1, counter)

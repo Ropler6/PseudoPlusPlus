@@ -140,6 +140,16 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
     brackets = 0 # []
 
     for token in tokens:
+        # split the token further and verify its contents
+        # (for example, arithmetic operations)
+        subtokens = token.split()
+        if len(subtokens) > 1:
+            subresult = check_for_errors(subtokens, "", counter, " ",
+                            operators_allowed=operators_allowed, reserved_allowed=reserved_allowed,
+                            identifiers_allowed=identifiers_allowed, literals_allowed=literals_allowed)
+            result += subresult + sep
+            continue
+        
         if type_of(token, counter) == "necunoscut":
             raise UnknownTokenError(f"{token} on line {counter.current_line} (2101)")
 
@@ -188,9 +198,33 @@ def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str 
 
     return result
 
+def in_string_literal(line: str, pos: int) -> bool:
+    """
+    Checks whether `line[pos]` is part of a string literal or not
+    """
+    
+    
+    is_literal = False
+    start = 0 # starting quotation mark
+    end = 0 # ending quotation mark
+    for index, char in enumerate(line):
+        if char == "\"":
+            if not is_literal: # starting a new string literal
+                start = index
+            else: # closing an existing string literal
+                end = index
+            is_literal = not is_literal
+        
+        # if the literal is closed and line[pos] is within its boundaries
+        # then it is part of the string literal
+        if not is_literal and start < pos and pos < end:
+            return True
+        
+    return False
+        
 
 def check_for_operators(line: str, pos: int, counter: Counter, omit: set[str] = set()):
-    if line[pos] in OPERATORS - omit:
+    if line[pos] in OPERATORS - omit and not in_string_literal(line, pos):
         raise UnexpectedOperatorError(f"{line[pos]} on line {counter.current_line} (2201)")
 
 
