@@ -1,8 +1,3 @@
----
-geometry: margin=3cm
-documentclass: extarticle
-fontsize: 12pt
----
 
 ## Informatii generale
 * Un traducător sursă-sursă, compilator sursă-sursă, transcompilator \
@@ -20,7 +15,7 @@ operatorul conditional, structura repetitiva, etc) folosind notatii informale si
 
 ## Motivatia alegerii temei
 
-* Am decis sa creez acest program pentru a-i ajuta mai ales pe elevii din clasa a IX-a de la profilul matematica-informatica sa invete programare. Cu ajutorul acestuia ei pot scrie mai usor algoritmi direct in pseudocodul pentru Bacalauread. Pot vedea si codul echivalent in C++ pe care il pot executa pentru a verifica corectitudinea acestuia. Aceasta elimina necesitatea parcurgerii manuale pentru fiecare data de intrare introdusa in program. Aceasta idee a pornit dintr-o nevoie personala. In clasa a IX-a doream sa rulez programele pe care le scriam, dar, nestiind C++, nu aveam aceasta posibilitate. Totusi, avand cunostinte de Lua (un alt limbaj de programare), am rescris manual programele din pseudocod pentru a vedea cum functioneaza cu adevarat acestea. Astfel, doresc sa ajut elevii sa inteleaga mai usor programarea prin crearea acestui compilator dintr-o sursa in alta.
+* Am decis sa creez acest program pentru a-i ajuta mai ales pe elevii din clasa a IX-a de la profilul matematica-informatica sa invete programare. Cu ajutorul acestuia ei pot scrie mai usor algoritmi direct in pseudocodul pentru Bacalaureat. Pot vedea si codul echivalent in C++ pe care il pot executa pentru a verifica corectitudinea acestuia. Aceasta elimina necesitatea parcurgerii manuale pentru fiecare data de intrare introdusa in program. Aceasta idee a pornit dintr-o nevoie personala. In clasa a IX-a doream sa rulez programele pe care le scriam, dar, nestiind C++, nu aveam aceasta posibilitate. Totusi, avand cunostinte de Lua (un alt limbaj de programare), am rescris manual programele din pseudocod pentru a vedea cum functioneaza cu adevarat acestea. Astfel, doresc sa ajut elevii sa inteleaga mai usor programarea prin crearea acestui compilator dintr-o sursa in alta.
 
 ## Tehnologii folosite
 
