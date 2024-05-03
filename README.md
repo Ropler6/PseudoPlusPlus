@@ -175,65 +175,66 @@ g.write(processed_line)
 
 ```python
 def process_user_input(line: str, counter: Counter):
-  """
-  Processes lines with the format `citeste <variables> (<data type>)` and
-  returns the C++ equivalent
-  """
-  
-
-  line = line.strip()
-  line = line[8:] # remove "citeste" from the line
-  line, _, data_type = line.partition("(")
-
-  if len(data_type) == 0: # if the type (or paranthesis) is missing
-    raise helpers.MissingKeywordError(f"Missing '(' or the data type on line {counter.current_line}")
-  
-  if data_type[-1] != ")":
-    raise helpers.MissingKeywordError(f"Missing ')' on line {counter.current_line}")
-
-  data_type = data_type[:-1].strip() # remove the ")"
-  tokens = line.split(",")
-  tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
-
-  if len(tokens) == 0: # if there are no variables being read
-    raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
-
-  if data_type not in helpers.DATA_TYPES:
-    raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line}")
-
-  result = ""
-  result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
-
-  for token in tokens: #declaring the variables and saving them for later usage
+    """
+    Processes lines with the format `citeste <variables> (<data type>)` and
+    returns the C++ equivalent
+    """
     
-    result += f"{token},"
-    counter.identifiers.append(helpers.Identifier(token, data_type))
 
-    # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
-    if helpers.type_of(token, counter) in ("intreg", "real"):
-      raise helpers.UnknownTokenError(f"{token} on line {counter.current_line}")
+    line = line.strip()
+    line = line[8:] # remove "citeste" from the line
+    line, _, data_type = line.partition("(")
+
+    if len(data_type) == 0: # if the type (or paranthesis) is missing
+        raise helpers.MissingKeywordError(f"Missing '(' or the data type on line {counter.current_line} (1201)")
     
-    if token in helpers.OPERATORS:
-      raise helpers.UnexpectedOperatorError(f"{token} on line {counter.current_line}")
-    
-    if token in helpers.RESERVED_KEYWORDS:
-      raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+    if data_type[-1] != ")":
+        raise helpers.MissingKeywordError(f"Missing ')' on line {counter.current_line} (1202)")
+
+    data_type = data_type[:-1].strip() # remove the ")"
+    tokens = line.split(",")
+    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
+
+    if len(tokens) == 0: # if there are no variables being read
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1203)")
+
+    if data_type not in helpers.DATA_TYPES:
+        raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line} (1204)")
+
+    result = ""
+    result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
+
+    for token in tokens: #declaring the variables and saving them for later usage
+        
+        result += f"{token},"
+        counter.identifiers.append(helpers.Identifier(token, data_type))
+
+        # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
+        if helpers.type_of(token, counter) in ("intreg", "real"):
+            raise helpers.UnknownTokenError(f"{token} on line {counter.current_line} (1205)")
+        
+        if token in helpers.OPERATORS:
+            raise helpers.UnexpectedOperatorError(f"{token} on line {counter.current_line} (1206)")
+        
+        if token in helpers.RESERVED_KEYWORDS:
+            raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line} (1207)")
+
 ```
 
 * Se formateaza rezultatul in sintaxa de C++, adaugandu-se fiecare simbol in \
 rezultatul final.
 
 ```python
-  result = result[:-1] + ";\n" # finishing the line
-  result += "cin>>"
+    result = result[:-1] + ";\n" # finishing the line
+    result += "cin>>"
 
-  for token in tokens: # adding reading syntax for each token
-    result += f"{token}>>"
+    for token in tokens: # adding reading syntax for each token
+        result += f"{token}>>"
 
-  result = result[:-2] # removing extra ">>" from the end
-  result += ";\n" # finishing the line
+    result = result[:-2] # removing extra ">>" from the end
+    result += ";\n" # finishing the line
 
-  return result
+    return result
 ```
 
 #### Afisare
@@ -244,33 +245,32 @@ rezultatul final.
 
 ```python
 def process_user_output(line: str, counter: Counter):
-  """
-  Processes lines with the format `scrie <variables | literals>` and returns the
-  C++ equivalent
-  """
-  
+    """
+    Processes lines with the format `scrie <variables | literals>` and returns the C++ equivalent
+    """
+    
 
-  line = line.strip()
-  line = line[6:] # remove "scrie" from the line
-  tokens = line.split(",")
+    line = line.strip()
+    line = line[6:] # remove "scrie" from the line
+    tokens = line.split(",")
 
-  if len(tokens) == 0:
-    raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+    if len(tokens) == 0:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1101)")
 
-  tokens[-1] = tokens[-1].strip("\n")
-  tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
+    tokens[-1] = tokens[-1].strip("\n")
+    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
 
-  result = "cout<<"
+    result = "cout<<"
 
-  result = helpers.check_for_errors(tokens, result, counter, "<<",
-                operators_allowed=True,
-                identifiers_allowed=True,
-                literals_allowed=True)
+    result = helpers.check_for_errors(tokens, result, counter, "<<",
+                              operators_allowed=True,
+                              identifiers_allowed=True,
+                              literals_allowed=True)
 
-  result = result[:-2] # removing extra "<<" from the end
-  result += ";\n" # finishing the line
+    result = result[:-2] # removing extra "<<" from the end
+    result += ";\n" # finishing the line
 
-  return result
+    return result
 ```
 
 #### Logica
@@ -282,29 +282,29 @@ conditionale logice.
 
 ```python
 def process_if_statement(line: str, counter: Counter):
-  """
-  Processes lines with the format `daca <conditions> atunci` and returns the
-  C++ equivalent
-  """
+    """
+    Processes lines with the format `daca <conditions> atunci` and returns the
+    C++ equivalent
+    """
 
 
-  line = line.strip()
-  result = ""
-  tokens = line.split()
-  if tokens[-1] not in ("atunci", "atunci;"):
-    raise helpers.MissingKeywordError(f"\"atunci\" on line {counter.current_line}")
-  
-  result = helpers.KEYWORDS[tokens[0]] # "daca"
-  tokens = tokens[1:-1] # removed "daca" & "atunci;"
+    line = line.strip()
+    result = ""
+    tokens = line.split()
+    if tokens[-1] not in ("atunci", "atunci;"):
+        raise helpers.MissingKeywordError(f"\"atunci\" on line {counter.current_line} (1601)")
+    
+    result = helpers.KEYWORDS[tokens[0]] # "daca"
+    tokens = tokens[1:-1] # removed "daca" & "atunci;"
 
-  if len(tokens) == 0:
-    raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+    if len(tokens) == 0:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1602)")
 
-  result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
-                        identifiers_allowed=True,
-                        literals_allowed=True)
+    result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
-  return result + helpers.KEYWORDS["atunci"]
+    return result + helpers.KEYWORDS["atunci"]
 ```
 
 #### Structura repetitiva cu test initial
@@ -316,44 +316,44 @@ structurilor de tipul `repeta <instructiuni> cat timp <conditie>`. Aceasta deter
 
 ```python
 def process_while_structure(line: str, counter: Counter):
-  """
-  Determines whether the "cat timp" is the start of a while-loop
-  or the end of a repeat-while loop and processes the code accordingly.
-  It splits the line into multiple lines after "executa" and processes them
-  separately.
+    """
+    Determines whether the "cat timp" is the start of a while-loop
+    or the end of a repeat-while loop and processes the code accordingly.
+    It splits the line into multiple lines after "executa" and processes them
+    separately.
 
-  The format processed is either `cat timp <conditions> executa` or `cat timp <conditions>` 
-  """
+    The format processed is either `cat timp <conditions> executa` or `cat timp <conditions>` 
+    """
 
 
-  line = line.strip()
-  result = ""
-  exe_index = line.find("executa")
-  if exe_index != -1: # while-loop
-    counter.required_stops += 1
-    while_loop, _, other = line.partition("executa")
-    tokens = while_loop.split()
-    result += "while ("
-    
-    if tokens[0] != "cat" or tokens[1] != "timp":
-      raise helpers.MissingKeywordError(f"Line {counter.current_line}")
-      
-    tokens = tokens[2:] # remove "cat" & "timp"
+    line = line.strip()
+    result = ""
+    exe_index = line.find("executa")
+    if exe_index != -1: # while-loop
+        counter.required_stops += 1
+        while_loop, _, other = line.partition("executa")
+        tokens = while_loop.split()
+        result += "while ("
+        
+        if tokens[0] != "cat" or tokens[1] != "timp":
+            raise helpers.MissingKeywordError(f"Line {counter.current_line} (1301)")
+            
+        tokens = tokens[2:] # remove "cat" & "timp"
 
-    if len(tokens) == 0:
-      raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
-    
-    result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
-                        identifiers_allowed=True,
-                        literals_allowed=True)
-    
-    result += helpers.KEYWORDS["executa"]
+        if len(tokens) == 0:
+            raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1302)")
+        
+        result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
+        
+        result += helpers.KEYWORDS["executa"]
 
-    processed_subline = ""
-    if len(other):
-      processed_subline = process_line(other, counter)
+        processed_subline = ""
+        if len(other):
+            processed_subline = process_line(other, counter)
 
-    return result + processed_subline
+        return result + processed_subline
 ```
 
 #### Structura repetitiva cu test final
@@ -380,21 +380,21 @@ def process_while_structure(line: str, counter: Counter):
   if exe_index != -1: # while-loop
     # the code for the while-loop
   else: # end of repeat-while loop
-    counter.loop_enders += 1
-    result = "} while("
-    tokens = line.split()
-    
-    if tokens[0] != "cat" or tokens[1] != "timp":
-      raise helpers.MissingKeywordError(f"Line {counter.current_line}")
-    
-    tokens = tokens[2:] # remove "cat" & "timp"
-    
-    result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
-                        identifiers_allowed=True,
-                        literals_allowed=True)
+        counter.loop_enders += 1
+        result = "} while("
+        tokens = line.split()
+        
+        if tokens[0] != "cat" or tokens[1] != "timp":
+            raise helpers.MissingKeywordError(f"Line {counter.current_line} (1303)")
+        
+        tokens = tokens[2:] # remove "cat" & "timp"
+        
+        result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
-    result += ");"    
-    return result
+        result += ");"        
+        return result
 ```
 
 #### Structura repetitiva cu numar cunoscut de operatii
@@ -406,110 +406,110 @@ variabilelor sau a valorilor literale.
 
 ```python
 def process_for_loop(line: str, counter: Counter):
-  """
-  Processes lines with the format 
-  `pentru <variable> <- <variable | literal>, <variable | literal>, <variable | literal>`
-  and returns the C++ equivalent
-  """
-  
+    """
+    Processes lines with the format 
+    `pentru <variable> <- <variable | literal>, <variable | literal>, <variable | literal>`
+    and returns the C++ equivalent
+    """
+    
 
-  line = line.strip()
+    line = line.strip()
 
-  if line[-7:] not in ("executa", "executa;"):
-    raise helpers.MissingKeywordError(f"\"executa\" on line {counter.current_line}")
+    if line[-7:] not in ("executa", "executa;"):
+        raise helpers.MissingKeywordError(f"\"executa\" on line {counter.current_line} (1501)")
 
-  line = line[7:-8] # remove "pentru" & "executa"
-  result = "for ("
-  tokens = line.split(",")
+    line = line[7:-8] # remove "pentru" & "executa"
+    result = "for ("
+    tokens = line.split(",")
 
-  if len(tokens) <= 2:
-    raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+    if len(tokens) <= 2:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1502)")
 
-  identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
-  identifier = identifier.strip()
-  init_value = init_value.strip()
-  bound = tokens[1].strip() # the value at which the for-loop ends
+    identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
+    identifier = identifier.strip()
+    init_value = init_value.strip()
+    bound = tokens[1].strip() # the value at which the for-loop ends
 ```
 
-* Se verifica numeroase conditii, cum ar fi prezenta unor simboluri necunoscute, lipsa uneia dintre valorile necesare structurii sau prezenta ilegala a unui cuvant cheie prin numararea simbolurilor prezente in diferite parti ale liniei curente si prin cautarea acestora in enumeratii.
+* Se verifica numeroase conditii, cum ar fi prezenta unor simboluri necunoscute, lipsa uneia dintre valorile necesare structurii sau prezenta ilegala a operatorilor, identificatorilor sau a valorilor de tip literal.
 
 ```python
   if len(tokens) > 3:
-    raise helpers.UnknownTokenError(f"{tokens[3:]} on line {counter.current_line}")
-  
-  if len(op) == 0:
-    raise helpers.MissingKeywordError(f"\"<-\" on line {counter.current_line}")
-  
-  if len(init_value) == 0:
-    raise helpers.MissingLiteralError(f"Line {counter.current_line}")
+        raise helpers.UnknownTokenError(f"{tokens[3:]} on line {counter.current_line} (1503)")
     
-  if len(identifier) == 0:
-    raise helpers.MissingIdentifierError(f"Line {counter.current_line}")
+    if len(op) == 0:
+        raise helpers.MissingKeywordError(f"\"<-\" on line {counter.current_line} (1504)")
+    
+    if len(init_value) == 0:
+        raise helpers.MissingLiteralError(f"Line {counter.current_line} (1505)")
+        
+    if len(identifier) == 0:
+        raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1506)")
 
-  if helpers.type_of(identifier, counter) in ("intreg", "real"):
-    raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line}") 
+    helpers.check_for_errors(init_value.split(), "", counter,
+                     operators_allowed=True,
+                     identifiers_allowed=True,
+                     literals_allowed=True)
+     
+    helpers.check_for_errors(bound.split(), "", counter,
+                     operators_allowed=True,
+                     identifiers_allowed=True,
+                     literals_allowed=True)
 
-  if init_value in helpers.RESERVED_KEYWORDS:
-    raise helpers.UnexpectedKeywordError(f"{init_value} on line {counter.current_line}")
-  
-  if init_value in helpers.OPERATORS:
-    raise helpers.UnexpectedOperatorError(f"{init_value} on line {counter.current_line}")
-  
-  if bound in helpers.RESERVED_KEYWORDS:
-    raise helpers.UnexpectedKeywordError(f"{bound} on line {counter.current_line}")
-  
-  if bound in helpers.OPERATORS:
-    raise helpers.UnexpectedOperatorError(f"{bound} on line {counter.current_line}")
+    if helpers.type_of(identifier, counter) in ("intreg", "real"):
+        raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line} (1507)") 
 ```
 
 * Se verifica daca valoarea initiala este un identificator deja declarat sau o valoare de tip literal.
 
 ```python
   if helpers.type_of(init_value, counter) == "identificator":
-    iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value, counter))
-  else:
-    iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
+        iterator = helpers.Identifier(identifier, helpers.get_identifier_type(init_value, counter))
+    else:
+        iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
 ```
 
 * Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare. Altfel, va fi creata linia corespunzatoare in C++ cu urmatoarea sintaxa: `<tip de date> <nume variabila> = <valoare initiala>`. Vor fi sterse, de asemenea, spatiile in plus care au fost adaugate de catre preprocesor sau de catre utilizator.
 
 ```python
-  if not helpers.is_identifier(iterator.name, counter):
-    if iterator.type != "necunoscut":
-      result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
+if not helpers.is_identifier(iterator.name, counter):
+        if iterator.type != "necunoscut":
+            result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
+        else:
+            raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line} (1508)")
     else:
-      raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line}")
-  else:
-    result += f"{iterator.name} = {init_value}; "
+        result += f"{iterator.name} = {init_value}; "
 
-  increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
+    increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 ```
 
 * Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa cu sintaxa. Sirul generat are formatul `<variabila> <operatie aritmetica de comparatie> <variabila | valoare de tip literal>; <variabila> += <increment>{`
+* Se adauga, de asemenea, iteratorul in lista de identificatori
 
 ```python
-  # if the increment is an identifier, put the processed sign ("<=" or ">=")
-  # depending on whether or not it has a '-' preceding it
-  if helpers.is_identifier(increment, counter) or helpers.is_identifier(increment[1:], counter):
-    if increment[0] == "-":
-      result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
-    else:
-      result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
+  counter.identifiers.append(iterator)
+    # if the increment is an identifier, put the processed sign ("<=" or ">=")
+    # depending on whether or not it has a '-' preceding it
+    if helpers.is_identifier(increment, counter) or helpers.is_identifier(increment[1:], counter):
+        if increment[0] == "-":
+            result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
+        else:
+            result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
+       
+        return result
+
+    # if the increment is a number literal, set the sign (">=" or "<=") accordingly
+    if helpers.type_of(increment, counter) in ("real", "intreg"):
+        if float(increment) > 0:
+            result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
+        else:
+            result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
+    elif helpers.type_of(increment, counter) == "caracter":
+        result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
+    else: # if the increment is a string
+        raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line} (1509)")
 
     return result
-
-  # if the increment is a number literal, set the sign (">=" or "<=") accordingly
-  if helpers.type_of(increment, counter) in ("real", "intreg"):
-    if float(increment) > 0:
-      result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
-    else:
-      result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
-  elif helpers.type_of(increment, counter) == "caracter":
-    result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
-  else: # if the increment is a string
-    raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line}")
-
-  return result
 ```
 
 #### Atribuirea valorilor variabilelor
@@ -521,28 +521,28 @@ necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_e
 
 ```python
 def process_assignment(line: str, counter: Counter):
-  """
-  Processes lines with the format `<variable> <- <variable | operation>`, adds them to the
-  identifiers array if required and returns the C++ equivalent
-  """
+    """
+    Processes lines with the format `<variable> <- <variable | operation>`, adds them to the
+    identifiers array if required and returns the C++ equivalent
+    """
 
 
-  line = line.strip()
-  result = ""
-  tokens = line.split()
+    line = line.strip()
+    result = ""
+    tokens = line.split()
 
-  if not helpers.is_identifier(tokens[0], counter): # variable declaration
-    result += "float "
-    counter.identifiers.append(helpers.Identifier(tokens[0], "real"))
+    if not helpers.is_identifier(tokens[0], counter): # variable declaration
+        result += "float "
+        counter.identifiers.append(helpers.Identifier(tokens[0], "real"))
 
-  result += tokens[0] + "="
-  tokens = tokens[2:]
+    result += tokens[0] + "="
+    tokens = tokens[2:]
 
-  result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
-                        identifiers_allowed=True,
-                        literals_allowed=True)
+    result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
+                                              identifiers_allowed=True,
+                                              literals_allowed=True)
 
-  return result + ";"
+    return result[:-1] + ";\n"
 ```
 
 \pagebreak
@@ -581,32 +581,32 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
     """
 
     if len(value) == 0:
-      return "necunoscut"
+        return "necunoscut"
 
     if value[0] == "\"" and value[-1] == "\"":
-      return "sir"
+        return "sir"
 
     for x in counter.identifiers:
-      if x.name == value:
-        return "identificator"
+        if x.name == value:
+            return "identificator"
 
     if value in OPERATORS:
-      return "operator"
+        return "operator"
     
     if value in RESERVED_KEYWORDS:
-      return "keyword"
+        return "keyword"
 
     value = value.replace(" ", "")
 
     try:
-      value = int(value)
-      return "intreg"
+        value = int(value)
+        return "intreg"
     except ValueError:
-      try:
-        value = float(value)
-        return "real"
-      except ValueError:
-        return "necunoscut"
+        try:
+            value = float(value)
+            return "real"
+        except ValueError:
+            return "necunoscut"
   ```
   
   * adaugarea unui caracter intr-un sir de caractere pe o anumita pozitie
@@ -622,12 +622,11 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
   ```
   
   * cautarea erorilor, in functie de coonditiile specificate la apelul functiei. Fiecare simbol din linia data este verificat pentru apartenenta sa la cuvintele cheie ale sintaxei, cat si pentru tipul sau de data (literal, identificator sau necunoscut). Functia poate omite verificarea anumitor categorii in functie de parametri specificati. Dupa verificare, dupa fiecare simbol este adaugat un separator specificat in parametrul `sep` sau `" "` in caz contrar.
+  * in cazul in care simbolul curent poate fi impartit in mai multe subsimboluri, acestea vor fi, la randul lor, verificate
   
   ```python
-  def check_for_errors(tokens: list[str], result: str, counter: Counter,
-                      sep: str = " ", *, operators_allowed: bool = False,
-                      reserved_allowed: bool = False, identifiers_allowed: bool = False,
-                      literals_allowed: bool = False) -> str:
+  def check_for_errors(tokens: list[str], result: str, counter: Counter, sep: str = " ", *, operators_allowed: bool = False, reserved_allowed: bool = False,
+                      identifiers_allowed: bool = False, literals_allowed: bool = False) -> str:
     """Checks `tokens` for illegal tokens (specified in the params) and throws errors accordingly
     
     Returns the processed tokens added to `result`"""
@@ -636,19 +635,29 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
     brackets = 0 # []
 
     for token in tokens:
+        # split the token further and verify its contents
+        # (for example, arithmetic operations)
+        subtokens = token.split()
+        if len(subtokens) > 1:
+            subresult = check_for_errors(subtokens, "", counter, " ",
+                            operators_allowed=operators_allowed, reserved_allowed=reserved_allowed,
+                            identifiers_allowed=identifiers_allowed, literals_allowed=literals_allowed)
+            result += subresult + sep
+            continue
+        
         if type_of(token, counter) == "necunoscut":
-            raise UnknownTokenError(f"{token} on line {counter.current_line}")
+            raise UnknownTokenError(f"{token} on line {counter.current_line} (2101)")
 
         if not reserved_allowed:
             if token in RESERVED_KEYWORDS:
-                raise UnexpectedKeywordError(f"{token} on line {counter.current_line}")
+                raise UnexpectedKeywordError(f"{token} on line {counter.current_line} (2102)")
         else:
             result += KEYWORDS[token] + sep
             continue
 
         if not operators_allowed:
             if token in OPERATORS:
-                raise UnexpectedOperatorError(f"{token} on line {counter.current_line}")
+                raise UnexpectedOperatorError(f"{token} on line {counter.current_line} (2103)")
         else:
             if token in OPERATORS:
                 if token in ("(", ")"):
@@ -660,7 +669,7 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
         
         if not literals_allowed:
             if type_of(token, counter) not in ("real", "intreg"):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2104)")
         else:
             if type_of(token, counter) != "identificator":
                 result += token + sep
@@ -668,30 +677,31 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
         
         if not identifiers_allowed:
             if is_identifier(token, counter):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2105)")
         else:
             if not is_identifier(token, counter):
-                raise UnknownTokenError(f"{token} on line {counter.current_line}")
+                raise UnknownTokenError(f"{token} on line {counter.current_line} (2106)")
             
             result += token + sep
             continue
 
     if brackets % 2 != 0:
-        raise MissingParenthesisError(f"on line {counter.current_line}")
+        raise MissingParenthesisError(f"on line {counter.current_line} (2107)")
 
     if parentheses % 2 != 0:
-        raise MissingParenthesisError(f"on line {counter.current_line}")
+        raise MissingParenthesisError(f"on line {counter.current_line} (2108)")
 
     return result
   ```
   
   * cautarea operatorilor, cautand un anumit caracter (cu posibile exceptii \
   specificate in parametrul optional `omit`) in setul de operatori
+  * acestia sunt ignorati in cazul in care apartin unui sir de caractere (valoare de tip literal)
   
   ```python
   def check_for_operators(line: str, pos: int, counter: Counter, omit: set[str] = set()):
-    if line[pos] in OPERATORS - omit:
-      raise UnexpectedOperatorError(f"{line[pos]} on line {counter.current_line}")
+    if line[pos] in OPERATORS - omit and not in_string_literal(line, pos):
+        raise UnexpectedOperatorError(f"{line[pos]} on line {counter.current_line} (2201)")
   ```
   
   * gasirea tipului unui identificator, cautandu-l dupa numele acestuia in lista de identificatori a programului
@@ -699,10 +709,10 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
   ```python
   def get_identifier_type(name: str, counter: Counter):
     for x in counter.identifiers:
-      if x.name == name:
-        return x.type
+        if x.name == name:
+            return x.type
 
-    raise MissingIdentifierError(f"Line {counter.current_line}")
+    raise MissingIdentifierError(f"Line {counter.current_line} (2301)")
   ```
   
   * verificarea unei secvente daca este sau nu un identificator, cautand-o in lista de identificatori a programului
@@ -710,13 +720,14 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
   ```python
   def is_identifier(name: str, counter: Counter):
     for x in counter.identifiers:
-      if x.name == name:
-        return True
+        if x.name == name:
+            return True
 
-  return False
+    return False
   ```
 
 * Erorile utilizate in program sunt `UnknownTokenError`, `UnexpectedKeywordError`, `MissingKeywordError`, `UnexpectedOperatorError`, `MissingLiteralError` si `MissingIdentifierError`, `MissingParenthesisError`, reprezentand, in ordine: prezenta unui simbol necunoscut, folosirea ilegala a unui cuvant cheie, lipsa unui cuvant cheie, folosirea ilegala a unui operator, lipsa unei valori de tip literal, lipsa unui identificator si lipsa unei paranteze (rotunde sau patrate).
+* Mesajele erorilor sunt acompaniate de un numar de 4 cifre care reprezinta locatia unde aceasta a fost sesizata: prima cifra (1 sau 2) reprezinta fisierul `processor.py`, respectiv `helpers.py`, a doua cifra reprezinta numarul de ordine al functiei din fisier (care poate trimite erori), iar ultimele doua cifre identifica numarul de ordine al erorii respective din erorile sesizate in functie. Spre exemplu, codul de eroare `2201` arata ca eroarea a fost declansata in fisierul `helpers.py` in a doua functie a sa (`check_for_operators()`), fiind prima eroare din aceasta.
 * Sunt definiti si operatorii si cuvintele cheie din sintaxa Pseudo++.
 
 ```python
