@@ -7,15 +7,20 @@ def preprocess_larrow(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character 
     """
     
-    helpers.check_for_operators(line, pos + 1, counter, {"-", "="})
-    helpers.check_for_operators(line, pos - 1, counter)
     
-    if line[pos + 1] not in ("-", " ", "="):
-        line = helpers.add_character_at(" ", line, pos + 1)
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1, counter, {"-", "="})
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1, counter)
+    
+    if pos < len(line) - 1:
+        if line[pos + 1] not in ("-", " ", "="):
+            line = helpers.add_character_at(" ", line, pos + 1)
 
-    if line[pos - 1] != " ":
-        line = helpers.add_character_at(" ", line, pos)
-        pos += 1
+    if pos > 0:
+        if line[pos - 1] != " ":
+            line = helpers.add_character_at(" ", line, pos)
+            pos += 1
 
     return line, pos
 
@@ -26,15 +31,20 @@ def preprocess_rarrow(line: str, pos: int, counter: Counter):
     Returns the modified line and the new position of the character 
     """
 
-    helpers.check_for_operators(line, pos + 1, counter, {"="})
-    helpers.check_for_operators(line, pos - 1, counter)
 
-    if line[pos + 1] not in ("=", " '"):
-        line = helpers.add_character_at(" ", line, pos + 1)
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1, counter, {"="})
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1, counter)
 
-    if line[pos - 1] != " ":
-        line = helpers.add_character_at(" ", line, pos)
-        pos += 1
+    if pos < len(line) - 1:
+        if line[pos + 1] not in ("=", " '"):
+            line = helpers.add_character_at(" ", line, pos + 1)
+
+    if pos > 0:
+        if line[pos - 1] != " ":
+            line = helpers.add_character_at(" ", line, pos)
+            pos += 1
 
     return line, pos
 
@@ -46,15 +56,19 @@ def preprocess_minus(line: str, pos: int, counter: Counter):
     """
 
 
-    helpers.check_for_operators(line, pos + 1, counter)
-    helpers.check_for_operators(line, pos - 1, counter, {"<"})
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1, counter)
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1, counter, {"<"})
 
-    if line[pos + 1] != " ":
-        line = helpers.add_character_at(" ", line, pos + 1)
+    if pos < len(line) - 1:
+        if line[pos + 1] != " ":
+            line = helpers.add_character_at(" ", line, pos + 1)
 
-    if line[pos - 1] != "<" and line[pos - 1] != " ":
-        line = helpers.add_character_at(" ", line, pos)
-        pos += 1
+    if pos > 0:
+        if line[pos - 1] != "<" and line[pos - 1] != " ":
+            line = helpers.add_character_at(" ", line, pos)
+            pos += 1
 
     return line, pos
 
@@ -66,18 +80,19 @@ def preprocess_equals(line: str, pos: int, counter: Counter):
     """
 
 
-    helpers.check_for_operators(line, pos + 1, counter)
-    helpers.check_for_operators(line, pos - 1, counter, {"!", "<", ">"})
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1, counter)
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1, counter, {"!", "<", ">"})
 
-    if line[pos - 1] not in ("!", "<", ">"):
-        line = helpers.add_character_at(" ", line, pos)
-        pos += 1
+    if pos > 0:
+        if line[pos - 1] not in ("!", "<", ">"):
+            line = helpers.add_character_at(" ", line, pos)
+            pos += 1
 
-    try:
+    if pos < len(line) - 1:
         if line[pos + 1] != " ":
             line = helpers.add_character_at(" ", line, pos + 1)
-    except IndexError:
-        pass
 
     return line, pos
 
@@ -89,8 +104,10 @@ def preprocess_division(line: str, pos: int, counter: Counter):
     """
 
 
-    helpers.check_for_operators(line, pos + 1 , counter)
-    helpers.check_for_operators(line, pos - 1 , counter)
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1 , counter)
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1 , counter)
 
     line = helpers.add_character_at("* 1.0 ", line, pos)
     pos += 6
@@ -105,20 +122,18 @@ def preprocess_arithmetic_operator(line: str, pos: int, counter: Counter):
     """
 
 
-    helpers.check_for_operators(line, pos + 1, counter)
-    helpers.check_for_operators(line, pos - 1, counter)
+    if pos < len(line) - 1:
+        helpers.check_for_operators(line, pos + 1, counter)
+    if pos > 0:
+        helpers.check_for_operators(line, pos - 1, counter)
 
-    try:
+    if pos < len(line) - 1:
         if line[pos + 1] != " ":
             line = helpers.add_character_at(" ", line, pos + 1)
-    except IndexError:
-        pass
 
-    try:
+    if pos > 0:
         if line[pos - 1] != " ":
             line = helpers.add_character_at(" ", line, pos)
             pos += 1
-    except IndexError:
-        pass
 
     return line, pos
