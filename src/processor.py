@@ -1,5 +1,5 @@
 import helpers
-from helpers import Counter
+from helpers import Counter, check_for_errors
 
 def process_user_output(line: str, counter: Counter):
     """
@@ -61,13 +61,10 @@ def process_user_input(line: str, counter: Counter):
     result = ""
     result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
 
-    for token in tokens: #declaring the variables and saving them for later usage
-        
-        result += f"{token},"
-        counter.identifiers.append(helpers.Identifier(token, data_type))
+    for token in tokens: #declaring the variables and saving them for later usage        
 
         # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
-        if helpers.type_of(token, counter) in ("intreg", "real"):
+        if helpers.type_of(token, counter) not in ("identificator", "necunoscut"):
             raise helpers.UnknownTokenError(f"{token} on line {counter.current_line} (1205)")
         
         if token in helpers.OPERATORS:
@@ -76,6 +73,9 @@ def process_user_input(line: str, counter: Counter):
         if token in helpers.RESERVED_KEYWORDS:
             raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line} (1207)")
 
+        counter.identifiers.append(helpers.Identifier(token, data_type))
+        result += f"{token},"
+    
     result = result[:-1] + ";\n" # finishing the line
     result += "cin>>"
 
@@ -223,13 +223,13 @@ def process_for_loop(line: str, counter: Counter):
     else:
         iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
 
-    if not helpers.is_identifier(iterator.name, counter):
+    if helpers.is_identifier(iterator.name, counter):
+        result += f"{iterator.name} = {init_value}; "
+    else:
         if iterator.type != "necunoscut":
             result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
         else:
             raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line} (1508)")
-    else:
-        result += f"{iterator.name} = {init_value}; "
 
     increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 
