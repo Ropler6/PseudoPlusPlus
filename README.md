@@ -27,6 +27,10 @@ Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele 
 * De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportandu-l ca fiind principalul lor sistem de control al versiunilor incepand din 2022. Exista multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
 * Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze \
 codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
+* Documentatia a fost realizata folosind programul Pandoc, fiind scrisa cu ajutorul limbajelor LaTeX si Markdown. LaTeX este un sistem de pregătire a documentelor pentru o tipărire de înaltă calitate. Este cel mai adesea utilizat pentru documente tehnice sau științifice de dimensiuni medii și mari, dar poate fi folosit pentru aproape orice formă de publicare.
+* Markdown este un limbaj de marcare ușor pentru crearea de text formatat cu ajutorul unui editor de text simplu. John Gruber și Aaron Swartz au creat Markdown în 2004 ca un limbaj de marcare menit să fie ușor de citit în forma sa de cod sursă. Markdown este utilizat pe scară largă pentru bloguri și mesagerie instantanee, fiind folosit și în alte părți în forumuri online, software colaborativ, pagini de documentație și fișiere readme. 
+* Pandoc este un convertor de documente gratuit, utilizat pe scară largă ca instrument de scriere (în special de către cercetători) și ca bază pentru fluxurile de lucru de publicare.
+* Programul exista sub forma unui fisier executabil datorita librarie PyInstaller. Aceasta reunește o aplicație Python și toate dependențele sale într-un singur pachet. Utilizatorul poate rula aplicația împachetată fără a instala un interpretor Python sau orice alt modul.
 
 \pagebreak
 
@@ -828,3 +832,17 @@ class Counter:
 \begin{figure}
 \includegraphics[width=5cm]{./images/output-file.png}
 \end{figure}
+
+# Bibliografie
+
+https://en.wikipedia.org/wiki/Python_(programming_language)
+https://en.wikipedia.org/wiki/Source-to-source_compiler
+https://en.wikipedia.org/wiki/Visual_Studio_Code
+https://en.wikipedia.org/wiki/Git
+https://en.wikipedia.org/wiki/GitHub
+https://gcc.gnu.org/onlinedocs/cpp/
+https://pandoc.org/
+https://www.latex-project.org/
+https://pyinstaller.org/en/stable/
+https://mermaid.js.org/syntax/flowchart.html
+
