@@ -204,13 +204,10 @@ def process_user_input(line: str, counter: Counter):
     result = ""
     result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
 
-    for token in tokens: #declaring the variables and saving them for later usage
-        
-        result += f"{token},"
-        counter.identifiers.append(helpers.Identifier(token, data_type))
+    for token in tokens: #declaring the variables and saving them for later usage        
 
         # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
-        if helpers.type_of(token, counter) in ("intreg", "real"):
+        if helpers.type_of(token, counter) not in ("identificator", "necunoscut"):
             raise helpers.UnknownTokenError(f"{token} on line {counter.current_line} (1205)")
         
         if token in helpers.OPERATORS:
@@ -218,6 +215,9 @@ def process_user_input(line: str, counter: Counter):
         
         if token in helpers.RESERVED_KEYWORDS:
             raise helpers.UnexpectedKeywordError(f"{token} on line {counter.current_line} (1207)")
+
+        counter.identifiers.append(helpers.Identifier(token, data_type))
+        result += f"{token},"
 
 ```
 
@@ -472,15 +472,13 @@ def process_for_loop(line: str, counter: Counter):
 * Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare. Altfel, va fi creata linia corespunzatoare in C++ cu urmatoarea sintaxa: `<tip de date> <nume variabila> = <valoare initiala>`. Vor fi sterse, de asemenea, spatiile in plus care au fost adaugate de catre preprocesor sau de catre utilizator.
 
 ```python
-if not helpers.is_identifier(iterator.name, counter):
+    if helpers.is_identifier(iterator.name, counter):
+        result += f"{iterator.name} = {init_value}; "
+    else:
         if iterator.type != "necunoscut":
             result += f"{helpers.KEYWORDS[iterator.type]} {iterator.name} = {init_value}; "
         else:
             raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line} (1508)")
-    else:
-        result += f"{iterator.name} = {init_value}; "
-
-    increment = tokens[2].replace(" ", "") # removing all spaces added by the preprocessor (or already existing)
 ```
 
 * Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa cu sintaxa. Sirul generat are formatul `<variabila> <operatie aritmetica de comparatie> <variabila | valoare de tip literal>; <variabila> += <increment>{`
