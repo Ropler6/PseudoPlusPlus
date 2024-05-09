@@ -835,14 +835,14 @@ class Counter:
 
 # Bibliografie
 
-https://en.wikipedia.org/wiki/Python_(programming_language)
-https://en.wikipedia.org/wiki/Source-to-source_compiler
-https://en.wikipedia.org/wiki/Visual_Studio_Code
-https://en.wikipedia.org/wiki/Git
-https://en.wikipedia.org/wiki/GitHub
-https://gcc.gnu.org/onlinedocs/cpp/
-https://pandoc.org/
-https://www.latex-project.org/
-https://pyinstaller.org/en/stable/
-https://mermaid.js.org/syntax/flowchart.html
+* https://en.wikipedia.org/wiki/Python_(programming_language)
+* https://en.wikipedia.org/wiki/Source-to-source_compiler
+* https://en.wikipedia.org/wiki/Visual_Studio_Code
+* https://en.wikipedia.org/wiki/Git
+* https://en.wikipedia.org/wiki/GitHub
+* https://gcc.gnu.org/onlinedocs/cpp/
+* https://pandoc.org/
+* https://www.latex-project.org/
+* https://pyinstaller.org/en/stable/
+* https://mermaid.js.org/syntax/flowchart.html
 
