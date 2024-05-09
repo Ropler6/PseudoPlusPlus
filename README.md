@@ -1,11 +1,33 @@
+---
+geometry: margin=3cm
+documentclass: extarticle
+fontsize: 12pt
+---
+
+\pagenumbering{gobble}
+
+# Cuprins
+
+## Informatii generale & Motivatia alegerii temei - 2
+## Tehnologii folosite - 3
+## Prezentarea codului sursa - 5
+## Etapa de preprocesare - 6
+## Etapa de procesare - 8
+## Erori si sintaxa - 20
+## Inainte de rezultatul final & Rezultatul final - 25
+## Structura programului - 26
+## Exemplu de executie - 27
+## Bibliografie - 28
+
+\pagebreak
 
 ## Informatii generale
-* Un traducător sursă-sursă, compilator sursă-sursă, transcompilator \
-sau transpilator este un tip de traducător care ia ca intrare codul sursă al unui \
-program scris într-un limbaj de programare și produce un cod sursă echivalent în același limbaj de programare sau într-un limbaj de programare diferit. Un traducător sursă-sursă convertește între limbaje de programare care operează aproximativ la același nivel de abstractizare, în timp ce un compilator tradițional traduce dintr-un limbaj de programare de nivel superior într-un limbaj de \
-programare de nivel inferior. De exemplu, un traducător sursă-sursă poate \
-efectua traducerea unui program din Python în JavaScript, în timp ce un \
-compilator tradițional traduce dintr-un limbaj precum C în asamblare sau Java în bytecode.
+* Un traducator sursa-sursa, compilator sursa-sursa, transcompilator \
+sau transpilator este un tip de traducator care ia ca intrare codul sursa al unui \
+program scris intr-un limbaj de programare si produce un cod sursa echivalent in acelasi limbaj de programare sau intr-un limbaj de programare diferit. Un traducator sursa-sursa converteste intre limbaje de programare care opereaza aproximativ la acelasi nivel de abstractizare, in timp ce un compilator traditional traduce dintr-un limbaj de programare de nivel superior intr-un limbaj de \
+programare de nivel inferior. De exemplu, un traducator sursa-sursa poate \
+efectua traducerea unui program din Python in JavaScript, in timp ce un \
+compilator traditional traduce dintr-un limbaj precum C in asamblare sau Java in bytecode.
 
 * Pseudocodul reprezinta o descriere a pasilor unui algoritm folosind mai multe \
 conventii ale limbajelor de programare (cum ar fi operatorul de atribuire, \
@@ -21,16 +43,14 @@ operatorul conditional, structura repetitiva, etc) folosind notatii informale si
 
 * Python este un limbaj de programare de nivel inalt, de uz general. Filosofia sa de design pune accentul pe lizibilitateacodului prin utilizarea unei indentari semnificative. Acesta a fost creat de catre neerlandezul Guido van Rossum in 1991. Acesta este un limbaj scris dinamic cu un colector de gunoi. Suporta mai multe paradigme de programare, inclusiv programare structurata (in special procedurala), orientata pe obiecte si functionala. Este adesea descris ca un limbaj cu "baterii incluse" datoruta bubkuitecuu sake standard cuprinzatoare.
 * Python se claseaza in mod constant ca fiind unul dintre cele mai populare limbaje de programare si a castigat o utilizare pe scara larga in comnitatea de invatare automata (machine learning).
-* Tot codul a fost scris si testat in Visual Studio Code. Acesta este un editor de cod sursa dezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidentierea sintaxei, completare inteligenta a codului, refactorizarae codului si Git incorporat. \
-Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele si pot instala extensii care adauga functionalitati.
+* Tot codul a fost scris si testat in Visual Studio Code. Acesta este un editor de cod sursa dezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidentierea sintaxei, completare inteligenta a codului, refactorizarae codului si Git incorporat. Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele si pot instala extensii care adauga functionalitati.
 * Git este un sistem distribuit de control al versiunilor care urmareste modificarile i orice set de fisiere de calculator, utiliza de obicei pentru coordonarea muncii intre programatorii care dezvolta in colbatorare codul sursa in timpul dezvoltarii de software. Printreobiectivele sale se numara viteza, integritatea datelor si suportul pentru fluxuri de lucru distribuite, neliniare (mii de ramuri paralele care ruleaza pe diferite calculatoare). Git a fost scris initial de Linus Torvalds in 2005 pentru dezvoltarea nucleului Linux, alti dezvoltatori de nucleu contribuind la dezvoltarea sa initiala. Din 2005, Junio Hamano a fost mentorul principal. LA fel ca in cazul majoritatii celorlalte sisteme distribuite de control a versiunilor client-server, fiecare director git de pe fiecare calculator este un depozit cu drepturi depline, cu istoric complet si abilitati complete de urmarire a versiunilor, independent de accesul la retea sau de un server central. Git este un software gratuit si cu sursa deschisa, partajat sub licenta GPL-2.0-only.
 * De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportandu-l ca fiind principalul lor sistem de control al versiunilor incepand din 2022. Exista multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
-* Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze \
-codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
-* Documentatia a fost realizata folosind programul Pandoc, fiind scrisa cu ajutorul limbajelor LaTeX si Markdown. LaTeX este un sistem de pregătire a documentelor pentru o tipărire de înaltă calitate. Este cel mai adesea utilizat pentru documente tehnice sau științifice de dimensiuni medii și mari, dar poate fi folosit pentru aproape orice formă de publicare.
-* Markdown este un limbaj de marcare ușor pentru crearea de text formatat cu ajutorul unui editor de text simplu. John Gruber și Aaron Swartz au creat Markdown în 2004 ca un limbaj de marcare menit să fie ușor de citit în forma sa de cod sursă. Markdown este utilizat pe scară largă pentru bloguri și mesagerie instantanee, fiind folosit și în alte părți în forumuri online, software colaborativ, pagini de documentație și fișiere readme. 
-* Pandoc este un convertor de documente gratuit, utilizat pe scară largă ca instrument de scriere (în special de către cercetători) și ca bază pentru fluxurile de lucru de publicare.
-* Programul exista sub forma unui fisier executabil datorita librarie PyInstaller. Aceasta reunește o aplicație Python și toate dependențele sale într-un singur pachet. Utilizatorul poate rula aplicația împachetată fără a instala un interpretor Python sau orice alt modul.
+* Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
+* Documentatia a fost realizata folosind programul Pandoc, fiind scrisa cu ajutorul limbajelor LaTeX si Markdown. LaTeX este un sistem de pregatire a documentelor pentru o tiparire de inalta calitate. Este cel mai adesea utilizat pentru documente tehnice sau stiintifice de dimensiuni medii si mari, dar poate fi folosit pentru aproape orice forma de publicare.
+* Markdown este un limbaj de marcare usor pentru crearea de text formatat cu ajutorul unui editor de text simplu. John Gruber si Aaron Swartz au creat Markdown in 2004 ca un limbaj de marcare menit sa fie usor de citit in forma sa de cod sursa. Markdown este utilizat pe scara larga pentru bloguri si mesagerie instantanee, fiind folosit si in alte parti in forumuri online, software colaborativ, pagini de documentatie si fisiere readme. 
+* Pandoc este un convertor de documente gratuit, utilizat pe scara larga ca instrument de scriere (in special de catre cercetatori) si ca baza pentru fluxurile de lucru de publicare.
+* Programul exista sub forma unui fisier executabil datorita librarie PyInstaller. Aceasta reuneste o aplicatie Python si toate dependentele sale intr-un singur pachet. Utilizatorul poate rula aplicatia impachetata fara a instala un interpretor Python sau orice alt modul.
 
 \pagebreak
 
@@ -833,13 +853,11 @@ class Counter:
 \includegraphics[width=5cm]{./images/output-file.png}
 \end{figure}
 
+\pagebreak
+
 # Bibliografie
 
-* https://en.wikipedia.org/wiki/Python_(programming_language)
-* https://en.wikipedia.org/wiki/Source-to-source_compiler
-* https://en.wikipedia.org/wiki/Visual_Studio_Code
-* https://en.wikipedia.org/wiki/Git
-* https://en.wikipedia.org/wiki/GitHub
+* https://en.wikipedia.org/
 * https://gcc.gnu.org/onlinedocs/cpp/
 * https://pandoc.org/
 * https://www.latex-project.org/
