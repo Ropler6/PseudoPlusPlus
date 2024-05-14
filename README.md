@@ -1,60 +1,54 @@
----
-geometry: margin=3cm
-documentclass: extarticle
-fontsize: 12pt
----
 
 \pagenumbering{gobble}
 
 # Cuprins
 
-## Informatii generale & Motivatia alegerii temei - 2
-## Tehnologii folosite - 3
-## Prezentarea codului sursa - 5
-## Etapa de preprocesare - 6
-## Etapa de procesare - 8
-## Erori si sintaxa - 20
-## Inainte de rezultatul final & Rezultatul final - 25
-## Structura programului - 26
-## Exemplu de executie - 27
-## Bibliografie - 28
+## Informații generale & Motivația alegerii temei..................4
+## Tehnologii folosite......................................................................5
+## Prezentarea codului sursă........................................................7
+## Etapa de preprocesare..............................................................8
+## Etapa de procesare..................................................................10
+## Erori și sintaxă.........................................................................22
+## Înainte de rezultatul final & Rezultatul final...................27
+## Structura programului............................................................28
+## Exemplu de execuție...............................................................29
+## Bibliografie................................................................................30
 
 \pagebreak
 
-## Informatii generale
-* Un traducator sursa-sursa, compilator sursa-sursa, transcompilator \
-sau transpilator este un tip de traducator care ia ca intrare codul sursa al unui \
-program scris intr-un limbaj de programare si produce un cod sursa echivalent in acelasi limbaj de programare sau intr-un limbaj de programare diferit. Un traducator sursa-sursa converteste intre limbaje de programare care opereaza aproximativ la acelasi nivel de abstractizare, in timp ce un compilator traditional traduce dintr-un limbaj de programare de nivel superior intr-un limbaj de \
-programare de nivel inferior. De exemplu, un traducator sursa-sursa poate \
-efectua traducerea unui program din Python in JavaScript, in timp ce un \
-compilator traditional traduce dintr-un limbaj precum C in asamblare sau Java in bytecode.
+## Informații generale
+* Un &nbsp; traducător &nbsp; sursă-sursă, &nbsp; compilator &nbsp; sursă-sursă, &nbsp; transcompilator \
+sau transpilator este un tip de traducător care ia ca intrare codul sursă al unui \
+program scris într-un limbaj de programare și produce un cod sursă echivalent în același limbaj de programare sau într-un limbaj de programare diferit. Un traducător sursă-sursă convertește între limbaje de programare care operează aproximativ la același nivel de abstractizare, în timp ce un compilator tradițional traduce dintr-un limbaj de &nbsp; programare &nbsp; de &nbsp; nivel &nbsp; superior într-un limbaj de \
+programare &nbsp; de &nbsp; nivel &nbsp; inferior. &nbsp; De &nbsp; exemplu, un traducător sursă-sursă poate \
+efectua &nbsp; traducerea &nbsp; unui &nbsp; program &nbsp; din &nbsp; Python &nbsp; în JavaScript, în timp ce un compilator tradițional traduce dintr-un limbaj precum C în asamblare sau Java în bytecode.
 
-* Pseudocodul reprezinta o descriere a pasilor unui algoritm folosind mai multe \
-conventii ale limbajelor de programare (cum ar fi operatorul de atribuire, \
-operatorul conditional, structura repetitiva, etc) folosind notatii informale si, de obicei, usor de inteles pentru actiuni si conditii. Chiar daca pseudocodul are caracteristici comune cu alte limbaje de programare, folosirea lui este intentionata pentru a fi citit de oameni, nu pentru a fi executat de calculatoare. Pseudocodul omite de obicie detalii care sunt esentiale pentru implementarea codului de catre un calculator. Programul este augumentat cu detalii de limbaj natural sau cu notatie matematica compacta. Pseudocodul este deseori folosit, deoarece este mai usor de inteles decat un limbaj de programare conventional, cat si pentru independenta sa fata de mediul delucru si de principiile cheie ale unui algoritm.
+* Pseudocodul reprezintă o descriere a pașilor unui algoritm folosind mai multe \
+convenții ale limbajelor de programare (cum ar fi operatorul de atribuire, \
+operatorul condițional, structura repetitivă, etc) folosind notații informale și, de obicei, ușor de înțeles pentru acțiuni și condiții. Chiar dacă pseudocodul are caracteristici comune cu alte limbaje de programare, folosirea lui este intenționată pentru a fi citit de oameni, nu pentru a fi executat de calculatoare. Pseudocodul omite de obicei detalii care sunt esențiale pentru implementarea codului de către un calculator. Programul este augumentat cu detalii de limbaj natural sau cu notație matematică compactă. Pseudocodul este deseori folosit, deoarece este mai ușor de înțeles decât un limbaj de programare convențional, cât și pentru independența sa față de mediul delucru și de principiile cheie ale unui algoritm.
 
-* Programul Pseudo++ este un compilator de la o sursa la alta. Acesta transforma pseudocod scris cu o sintaxa similara cu cea de Bacalaureat in cod C++ ce poate fi compilat si executat.
+* Programul Pseudo++ este un compilator de la o sursă la alta. Acesta transformă pseudocod scris cu o sintaxa similară cu cea de Bacalaureat in cod C++ ce poate fi compilat si executat.
 
-## Motivatia alegerii temei
+## Motivația alegerii temei
 
-* Am decis sa creez acest program pentru a-i ajuta mai ales pe elevii din clasa a IX-a de la profilul matematica-informatica sa invete programare. Cu ajutorul acestuia ei pot scrie mai usor algoritmi direct in pseudocodul pentru Bacalaureat. Pot vedea si codul echivalent in C++ pe care il pot executa pentru a verifica corectitudinea acestuia. Aceasta elimina necesitatea parcurgerii manuale pentru fiecare data de intrare introdusa in program. Aceasta idee a pornit dintr-o nevoie personala. In clasa a IX-a doream sa rulez programele pe care le scriam, dar, nestiind C++, nu aveam aceasta posibilitate. Totusi, avand cunostinte de Lua (un alt limbaj de programare), am rescris manual programele din pseudocod pentru a vedea cum functioneaza cu adevarat acestea. Astfel, doresc sa ajut elevii sa inteleaga mai usor programarea prin crearea acestui compilator dintr-o sursa in alta.
+* Am decis sa creez acest program pentru a-i ajuta mai ales pe elevii din clasa a IX-a de la profilul matematică-informatică să invețe programare. Cu ajutorul acestuia, ei pot scrie mai ușor algoritmi direct în pseudocodul pentru Bacalaureat. Pot vedea și codul echivalent in C++ pe care îl pot executa pentru a verifica corectitudinea acestuia. Aceasta elimină necesitatea parcurgerii manuale pentru fiecare dată de intrare introdusă în program. Această idee a pornit dintr-o nevoie personală. În clasa a IX-a doream să rulez programele pe care le scriam, dar, neștiind C++, nu aveam această posibilitate. Totuși, având cunoștințe de Lua (un alt limbaj de programare), am rescris manual programele din pseudocod pentru a vedea cum funcționează cu adevărat acestea. Astfel, doresc să ajut elevii să ințeleagă mai ușor programarea prin crearea acestui compilator dintr-o sursa în alta.
 
 ## Tehnologii folosite
 
-* Python este un limbaj de programare de nivel inalt, de uz general. Filosofia sa de design pune accentul pe lizibilitateacodului prin utilizarea unei indentari semnificative. Acesta a fost creat de catre neerlandezul Guido van Rossum in 1991. Acesta este un limbaj scris dinamic cu un colector de gunoi. Suporta mai multe paradigme de programare, inclusiv programare structurata (in special procedurala), orientata pe obiecte si functionala. Este adesea descris ca un limbaj cu "baterii incluse" datoruta bubkuitecuu sake standard cuprinzatoare.
-* Python se claseaza in mod constant ca fiind unul dintre cele mai populare limbaje de programare si a castigat o utilizare pe scara larga in comnitatea de invatare automata (machine learning).
-* Tot codul a fost scris si testat in Visual Studio Code. Acesta este un editor de cod sursa dezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidentierea sintaxei, completare inteligenta a codului, refactorizarae codului si Git incorporat. Utilizatorii pot schimba tema, comenzile rapide de la tastatura si preferintele si pot instala extensii care adauga functionalitati.
-* Git este un sistem distribuit de control al versiunilor care urmareste modificarile i orice set de fisiere de calculator, utiliza de obicei pentru coordonarea muncii intre programatorii care dezvolta in colbatorare codul sursa in timpul dezvoltarii de software. Printreobiectivele sale se numara viteza, integritatea datelor si suportul pentru fluxuri de lucru distribuite, neliniare (mii de ramuri paralele care ruleaza pe diferite calculatoare). Git a fost scris initial de Linus Torvalds in 2005 pentru dezvoltarea nucleului Linux, alti dezvoltatori de nucleu contribuind la dezvoltarea sa initiala. Din 2005, Junio Hamano a fost mentorul principal. LA fel ca in cazul majoritatii celorlalte sisteme distribuite de control a versiunilor client-server, fiecare director git de pe fiecare calculator este un depozit cu drepturi depline, cu istoric complet si abilitati complete de urmarire a versiunilor, independent de accesul la retea sau de un server central. Git este un software gratuit si cu sursa deschisa, partajat sub licenta GPL-2.0-only.
-* De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportandu-l ca fiind principalul lor sistem de control al versiunilor incepand din 2022. Exista multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
-* Codul sursa este tinut pe GitHub. GitHub este o platforma de dezvoltare ce permite dezvoltatorilor sa creeze, sa stocheze, sa gestioneze si sa partajeze codul lor. Foloseste software-ul Git, oferinde controlul distribuit al versiunilor Git, plus controlul accesului, urmarirea erorilor, solicitaro de caracteristici software, gestionarea sarcinilor, integrarea continua si wiki-uri pentru fiecare proiect.
-* Documentatia a fost realizata folosind programul Pandoc, fiind scrisa cu ajutorul limbajelor LaTeX si Markdown. LaTeX este un sistem de pregatire a documentelor pentru o tiparire de inalta calitate. Este cel mai adesea utilizat pentru documente tehnice sau stiintifice de dimensiuni medii si mari, dar poate fi folosit pentru aproape orice forma de publicare.
-* Markdown este un limbaj de marcare usor pentru crearea de text formatat cu ajutorul unui editor de text simplu. John Gruber si Aaron Swartz au creat Markdown in 2004 ca un limbaj de marcare menit sa fie usor de citit in forma sa de cod sursa. Markdown este utilizat pe scara larga pentru bloguri si mesagerie instantanee, fiind folosit si in alte parti in forumuri online, software colaborativ, pagini de documentatie si fisiere readme. 
-* Pandoc este un convertor de documente gratuit, utilizat pe scara larga ca instrument de scriere (in special de catre cercetatori) si ca baza pentru fluxurile de lucru de publicare.
-* Programul exista sub forma unui fisier executabil datorita librarie PyInstaller. Aceasta reuneste o aplicatie Python si toate dependentele sale intr-un singur pachet. Utilizatorul poate rula aplicatia impachetata fara a instala un interpretor Python sau orice alt modul.
+* Python este un limbaj de programare de nivel înalt, de uz general. Filosofia sa de design pune accentul pe lizibilitatea codului prin utilizarea unei indentări semnificative. Acesta a fost creat de catre neerlandezul Guido van Rossum în 1991. Acesta este un limbaj scris dinamic cu un colector de gunoi (garbage collector). Suportă mai multe paradigme de programare, inclusiv programare structurată (în special procedurală), orientată pe obiecte și funcțională. Este adesea descris ca un limbaj cu "baterii incluse" datorită librăriei sale standard cuprinzătoare.
+* Python se claseaza în mod constant ca fiind unul dintre cele mai populare limbaje de programare și a castigat o utilizare pe scara largă în comunitatea de învățare automata (machine learning).
+* Tot codul a fost scris și testat in Visual Studio Code. Acesta este un editor de cod sursă dezvoltat de Microsoft pentru Windows, Linux si macOS. Printre caracteristicile sale se numara suportul pentru depanare, evidențierea sintaxei, completare inteligentă a codului, refactorizarea codului și Git incorporat. Utilizatorii pot schimba tema, comenzile rapide de la tastatură și preferințele și pot instala extensii care adauga funcționalități.
+* Git este un sistem distribuit de control al versiunilor care urmărește modificările în orice set de fișiere de calculator, utilizat de obicei pentru coordonarea muncii între programatorii care dezvoltă în colaborare codul sursa în timpul dezvoltării de software. Printre obiectivele sale se numără viteza, integritatea datelor și suportul pentru fluxuri de lucru distribuite, neliniare (mii de ramuri paralele care rulează pe diferite calculatoare). Git a fost scris inițial de Linus Torvalds in 2005 pentru dezvoltarea nucleului Linux, alți dezvoltatori de nucleu contribuind la dezvoltarea sa inițială. Din 2005, Junio Hamano a fost mentorul principal. La fel ca în cazul majorității celorlalte sisteme distribuite de control a versiunilor client-server, fiecare director git de pe fiecare calculator este un depozit cu drepturi depline, cu istoric complet și abilități complete de urmărire a versiunilor, independent de accesul la rețea sau de un server central. Git este un software gratuit și cu sursă deschisă, partajat sub licenta GPL-2.0-only.
+* De la crearea sa, Git a devenit cel mai popular sistem distribuit de control a versiunilor, aproape 95% dintre dezvoltatori raportându-l ca fiind principalul lor sistem de control al versiunilor începând din 2022. Există multe oferte populare de servicii de depozit Git, inclusiv GitHub, SourceForge, Bitbucket si GitLab.
+* Codul sursă este ținut pe GitHub. GitHub este o platformă de dezvoltare ce permite dezvoltatorilor să creeze, să stocheze, să gestioneze și să partajeze codul lor. Folosește software-ul Git, oferind controlul distribuit al versiunilor Git, plus controlul accesului, urmărirea erorilor, solicitări de caracteristici software, gestionarea sarcinilor, integrarea continuă și wiki-uri pentru fiecare proiect.
+* Documentația a fost realizată folosind programul Pandoc, fiind scrisă cu ajutorul limbajelor LaTeX si Markdown. LaTeX este un sistem de pregătire a documentelor pentru o tipărire de înaltă calitate. Este cel mai adesea utilizat pentru documente tehnice sau științifice de dimensiuni medii și mari, dar poate fi folosit pentru aproape orice formă de publicare.
+* Markdown este un limbaj de marcare ușor pentru crearea de text formatat cu ajutorul unui editor de text simplu. John Gruber și Aaron Swartz au creat Markdown în 2004 ca un limbaj de marcare menit să fie ușor de citit în forma sa de cod sursă. Markdown este utilizat pe scara largă pentru bloguri și mesagerie instantanee, fiind folosit și în alte părți în forumuri online, software colaborativ, pagini de documentație și fișiere de tip README.
+* Pandoc este un convertor de documente gratuit, utilizat pe scară largă ca instrument de scriere (în special de către cercetători) și ca baza pentru fluxurile de lucru de publicare.
+* Programul există sub forma unui fișier executabil datorită librariei PyInstaller. Aceasta reunește o aplicație Python și toate dependențele sale într-un singur pachet. Utilizatorul poate rula aplicatia împachetata fara a instala un interpretor Python sau orice alt modul.
 
 \pagebreak
 
-## Prezentarea codului sursa
+## Prezentarea codului sursă
 
 * Utilizatorului i se dechide o fereastra de tip terminal in care programul va cere ca data de intrare fisierul ce trebuie transformat in C++ (cu extensia .pc), (optional) numele fisierului de iesire si calea (PATH) catre acesta. Acestea vor fi stocate in variabilele `input_file`, respectiv `output_file`.
 * Fisierul de iesire (cu numele prestabilit "main.cpp") va fi pus in directorul curent daca nu este aleasa o cale.
@@ -70,7 +64,7 @@ def main():
     output_file = "./main.cpp"
 
   raw_file = Path(input_file)
-  if not raw_file.is_file(): # checking if the input file exists
+  if not raw_file.is_file():
     print(f"File '{input_file}' does not exist!")
     print(EXIT_MESSAGE)
     return
@@ -81,27 +75,26 @@ def main():
 ## Etapa de preprocesare
 
 * Programul verifica codul scris in Pseudo++, linie cu linie si caracter cu caracter, si prelucreaza in mod specific cuvintele cheie, adaugand ';' dupa cele ce marcheaza terminarea unei instructiuni logice.
-* Se instantiaza, de asemenea, variabila `counter` care va fi folosita prin intregul program pentru a facilita "comunicarea' dintre diferitele parti ale acestuia.
+* Se instantiaza, de asemenea, variabila `counter` care va fi folosita prin intregul program pentru a facilita "comunicarea" dintre diferitele parti ale acestuia.
 
 ```python
 counter = helpers.Counter()
-  # processing the code and outputting it
   with open(input_file, "r") as f:
-    for line in f: # go line by line
+    for line in f:
 
       line = line.strip()
-      pos = 0 # the position which it's currently at
+      pos = 0
       tokens = line.split()
-      for token in tokens: # adding ";" after/before each relevant keyword
-        pos += len(token) + 1 # the +1 is to compensate for the space (separator)
-        if token in ("altfel", "atunci", "executa", "repeta"): # add ';' after the keywords
+      for token in tokens:
+        pos += len(token) + 1
+        if token in ("altfel", "atunci", "executa", "repeta"):
           line = helpers.add_character_at(";", line, pos - 1)
           pos += 1
-        elif token in ("stop", "citeste", "scrie"): # add ';' before the keywords
+        elif token in ("stop", "citeste", "scrie"):
           line = helpers.add_character_at(";", line, pos - len(token) - 1)
           pos += 1
 
-      line += "\n" # adding it back (removed above)
+      line += "\n"
 ```
 
 * Programul ia fiecare caracter din linia curenta, incadrand operatorii matematici intre spatii si semnaland o eroare daca se intampina vreo problema.
@@ -109,8 +102,7 @@ counter = helpers.Counter()
 
 ```python
 try:
-  while i < len(line): # processing the current line
-            # using a while-loop to properly have len(line) updated
+  while i < len(line):
     match line[i]:
       case "<":
         line, i = preprocessor.preprocess_larrow(line, i, counter)
@@ -170,7 +162,7 @@ graph LR
     simbol --> necunoscut & ilegal --> eroare
 ```
 
-### Generalitati
+### Generalități
 
 * Toate functiile verifica respectarea sintaxei si semnaleaza erori la gasirea unor probleme. Acestea sunt: lipsa de paraneze, folosirea unui tip de date invalid, lipsa declararii variabilelor, prezenta ilegala sau lipsa operatorilor, a variabilelor sau a literalelor, prezenta unor cuvinte/simboluri necunoscute programului, etc.
 * Nu sunt verificate erorile algebrice sau de logica matematica, obiectivul \
@@ -178,24 +170,24 @@ transpiler-ului fiind crearea unui fisier C++ echivalent celui scris in Pseudo++
 * In programul principal este apelata functia `process_line` care apeleaza la randul ei celelalte functii pentru a procesa diferitele tipuri de structuri si intoarce linia procesata. Odata terminata procesarea (fara erori), linia procesata va fi scrisa in fisierul de tip C++.
 
 ```python
-try: # try to process the current line
+try:
   processed_line = processor.process_line(line, counter)
-except Exception as e: # if an exception is raised, display it and terminate the program
+except Exception as e:
   print(f"{type(e).__name__}: {e}")
   force_exit(g, output_file)
   return
 
-# Write the processed line to the file
 g.write(processed_line)
 ```
 
-### Operatii si sintaxa acestora
+### Operații și sintaxa acestora
 
 #### Citire
 
 * Sintaxa: `citeste <variable> (<tip de date>)`
 * Functia `process_user_input` proceseaza linii care efectueaza operatii de citire a datelor de intrare de un anumit tip de date.
 * Se sterge cuvantul "citeste" din linia curenta si se verifica existenta tipului de date si al parantezelor. Se verifica existenta simbolurilor, apoi sunt cautate simboluri ilegale, cum ar fi cele de tip literal, cuvinte cheie, operatori.
+* Se adauga fiecare variabila in lista de identificatori interna a programului cu tipul de date precizat intre paranteze.
 
 ```python
 def process_user_input(line: str, counter: Counter):
@@ -206,31 +198,29 @@ def process_user_input(line: str, counter: Counter):
     
 
     line = line.strip()
-    line = line[8:] # remove "citeste" from the line
+    line = line[8:]
     line, _, data_type = line.partition("(")
 
-    if len(data_type) == 0: # if the type (or paranthesis) is missing
+    if len(data_type) == 0:
         raise helpers.MissingKeywordError(f"Missing '(' or the data type on line {counter.current_line} (1201)")
     
     if data_type[-1] != ")":
         raise helpers.MissingKeywordError(f"Missing ')' on line {counter.current_line} (1202)")
 
-    data_type = data_type[:-1].strip() # remove the ")"
+    data_type = data_type[:-1].strip()
     tokens = line.split(",")
-    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
+    tokens = [x.strip(" ") for x in tokens]
 
-    if len(tokens) == 0: # if there are no variables being read
+    if len(tokens) == 0:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1203)")
 
     if data_type not in helpers.DATA_TYPES:
         raise helpers.UnknownTokenError(f"{data_type} on line {counter.current_line} (1204)")
 
     result = ""
-    result += helpers.KEYWORDS[data_type] + " " # the data type of the variables
+    result += helpers.KEYWORDS[data_type] + " "
 
-    for token in tokens: #declaring the variables and saving them for later usage        
-
-        # check for literals/helpers.OPERATORS/reserved helpers.KEYWORDS
+    for token in tokens:
         if helpers.type_of(token, counter) not in ("identificator", "necunoscut"):
             raise helpers.UnknownTokenError(f"{token} on line {counter.current_line} (1205)")
         
@@ -249,23 +239,24 @@ def process_user_input(line: str, counter: Counter):
 rezultatul final.
 
 ```python
-    result = result[:-1] + ";\n" # finishing the line
+    result = result[:-1] + ";\n"
     result += "cin>>"
 
-    for token in tokens: # adding reading syntax for each token
+    for token in tokens:
         result += f"{token}>>"
 
-    result = result[:-2] # removing extra ">>" from the end
-    result += ";\n" # finishing the line
+    result = result[:-2]
+    result += ";\n"
 
     return result
 ```
 
-#### Afisare
+#### Afișare
 
 * Sintaxa: `scrie <variabile/literal>`
 * Functia `process_user_output` proceseaza linii care efectueaza operatii de afisare a datelor.
 * Se sterge cuvantul "scrie" din linia curenta si se verifica existenta simbolurilor prin numararea secventelor separate prin virgula. Sunt cautate cuvinte cheie si simboluri necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`.
+* Pe langa tipuri de date numerice, pot fi incluse si siruri de caracter cu conditia ca acestea sa nu aibe spatiiin interiorul lor.
 
 ```python
 def process_user_output(line: str, counter: Counter):
@@ -275,14 +266,14 @@ def process_user_output(line: str, counter: Counter):
     
 
     line = line.strip()
-    line = line[6:] # remove "scrie" from the line
+    line = line[6:]
     tokens = line.split(",")
 
     if len(tokens) == 0:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1101)")
 
     tokens[-1] = tokens[-1].strip("\n")
-    tokens = [x.strip(" ") for x in tokens] # removing unnecesary spaces
+    tokens = [x.strip(" ") for x in tokens]
 
     result = "cout<<"
 
@@ -291,13 +282,13 @@ def process_user_output(line: str, counter: Counter):
                               identifiers_allowed=True,
                               literals_allowed=True)
 
-    result = result[:-2] # removing extra "<<" from the end
-    result += ";\n" # finishing the line
+    result = result[:-2]
+    result += ";\n"
 
     return result
 ```
 
-#### Logica
+#### Logică
 
 * Sintaxa: `daca <conditii> atunci <instructiuni> stop`
 * Functia `process_if_statement` proceseaza linii care efectueaza operatii \
@@ -318,8 +309,8 @@ def process_if_statement(line: str, counter: Counter):
     if tokens[-1] not in ("atunci", "atunci;"):
         raise helpers.MissingKeywordError(f"\"atunci\" on line {counter.current_line} (1601)")
     
-    result = helpers.KEYWORDS[tokens[0]] # "daca"
-    tokens = tokens[1:-1] # removed "daca" & "atunci;"
+    result = helpers.KEYWORDS[tokens[0]]
+    tokens = tokens[1:-1]
 
     if len(tokens) == 0:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1602)")
@@ -331,7 +322,7 @@ def process_if_statement(line: str, counter: Counter):
     return result + helpers.KEYWORDS["atunci"]
 ```
 
-#### Structura repetitiva cu test initial
+#### Structura repetitiva cu test inițial
 
 * Sintaxa: `cat timp <conditii> executa <instructiuni> stop`
 * Functia `process_while_structure` proceseaza atat structurile de forma `cat timp <conditii> executa <instructiuni> stop`, cat si partea finala a \
@@ -362,7 +353,7 @@ def process_while_structure(line: str, counter: Counter):
         if tokens[0] != "cat" or tokens[1] != "timp":
             raise helpers.MissingKeywordError(f"Line {counter.current_line} (1301)")
             
-        tokens = tokens[2:] # remove "cat" & "timp"
+        tokens = tokens[2:]
 
         if len(tokens) == 0:
             raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1302)")
@@ -380,11 +371,13 @@ def process_while_structure(line: str, counter: Counter):
         return result + processed_subline
 ```
 
-#### Structura repetitiva cu test final
+#### Structura repetitivă cu test final
 
 * Sintaxa: `repeta <instructiuni> pana cand | cat timp <conditii>`
 * Functia `process_repeat_until` proceseaza structurile repetitive cu test initial.
 * Este folosita functia `process_while_structure` mentionata anterior pentru procesarea finalului structurii in cazul in care aceasta se termina in `cat timp`. Sunt cautate cuvinte cheie si simboluri necunoscute si sunt semnalate erori la gasirea lor folosind functia `check_for_errors`. In cazul in care nu apar cuvintele cheie `cat` sau `timp` este semnalata o eroare.
+* Este, de asemenea, incrementat contorul de cuvinte cheie de inchidere a \
+structurilor repetitive.
 
 ```python
 def process_while_structure(line: str, counter: Counter):
@@ -401,9 +394,8 @@ def process_while_structure(line: str, counter: Counter):
   line = line.strip()
   result = ""
   exe_index = line.find("executa")
-  if exe_index != -1: # while-loop
-    # the code for the while-loop
-  else: # end of repeat-while loop
+  if exe_index != -1:
+  else:
         counter.loop_enders += 1
         result = "} while("
         tokens = line.split()
@@ -411,7 +403,7 @@ def process_while_structure(line: str, counter: Counter):
         if tokens[0] != "cat" or tokens[1] != "timp":
             raise helpers.MissingKeywordError(f"Line {counter.current_line} (1303)")
         
-        tokens = tokens[2:] # remove "cat" & "timp"
+        tokens = tokens[2:]
         
         result = helpers.check_for_errors(tokens, result, counter, operators_allowed=True,
                                               identifiers_allowed=True,
@@ -421,12 +413,13 @@ def process_while_structure(line: str, counter: Counter):
         return result
 ```
 
-#### Structura repetitiva cu numar cunoscut de operatii
+#### Structura repetitivă cu număr cunoscut de operații
 
 * Sintaxa: `pentru <variabila> <- <valoare | variabila>, <valoare | variabila>, <valoare | variabila>`
 * Functia `process_for_loop` proceseaza structurile repetitive cu numar cunoscut de operatii, verificand daca iteratorul exista deja in vectorul cu variabile. Acesta proceseaza diferit iteratorul, limita si incrementul in functie de folosirea \
 variabilelor sau a valorilor literale.
 * Se verifica prezenta cuvantului cheie `executa` si se semnaleaza o eroare in cazul lipsei acestuia. Se verifica numarul de simboluri si se extrag iteratorul, limita si incrementul.
+* Valoarea de incrementare din structura trebuie sa fie o variabila simpla, nu o expresia, datorita modului in care a fost conceput programul.
 
 ```python
 def process_for_loop(line: str, counter: Counter):
@@ -442,20 +435,21 @@ def process_for_loop(line: str, counter: Counter):
     if line[-7:] not in ("executa", "executa;"):
         raise helpers.MissingKeywordError(f"\"executa\" on line {counter.current_line} (1501)")
 
-    line = line[7:-8] # remove "pentru" & "executa"
+    line = line[7:-8]
     result = "for ("
     tokens = line.split(",")
 
     if len(tokens) <= 2:
         raise helpers.MissingIdentifierError(f"Line {counter.current_line} (1502)")
 
-    identifier, op, init_value = tokens[0].partition("<-") # the declaration of the iterator variable (ex: "i <- 1")
+    identifier, op, init_value = tokens[0].partition("<-")
     identifier = identifier.strip()
     init_value = init_value.strip()
-    bound = tokens[1].strip() # the value at which the for-loop ends
+    bound = tokens[1].strip()
 ```
 
 * Se verifica numeroase conditii, cum ar fi prezenta unor simboluri necunoscute, lipsa uneia dintre valorile necesare structurii sau prezenta ilegala a operatorilor, identificatorilor sau a valorilor de tip literal.
+* Sunt verificate pe rand valoarea initiala si valoarea limita din structura folosind functia `check_for_errors`.
 
 ```python
   if len(tokens) > 3:
@@ -484,7 +478,7 @@ def process_for_loop(line: str, counter: Counter):
         raise helpers.UnknownTokenError(f"{identifier} on line {counter.current_line} (1507)") 
 ```
 
-* Se verifica daca valoarea initiala este un identificator deja declarat sau o valoare de tip literal.
+* Se verifica daca valoarea initiala este un identificator deja declarat sau o valoare de tip literal. Se initializeaza iteratorul bazandu-se pe aceasta.
 
 ```python
   if helpers.type_of(init_value, counter) == "identificator":
@@ -493,7 +487,8 @@ def process_for_loop(line: str, counter: Counter):
         iterator = helpers.Identifier(identifier, helpers.type_of(init_value, counter))
 ```
 
-* Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare. Altfel, va fi creata linia corespunzatoare in C++ cu urmatoarea sintaxa: `<tip de date> <nume variabila> = <valoare initiala>`. Vor fi sterse, de asemenea, spatiile in plus care au fost adaugate de catre preprocesor sau de catre utilizator.
+* Daca iteratorul nu este un identificator si daca tipul acestuia este necunoscut, va fi semnalata o eroare. Altfel, va fi creata linia corespunzatoare in C++ cu urmatoarea sintaxa: `<tip de date> <nume variabila> = <valoare initiala>`. Vor fi sterse, de asemenea, spatiile in plus care au fost adaugate de catre \
+preprocesor sau de catre utilizator.
 
 ```python
     if helpers.is_identifier(iterator.name, counter):
@@ -505,13 +500,11 @@ def process_for_loop(line: str, counter: Counter):
             raise helpers.UnknownTokenError(f"{iterator.name} on line {counter.current_line} (1508)")
 ```
 
-* Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa cu sintaxa. Sirul generat are formatul `<variabila> <operatie aritmetica de comparatie> <variabila | valoare de tip literal>; <variabila> += <increment>{`
+* Se adauga operatorii de comparatie si de incrementare din C++ in functie de tipul incrementului si de prezenta unui minus (`-`) inaintea sa. Sirul generat are formatul `<variabila> <operatie aritmetica de comparatie> <variabila | valoare de tip literal>; <variabila> += <increment>{`
 * Se adauga, de asemenea, iteratorul in lista de identificatori
 
 ```python
   counter.identifiers.append(iterator)
-    # if the increment is an identifier, put the processed sign ("<=" or ">=")
-    # depending on whether or not it has a '-' preceding it
     if helpers.is_identifier(increment, counter) or helpers.is_identifier(increment[1:], counter):
         if increment[0] == "-":
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
@@ -520,7 +513,6 @@ def process_for_loop(line: str, counter: Counter):
        
         return result
 
-    # if the increment is a number literal, set the sign (">=" or "<=") accordingly
     if helpers.type_of(increment, counter) in ("real", "intreg"):
         if float(increment) > 0:
             result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
@@ -528,7 +520,7 @@ def process_for_loop(line: str, counter: Counter):
             result += f"{iterator.name} >= {bound}; {iterator.name} += {increment})" + "{"
     elif helpers.type_of(increment, counter) == "caracter":
         result += f"{iterator.name} <= {bound}; {iterator.name} += {increment})" + "{"
-    else: # if the increment is a string
+    else:
         raise helpers.UnknownTokenError(f"{increment} on line {counter.current_line} (1509)")
 
     return result
@@ -553,7 +545,7 @@ def process_assignment(line: str, counter: Counter):
     result = ""
     tokens = line.split()
 
-    if not helpers.is_identifier(tokens[0], counter): # variable declaration
+    if not helpers.is_identifier(tokens[0], counter):
         result += "float "
         counter.identifiers.append(helpers.Identifier(tokens[0], "real"))
 
@@ -569,7 +561,7 @@ def process_assignment(line: str, counter: Counter):
 
 \pagebreak
 
-## Erori si sintaxa
+## Erori și sintaxă
 
 * In fisierul `helpers.py` se afla majoritatea functiilor si enumeratiilor folosite pentru verificarea sintaxei, cat si definitiile erorilor folosite in cod. Sunt definiti operatorii, cuvintele cheie si tipurile de date.
 
@@ -631,7 +623,7 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
             return "necunoscut"
   ```
   
-  * adaugarea unui caracter intr-un sir de caractere pe o anumita pozitie
+  * adaugarea unui caracter intr-un sir de caractere pe o anumita pozitie; se ia sirul pana la pozitia tinta exclusiv, se adauga caracterul din parametri, apoi se adauga restul sirului
   
   ```python
   def add_character_at(character: str, string: str, position: int) -> str:
@@ -653,12 +645,10 @@ simbolului, caracterul incipient si final, prezenta sa in lista de identificator
     
     Returns the processed tokens added to `result`"""
 
-    parentheses = 0 # ()
-    brackets = 0 # []
+    parentheses = 0
+    brackets = 0
 
     for token in tokens:
-        # split the token further and verify its contents
-        # (for example, arithmetic operations)
         subtokens = token.split()
         if len(subtokens) > 1:
             subresult = check_for_errors(subtokens, "", counter, " ",
@@ -771,7 +761,7 @@ class Identifier:
 
 \pagebreak
 
-## Inainte de rezultatul final
+## Înainte de rezultatul final
 
 * Se verifica daca sunt prezente in program destule cuvinte cheie de inchidere a structurilor repetitive sau a structurilor logice (`stop`, respectiv `pana cand`/`cat timp`).
 * In cazul in care nu sunt prezente destule (sau daca sunt prea multe) va fi semnalata o eroare si programul se va termina fara a afisa rezultatul.
@@ -836,7 +826,7 @@ class Counter:
 
 * `helpers.py`: Contine definitia multor clase si functii adjuvante folosite in celelalte fisiere, cum ar fi toate clasele de erori, `Counter`, `Identifier` si lista de cuvinte cheie
 
-# Exemplu de executie
+# Exemplu de execuție
 
 * Executia programului si introducerea datelor de intrare
 \begin{figure}
